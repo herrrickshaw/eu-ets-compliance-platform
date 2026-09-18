@@ -1075,26 +1075,107 @@ def run():
              source_confidence=SECONDARY,
              notes="Volume fell from 18,653.8 t (YTD Jan 2025) to 10,874.72 t (YTD Jan 2026). Underlying "
              "DGCIS/Tradestat attribution not explicit in the article -- treat as secondary."),
-        # ---- Cement (HS 2523) -- data gap, likely negligible ----
-        dict(product_category="Cement", hs_chapter="2523", period="CY2023 (global total, all destinations)",
+        # ---- Cement -- HSN-level EU-import-from-India mirror data (Oct 2026 research pass) ----
+        # CBAM Annex I cement-sector CN codes cross-checked across 3 secondary sources (cbamguide.com,
+        # cbam-services.com, carbonchain.com) -- EUR-Lex primary text itself returned empty/bot-blocked.
+        # Mirror data (EU's own import records, since India's own export-side portal is unscrapable) via
+        # UN Comtrade through World Bank WITS -- HS 6-digit only, not CN 8-digit (Eurostat Comext, which
+        # would give CN8, returned 404/blocked in this session -- explicit gap, not filled with a guess).
+        dict(product_category="Cement", hs_chapter="2523", period="CY2023 (India global total, all destinations)",
              export_value_usd=45.5e6, export_volume_tonnes=None, yoy_change_pct=-13.4,
              source_name="trendeconomy.com, India HS 2523 export data 2012-2023",
              source_url="https://trendeconomy.com/data/h2/India/2523",
              source_confidence=SECONDARY,
-             notes="This is India's TOTAL global cement export value, not EU-specific -- no EU country "
-             "appears in the top-5 destinations (Sri Lanka 66%, Maldives 19.3%, Nepal 4%, Bhutan 3.7%, "
-             "UAE 1%). No primary EU-specific figure found; the total-export ceiling makes EU exposure "
-             "structurally unlikely to be material. Treat as negligible-to-zero, not zero-confirmed.",
+             notes="India's TOTAL global cement export value for context -- EU is not in the top-5 "
+             "destinations (Sri Lanka 66%, Maldives 19.3%, Nepal 4%, Bhutan 3.7%, UAE 1%)."),
+        dict(product_category="Cement", hs_chapter="2523 10 00", period="2023 (EU imports from India, clinkers)",
+             export_value_usd=160, export_volume_tonnes=0.399, yoy_change_pct=None,
+             source_name="UN Comtrade via World Bank WITS (EU imports, partner=India, HS6 252310)",
+             source_url="https://wits.worldbank.org/trade/comtrade/en/country/EUN/year/2023/tradeflow/Imports/partner/ALL/product/252310",
+             source_confidence=SECONDARY,
+             notes="$160 for 399 kg -- sample/non-commercial-lot scale, not a real trade corridor."),
+        dict(product_category="Cement", hs_chapter="2523 10 00", period="2024 (EU imports from India, clinkers)",
+             export_value_usd=790, export_volume_tonnes=1.997, yoy_change_pct=None,
+             source_name="UN Comtrade via World Bank WITS",
+             source_url="https://wits.worldbank.org/trade/comtrade/en/country/EUN/year/2024/tradeflow/Imports/partner/ALL/product/252310",
+             source_confidence=SECONDARY,
+             notes="India's large clinker export volumes go to Bangladesh/Sri Lanka/Africa, not the EU."),
+        dict(product_category="Cement", hs_chapter="2523 21/29 00", period="2023-2025 (EU imports from India, Portland cement)",
+             export_value_usd=7770, export_volume_tonnes=10.076, yoy_change_pct=None,
+             source_name="UN Comtrade via WITS (252321+252329 summed across 2023-2025)",
+             source_url="https://wits.worldbank.org/trade/comtrade/en/country/EUN/year/2024/tradeflow/Imports/partner/ALL/product/252329",
+             source_confidence=SECONDARY,
+             notes="White (252321, 2023 only: $250/45kg) + other Portland (252329, 2023 $1,550/9,749kg; "
+             "2024 $4,480/2,702kg; 2025 $1,970/282kg) summed. Implied unit prices ($580-1,660/tonne) are "
+             "far above bulk cement pricing (~$50-150/tonne) -- further evidence of sample/lab-quantity "
+             "shipments, not commercial trade."),
+        dict(product_category="Cement", hs_chapter="2523 30/90 00", period="2024 (EU imports from India, aluminous + other hydraulic)",
+             export_value_usd=96_880, export_volume_tonnes=312.971, yoy_change_pct=None,
+             source_name="UN Comtrade via WITS (252330 aluminous $94,370/309,775kg + 252390 other hydraulic $2,510/3,196kg)",
+             source_url="https://wits.worldbank.org/trade/comtrade/en/country/EUN/year/2024/tradeflow/Imports/partner/ALL/product/252330",
+             source_confidence=SECONDARY,
+             notes="The largest of the cement-sector lines, but still ~$97K/yr -- immaterial next to "
+             "steel/aluminium's billions. CONFIRMED: cement CBAM exposure is genuinely negligible for "
+             "India at the actual CN-code level, not just at the global-total level."),
+        dict(product_category="Cement", hs_chapter="2507 00 (80)", period="2024 (EU imports from India, kaolinic clays -- HS6, overstated)",
+             export_value_usd=13_816_440, export_volume_tonnes=113_325, yoy_change_pct=None,
+             source_name="UN Comtrade via WITS, full HS6 heading 250700",
+             source_url="https://wits.worldbank.org/trade/comtrade/en/country/EUN/year/2024/tradeflow/Imports/partner/ALL/product/250700",
+             source_confidence=SECONDARY,
+             notes="CBAM Annex I only covers CN 2507 00 80 (other kaolinic clays, a cement-sector "
+             "precursor), but WITS/Comtrade only reports at HS6 (250700), which also includes non-CBAM "
+             "raw kaolin (2507 00 20) -- this figure OVERSTATES the CBAM-relevant slice. True 2507 00 80 "
+             "value could not be isolated (needs Eurostat Comext CN8 data, not accessible this session).",
              ),
-        # ---- Fertilizers (HS 31) -- data gap, inferred negligible ----
-        dict(product_category="Fertilizers", hs_chapter="31", period="No EU export figure found",
-             export_value_usd=None, export_volume_tonnes=None, yoy_change_pct=None,
-             source_name="No DGCIS/PIB/GTRI figure found for India-EU fertilizer exports specifically",
-             source_url=None, source_confidence=SECONDARY,
-             notes="India is a NET IMPORTER of both urea (imports 5-10 MnT/yr against ~31.2 MnT domestic "
-             "production, nearly all absorbed by domestic subsidy-driven consumption) and ammonia (2.2 MnT "
-             "imported in 2022) -- strong indirect evidence EU export exposure is negligible. Not "
-             "quantified; do not fabricate a figure here."),
+        # ---- Fertilizers -- HSN-level EU-import-from-India mirror data ----
+        # CBAM Annex I fertiliser scope is WIDER than a narrow urea-only assumption: all of CN 3102, plus
+        # 2808 (nitric acid), 2814 (ammonia), 2834 21 00 (potassium nitrate -- easy to miss, sits in HS
+        # ch.28 not ch.31), and 3105 except 3105 60 00 (P+K only, no nitrogen, explicitly carved out).
+        dict(product_category="Fertilizers", hs_chapter="3102 (all)", period="2023 (EU imports from India, nitrogenous fertilisers)",
+             export_value_usd=954_150, export_volume_tonnes=1030.430, yoy_change_pct=None,
+             source_name="UN Comtrade via WITS",
+             source_url="https://wits.worldbank.org/trade/comtrade/en/country/EUN/year/2023/tradeflow/Imports/partner/ALL/product/3102",
+             source_confidence=SECONDARY,
+             notes="Which 8-digit subheading (urea/ammonium nitrate/UAN/etc.) drives this figure could "
+             "not be isolated at HS6 -- needs Eurostat Comext CN8, not accessible this session. Almost "
+             "certainly not urea itself, given India's large net-importer position there."),
+        dict(product_category="Fertilizers", hs_chapter="3102 (all)", period="2024 (EU imports from India, nitrogenous fertilisers)",
+             export_value_usd=897_550, export_volume_tonnes=1099.100, yoy_change_pct=None,
+             source_name="UN Comtrade via WITS",
+             source_url="https://wits.worldbank.org/trade/comtrade/en/country/EUN/year/2024/tradeflow/Imports/partner/ALL/product/3102",
+             source_confidence=SECONDARY, notes=None),
+        dict(product_category="Fertilizers", hs_chapter="3102 (all)", period="2025 (EU imports from India, nitrogenous fertilisers)",
+             export_value_usd=1_259_760, export_volume_tonnes=972.156, yoy_change_pct=None,
+             source_name="UN Comtrade via WITS",
+             source_url="https://wits.worldbank.org/trade/comtrade/en/country/EUN/year/2025/tradeflow/Imports/partner/ALL/product/3102",
+             source_confidence=SECONDARY, notes=None),
+        dict(product_category="Fertilizers", hs_chapter="2814", period="2024 (EU imports from India, ammonia)",
+             export_value_usd=6870, export_volume_tonnes=0.007, yoy_change_pct=None,
+             source_name="UN Comtrade via WITS",
+             source_url="https://wits.worldbank.org/trade/comtrade/en/country/EUN/year/2024/tradeflow/Imports/partner/ALL/product/2814",
+             source_confidence=SECONDARY,
+             notes="Negligible -- consistent with India being a large net ammonia IMPORTER (2.2 MnT in "
+             "2022). Nitric acid (CN 2808) and UAN/N-mixtures (CN 3102 80) show India absent entirely "
+             "from the EU's partner list for these lines -- zero, not a data gap."),
+        dict(product_category="Fertilizers", hs_chapter="2834 21 00", period="2024 (EU imports from India, potassium nitrate)",
+             export_value_usd=1_659_700, export_volume_tonnes=565.461, yoy_change_pct=None,
+             source_name="UN Comtrade via WITS",
+             source_url="https://wits.worldbank.org/trade/comtrade/en/country/EUN/year/2024/tradeflow/Imports/partner/ALL/product/283421",
+             source_confidence=SECONDARY,
+             notes="THE ONE REAL FERTILISER EXPORT LINE: India ranked 7th among all EU suppliers of "
+             "potassium nitrate (~0.49% of the EU's $337.9M total imports of this line). Small in "
+             "absolute terms but genuinely non-trivial and NOT a rounding error, unlike every other "
+             "fertiliser line above -- don't default this whole category to 'zero'. Easy to miss: this "
+             "CN code sits in HS Chapter 28 (inorganic chemicals), not Chapter 31 (fertilisers), but is "
+             "explicitly in CBAM Annex I's fertiliser-sector scope.",
+             ),
+        dict(product_category="Fertilizers", hs_chapter="3105 (excl. 3105 60 00)", period="2024 (EU imports from India, multi-nutrient N+P/N+K/N+P+K fertilisers)",
+             export_value_usd=985_370, export_volume_tonnes=414.025, yoy_change_pct=None,
+             source_name="UN Comtrade via WITS",
+             source_url="https://wits.worldbank.org/trade/comtrade/en/country/EUN/year/2024/tradeflow/Imports/partner/ALL/product/3105",
+             source_confidence=SECONDARY,
+             notes="CN 3105 60 00 (P+K only, no nitrogen) is explicitly excluded from CBAM's fertiliser "
+             "scope; this figure is the remainder (N-containing multi-nutrient blends)."),
         # ---- Hydrogen (HS 2804.10) -- confirmed no export industry ----
         dict(product_category="Hydrogen", hs_chapter="2804.10", period="2026",
              export_value_usd=0, export_volume_tonnes=0, yoy_change_pct=None,

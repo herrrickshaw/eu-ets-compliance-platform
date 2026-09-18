@@ -25,6 +25,16 @@ function StatusBadge({ status }) {
   return <Badge status={status} />;
 }
 
+function formatUsd(value) {
+  if (value == null) return "no figure found";
+  if (value === 0) return "$0";
+  const abs = Math.abs(value);
+  if (abs >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
+  if (abs >= 1e6) return `$${(value / 1e6).toFixed(2)}M`;
+  if (abs >= 1e3) return `$${(value / 1e3).toFixed(1)}K`;
+  return `$${value.toLocaleString()}`;
+}
+
 export default function IndiaCcts() {
   const { data: sectors } = useApi("/india/sectors");
   const { data: activities } = useApi("/india/article6-activities");
@@ -206,6 +216,7 @@ export default function IndiaCcts() {
         <Table
           columns={[
             { key: "product_category", label: "Category" },
+            { key: "hs_chapter", label: "HS/CN code" },
             { key: "period", label: "Period" },
             { key: "export_value_usd", label: "Export value" },
             { key: "export_volume_tonnes", label: "Volume" },
@@ -214,7 +225,8 @@ export default function IndiaCcts() {
           ]}
           rows={cbamExposure ?? []}
           renderCell={(row, key) => {
-            if (key === "export_value_usd") return row.export_value_usd != null ? `$${(row.export_value_usd / 1e9).toFixed(2)}B` : "no figure found";
+            if (key === "hs_chapter") return row.hs_chapter ?? "—";
+            if (key === "export_value_usd") return formatUsd(row.export_value_usd);
             if (key === "export_volume_tonnes") return row.export_volume_tonnes != null ? `${row.export_volume_tonnes.toLocaleString()} t` : "—";
             if (key === "yoy_change_pct") return row.yoy_change_pct != null ? `${row.yoy_change_pct > 0 ? "+" : ""}${row.yoy_change_pct}%` : "—";
             if (key === "confidence") return <span className="text-xs text-slate-400 uppercase">{row.source_confidence}</span>;
