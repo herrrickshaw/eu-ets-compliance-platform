@@ -602,3 +602,36 @@ class IndiaCarbonPriceComparison(Base):
     price_date: Mapped[date] = mapped_column(Date, nullable=False)
     trend_note: Mapped[str] = mapped_column(String, nullable=True)
     source_confidence: Mapped[SourceConfidence] = mapped_column(db_enum(SourceConfidence), nullable=False)
+
+
+class FigureType(str, enum.Enum):
+    ASPIRATIONAL_TARGET = "aspirational_target"  # e.g. a 2030 policy goal, not yet built
+    AWARDED_OPERATIONAL = "awarded_operational"  # capacity actually awarded/under construction/operating now
+    CURRENT_ACTUAL = "current_actual"  # a measured current-year figure (e.g. cumulative PAT savings to date)
+
+
+class IndiaSupplyCapacity(Base):
+    """Bottom-up supply-side capacity for each Article 6.2-eligible activity,
+    sourced from MNRE/MoPNG/PIB/CEA/BEE records — a proxy for potential credit
+    supply, since no official Article 6.2 pipeline volume is published. Capacity
+    (GW/MMT/plant count/etc.) is converted to potential avoided tCO2e/year where
+    a defensible physical conversion exists (documented in conversion_note);
+    where it doesn't (e.g. diffuse "BAT for hard-to-abate"), potential_avoided_mt_co2e
+    stays null and the row is excluded from the gap-analysis total, not zero-filled."""
+
+    __tablename__ = "india_supply_capacity"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    activity_id: Mapped[int] = mapped_column(ForeignKey("article6_eligible_activities.id"))
+    metric_label: Mapped[str] = mapped_column(String, nullable=False)
+    value: Mapped[float | None] = mapped_column(Float, nullable=True)
+    unit: Mapped[str] = mapped_column(String, nullable=False)
+    figure_type: Mapped[FigureType] = mapped_column(db_enum(FigureType), nullable=False)
+    as_of_date: Mapped[date | None] = mapped_column(Date, nullable=True)
+    source_name: Mapped[str] = mapped_column(String, nullable=False)
+    source_url: Mapped[str] = mapped_column(String, nullable=True)
+    source_confidence: Mapped[SourceConfidence] = mapped_column(db_enum(SourceConfidence), nullable=False)
+    conversion_note: Mapped[str] = mapped_column(String, nullable=True)
+    potential_avoided_mt_co2e: Mapped[float | None] = mapped_column(Float, nullable=True)
+
+    activity: Mapped[Article6EligibleActivity] = relationship()

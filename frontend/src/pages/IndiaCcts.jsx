@@ -29,11 +29,15 @@ export default function IndiaCcts() {
   const { data: sectors } = useApi("/india/sectors");
   const { data: activities } = useApi("/india/article6-activities");
   const { data: prices } = useApi("/india/carbon-prices");
+  const { data: supplyCapacity } = useApi("/india/supply-capacity");
 
   const [overrides, setOverrides] = useState({});
   const [demand, setDemand] = useState(null);
+  const [gap, setGap] = useState(null);
   const [busy, setBusy] = useState(false);
+  const [gapBusy, setGapBusy] = useState(false);
   const [err, setErr] = useState(null);
+  const [gapErr, setGapErr] = useState(null);
 
   function setOverride(sectorId, field, value) {
     setOverrides((prev) => ({
@@ -62,11 +66,37 @@ export default function IndiaCcts() {
     }
   }
 
+  async function runGapAnalysis() {
+    setGapBusy(true);
+    setGapErr(null);
+    try {
+      const payload = {
+        overrides: Object.entries(overrides).map(([sector_id, v]) => ({
+          sector_id: Number(sector_id),
+          volume_mt: v.volume_mt,
+          intensity_tco2_per_t: v.intensity_tco2_per_t,
+        })),
+      };
+      const result = await api.post("/india/gap-analysis", payload);
+      setGap(result);
+    } catch (e) {
+      setGapErr(e.message);
+    } finally {
+      setGapBusy(false);
+    }
+  }
+
   const demandBySector = useMemo(() => {
     const m = {};
     (demand?.sectors ?? []).forEach((s) => (m[s.sector_id] = s));
     return m;
   }, [demand]);
+
+  const activityNameById = useMemo(() => {
+    const m = {};
+    (activities ?? []).forEach((a) => (m[a.id] = a.name));
+    return m;
+  }, [activities]);
 
   const mitigationActivities = activities?.filter((a) => a.category === "mitigation") ?? [];
   const otherActivities = activities?.filter((a) => a.category !== "mitigation") ?? [];
@@ -187,15 +217,122 @@ export default function IndiaCcts() {
         {demand && <p className="text-xs text-slate-400 mt-2">{demand.methodology_note}</p>}
       </Card>
 
-      <Card title="Article 6.2 eligible activities (supply side)">
+      <Card title="Supply capacity by activity (MNRE / MoPNG / PIB / CEA / BEE)">
         <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-600 mb-4">
-          <strong>Supply-side sizing gap:</strong> no official aggregate Article 6.2 pipeline volume (tCO2e) is
-          published for India — this is a confirmed data gap, not an omission. The list below is the eligible
-          activity set only (MoEFCC/NDAIAPA, finalized 17 Feb 2023); it cannot currently be quantified against
-          the demand model above. For scale context: India historically registered ~1,686 CDM projects and was
-          issued ~265M CERs — dominated by wind/hydro by project count and a few large HFC-23 destruction
-          projects by volume — but this is historical CDM context, not a current Article 6.2 supply estimate.
+          No official Article 6.2 pipeline volume (tCO2e) is published for India, so this is a bottom-up proxy:
+          capacity/target figures per eligible activity from primary ministry sources, converted to potential
+          avoided tCO2e/year where a defensible physical conversion exists.{" "}
+          <strong>aspirational_target</strong> = a policy goal (e.g. 2030), not yet built —{" "}
+          <strong>awarded_operational</strong> = capacity actually awarded/under construction/running —{" "}
+          <strong>current_actual</strong> = a measured to-date figure. Don't sum these as if they were all
+          available today.
         </div>
+        {(supplyCapacity ?? []).length === 0 ? (
+          <div className="text-sm text-slate-400 py-4 text-center">No supply-capacity data seeded yet.</div>
+        ) : (
+          <Table
+            columns={[
+              { key: "activity", label: "Activity" },
+              { key: "metric_label", label: "Metric" },
+              { key: "value", label: "Figure" },
+              { key: "figure_type", label: "Type" },
+              { key: "potential", label: "Potential avoided (Mt CO2e/yr)" },
+              { key: "source", label: "Source" },
+            ]}
+            rows={supplyCapacity ?? []}
+            renderCell={(row, key) => {
+              if (key === "activity") return activityNameById[row.activity_id] ?? `#${row.activity_id}`;
+              if (key === "value") return row.value != null ? `${row.value.toLocaleString()} ${row.unit}` : "no figure found";
+              if (key === "figure_type") return <Badge status={row.figure_type === "aspirational_target" ? "pending" : "compliant"} label={row.figure_type} />;
+              if (key === "potential")
+                return row.potential_avoided_mt_co2e != null ? row.potential_avoided_mt_co2e.toLocaleString() : "not quantifiable";
+              if (key === "source")
+                return row.source_url ? (
+                  <a href={row.source_url} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">
+                    {row.source_name}
+                  </a>
+                ) : (
+                  row.source_name
+                );
+              return row[key];
+            }}
+          />
+        )}
+        <details className="mt-3 text-xs text-slate-500">
+          <summary className="cursor-pointer hover:text-slate-700">Conversion methodology per row</summary>
+          <ul className="mt-2 space-y-2">
+            {(supplyCapacity ?? []).map((r) => (
+              <li key={r.id}>
+                <span className="font-medium text-slate-600">
+                  {activityNameById[r.activity_id]} — {r.metric_label}:
+                </span>{" "}
+                {r.conversion_note ?? "no conversion — excluded from gap-analysis total"}
+              </li>
+            ))}
+          </ul>
+        </details>
+      </Card>
+
+      <Card title="Demand vs. supply gap analysis">
+        <p className="text-xs text-slate-500 mb-3">
+          Compares the illustrative CCTS demand model above against the supply capacity table, split into
+          near-term (awarded/operational/current, comparable to the FY2025-27 compliance window) and
+          long-range aspirational (2030/2050 policy targets — an upper bound, not available supply today).
+          Uses your current volume/intensity overrides if you've edited them above.
+        </p>
+        <button
+          onClick={runGapAnalysis}
+          disabled={gapBusy}
+          className="px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-900 text-white hover:bg-slate-700 disabled:opacity-40"
+        >
+          Run gap analysis
+        </button>
+        {gapErr && <div className="text-sm text-rose-600 mt-2">{gapErr}</div>}
+        {gap && (
+          <div className="mt-4 space-y-4">
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <div className="text-xs text-slate-500">Total demand (CCTS, FY2025-27)</div>
+                <div className="text-xl font-bold">{gap.total_demand_mt_co2e.toLocaleString()} Mt CO2e</div>
+              </div>
+              <div>
+                <div className="text-xs text-slate-500">Near-term supply (awarded/actual)</div>
+                <div className="text-xl font-bold">{gap.total_near_term_supply_mt_co2e.toLocaleString()} Mt CO2e</div>
+              </div>
+              <div>
+                <div className="text-xs text-slate-500">
+                  {gap.near_term_gap_mt_co2e >= 0 ? "Near-term demand exceeds supply by" : "Near-term supply exceeds demand by"}
+                </div>
+                <div className={`text-xl font-bold ${gap.near_term_gap_mt_co2e >= 0 ? "text-rose-600" : "text-emerald-600"}`}>
+                  {Math.abs(gap.near_term_gap_mt_co2e).toLocaleString()} Mt CO2e
+                </div>
+              </div>
+            </div>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-900">
+              <strong>Long-range aspirational potential (2030, mostly): {gap.total_aspirational_supply_mt_co2e.toLocaleString()} Mt CO2e</strong>{" "}
+              — dominated by the 30 GW offshore wind target (78.4 Mt) and the 5 MMT green hydrogen target (47.5 Mt).
+              This is {(gap.total_aspirational_supply_mt_co2e / gap.total_demand_mt_co2e).toFixed(1)}x current demand
+              on paper, but reflects policy goals with little built capacity behind them yet (e.g. India's first
+              offshore wind tender drew zero bids) — not a claim that supply will actually outpace demand.
+            </div>
+            {gap.supply_rows_excluded_no_conversion.length > 0 && (
+              <details className="text-xs text-slate-500">
+                <summary className="cursor-pointer hover:text-slate-700">
+                  Excluded from both totals — no defensible conversion or wrong time horizon ({gap.supply_rows_excluded_no_conversion.length})
+                </summary>
+                <ul className="mt-2 space-y-1">
+                  {gap.supply_rows_excluded_no_conversion.map((r) => (
+                    <li key={r}>{r}</li>
+                  ))}
+                </ul>
+              </details>
+            )}
+            <p className="text-xs text-slate-400">{gap.supply_methodology_note}</p>
+          </div>
+        )}
+      </Card>
+
+      <Card title="Article 6.2 eligible activities (full list)">
         <div className="grid md:grid-cols-2 gap-4">
           <div>
             <div className="text-xs font-semibold text-slate-500 uppercase mb-2">Mitigation ({mitigationActivities.length})</div>

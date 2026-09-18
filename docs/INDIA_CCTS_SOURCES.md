@@ -31,9 +31,68 @@ to have this data in the future without re-checking.
   anywhere** — confirmed data gap, not an oversight. The only concrete development
   found was a bilateral India-Japan Joint Crediting Mechanism (JCM) with no
   published volume figure.
-- PIB primary press releases returned HTTP 403 to automated fetch during research —
-  everything attributed to PIB above is via secondary reporting that cites it, not
-  a page read directly.
+- PIB primary press releases returned HTTP 403 to automated fetch during the
+  *first* (demand-side) research pass — everything attributed to PIB in that pass
+  is via secondary reporting that cites it, not a page read directly. **Update:**
+  the *second* (supply-side capacity) research pass successfully fetched many PIB
+  pages directly via `curl` (the WebFetch/browser tool block is consistent with
+  the known ET/Hindu-style WAF block pattern — `curl` gets through where
+  browser-based fetches don't, per `feedback_economic_times_blocked` in this
+  environment's memory). Rows sourced from that second pass and tagged
+  `source_confidence=primary` in `IndiaSupplyCapacity` genuinely are primary-source
+  reads, not secondary reporting — see the per-row `source_url` fields.
+
+## Supply-side capacity (`IndiaSupplyCapacity`) — what's solid vs. genuinely thin
+
+A third research pass (Sept 2026) built a bottom-up supply-capacity model per
+Article 6.2-eligible activity, since no official pipeline volume exists (see
+above). Key findings, each with a primary PIB/MNRE/NITI Aayog/steel.gov.in/BEE
+citation in the row's `source_url`:
+
+- **Green hydrogen**: awarded production capacity (862,000 t/yr, ~17% of the 5
+  MMT/yr 2030 target) and electrolyser manufacturing capacity (3,000 MW/yr) are
+  solid, primary-sourced, current (May 2025) figures.
+- **Green ammonia**: SECI's first tendered tranche (75,000 t/yr, Aug 2025) is
+  real and cleared; the cumulative 724,000 t/yr figure is the *planned* total
+  across 13 auctions, most not yet run.
+- **Offshore wind**: the 30 GW-by-2030 target is aspirational and, as of this
+  research, essentially unbacked by built capacity — India's first tender (500
+  MW, Gujarat) drew **zero bids**. Only 1 GW is Cabinet-approved/funded via a
+  viability-gap-funding scheme; nothing is under construction.
+- **CCUS**: the only national capacity figure found anywhere (NITI Aayog, Nov
+  2022) is a 2050-horizon 750 Mt CO2/yr target — deliberately excluded from the
+  gap-analysis totals as too distant to be comparable to CCTS's FY2025-27 window.
+  No 2030-horizon CCUS figure exists. The only near-term figure is a single small
+  ONGC pilot (~100 t CO2/day), sourced only from trade press, not a primary
+  MoPNG/PIB document.
+- **PAT scheme (BEE energy efficiency)**: BEE's own dashboard cites 25.78
+  Million toe of cumulative energy savings (labeled "2025") but with **no
+  matching current CO2-avoided figure**. The only CO2-avoided numbers found
+  (97.01 Mt cumulative) cover Cycles I-II only (2012-2019) — Cycles III-VII
+  actuals are missing from every source checked. This is a genuine, confirmed
+  gap in BEE's public reporting, not a research shortfall.
+- **Tidal/ocean energy**: confirmed genuinely negligible — India has zero
+  operational capacity; two pilot attempts (Sundarbans, Gulf of Kutch) were both
+  abandoned over cost.
+- **CEA grid emission factor**: FY2024-25 weighted-average = 0.710 tCO2/MWh
+  (Combined Margin 0.736), from CEA's own "CO2 Baseline Database for the Indian
+  Power Sector v21.0" (Nov 2025) — the one figure in this whole module read
+  directly from its primary source with high confidence, and the constant used
+  throughout `seed_data.py` to convert MW capacity into potential avoided tCO2e.
+
+**Capacity-factor assumptions used to convert MW → MWh/year** (35% for
+FDRE/RTC, 42% for offshore wind, 30% blended for the Ladakh corridor) are
+standard illustrative industry ranges, **explicitly not India-specific-sourced**
+in any research pass — see each row's `conversion_note` in the seed data. If
+replacing these, CEA/MNRE publish actual plant-load-factor (PLF/CUF) statistics
+by state/region that would be a better source than these placeholders.
+
+The gap-analysis endpoint (`POST /api/india/gap-analysis`) deliberately reports
+**two separate supply totals** rather than one blended number: near-term
+(awarded/operational/current, i.e. plausibly deliverable within the CCTS
+FY2025-27 compliance window) and aspirational (2030/2050 policy targets, an
+upper bound only). Blending them would be actively misleading given how far
+some of these targets are from built capacity today.
 
 ## The demand-model calculator is illustrative, not official
 

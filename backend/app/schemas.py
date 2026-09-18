@@ -349,3 +349,28 @@ class IndiaCarbonPriceOut(OrmBase):
     price_date: date
     trend_note: str | None
     source_confidence: str
+
+
+class IndiaSupplyCapacityOut(OrmBase):
+    id: int
+    activity_id: int
+    metric_label: str
+    value: float | None
+    unit: str
+    figure_type: str
+    as_of_date: date | None
+    source_name: str
+    source_url: str | None
+    source_confidence: str
+    conversion_note: str | None
+    potential_avoided_mt_co2e: float | None
+
+
+class GapAnalysisResponse(BaseModel):
+    total_demand_mt_co2e: float
+    total_near_term_supply_mt_co2e: float  # awarded_operational + current_actual rows only
+    total_aspirational_supply_mt_co2e: float  # aspirational_target rows only — long-range upper bound, not available now
+    near_term_gap_mt_co2e: float  # positive = demand exceeds near-term quantifiable supply
+    supply_rows_excluded_no_conversion: list[str]
+    demand_methodology_note: str
+    supply_methodology_note: str
