@@ -1054,6 +1054,77 @@ def run():
              source_confidence=SECONDARY,
              notes="Steep drop attributed to CBAM front-running by importers/exporters ahead of the "
              "definitive regime; volume figure not given in this source."),
+        # ---- Iron & Steel -- HSN-level EU-import-from-India data, Eurostat Comext queried directly ----
+        # ADDS to (doesn't replace) the Lok Sabha/GTRI fiscal-year rows above -- both are legitimately
+        # primary/well-sourced, just measuring on different bases (India FY + India-reported export value
+        # vs. EU calendar year + EU-reported CIF import value), so the totals don't match exactly and
+        # shouldn't be expected to. This adds the CN-heading-level PRODUCT MIX the fiscal-year rows don't
+        # have. Chapter 72/73 spans 35+ headings; 7204 (ferrous scrap) is excluded from CBAM entirely, and
+        # heading 7202 (ferro-alloys) is a genuine split -- most sub-headings are excluded, but ferro-
+        # manganese (7202 11/19), ferro-silicon (7202 21/29), ferro-silico-manganese (7202 30), and
+        # ferro-chromium (7202 41/49) ARE covered and dominate India's actual 7202 exports (EUR 343.6M of
+        # EUR 352.8M total 7202 value in 2024, i.e. 97.5% -- so the covered-subset figure is used
+        # throughout, not the full HS4 total).
+        dict(product_category="Iron & Steel", hs_chapter="72/73 (all CBAM headings)", period="2024 (EU imports from India, TOTAL, calendar year)",
+             export_value_usd=4_979_605_790, export_volume_tonnes=None, yoy_change_pct=-3.0,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly, summed across 35 headings (72 excl. 7204 scrap; 73.01-73.08)",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7208.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="Calendar-year total: EUR 4,755.9M (2023) -> EUR 4,610.7M (2024, -3.0%) -> EUR "
+             "3,649.7M (2025, -20.8%) -- USD approximate at ~1.08/1.05 EUR:USD. The 2025 drop is directionally "
+             "consistent with GTRI's reported FY24->FY25 -35.1% (steel exports falling ahead of CBAM's "
+             "definitive regime) even though the two figures use different year/reporting bases and "
+             "shouldn't be expected to match exactly."),
+        dict(product_category="Iron & Steel", hs_chapter="7208", period="2024 (EU imports from India, hot-rolled flat, not clad/plated/coated)",
+             export_value_usd=1_123_763_662, export_volume_tonnes=1_584_475.511, yoy_change_pct=3.0,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7208.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="The single largest steel line (~23% of the sector total in 2024). Value: EUR 1,009.8M "
+             "(2023) -> EUR 1,040.5M (2024) -> EUR 458.3M (2025, -56.0%) -- a sharp 2025 drop alongside a "
+             "near-halving of volume (1,584,476t 2024 -> 789,495t 2025)."),
+        dict(product_category="Iron & Steel", hs_chapter="7210", period="2024 (EU imports from India, flat, clad/plated/coated)",
+             export_value_usd=948_265_364, export_volume_tonnes=1_007_722.431, yoy_change_pct=8.6,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7210.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="Second-largest line. Value: EUR 808.3M (2023) -> EUR 878.0M (2024) -> EUR 689.2M "
+             "(2025, -21.5%)."),
+        dict(product_category="Iron & Steel", hs_chapter="7222", period="2024 (EU imports from India, other alloy steel bars/rods/angles)",
+             export_value_usd=478_680_026, export_volume_tonnes=None, yoy_change_pct=-16.9,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7222.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="Value: EUR 533.4M (2023) -> EUR 443.2M (2024) -> EUR 481.8M (2025) -- the one major "
+             "line that ROSE in 2025 while the sector overall declined."),
+        dict(product_category="Iron & Steel", hs_chapter="7202 (covered ferro-alloys only)", period="2024 (EU imports from India, ferro-Mn/Si/SiMn/Cr)",
+             export_value_usd=371_107_858, export_volume_tonnes=None, yoy_change_pct=-11.3,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly, summed across 720211+720219+720221+720229+720230+720241+720249",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.720230.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="Only ferro-manganese, ferro-silicon, ferro-silico-manganese, and ferro-chromium "
+             "sub-headings of 7202 are CBAM-covered (ferro-molybdenum/tungsten/titanium/vanadium/"
+             "niobium/phosphorus/magnesium/nickel and 'other' are excluded, like scrap) -- this is the "
+             "covered-only figure, 97.5% of the full 7202 HS4 total. Ferro-silico-manganese (CN 720230) "
+             "alone is EUR 152.3M, the single largest ferro-alloy sub-line. Covered-subset total: EUR "
+             "387.5M (2023) -> EUR 343.6M (2024) -> EUR 354.8M (2025)."),
+        dict(product_category="Iron & Steel", hs_chapter="7209", period="2024 (EU imports from India, cold-rolled flat)",
+             export_value_usd=330_534_906, export_volume_tonnes=None, yoy_change_pct=7.3,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7209.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="Stable/growing: EUR 285.3M (2023) -> EUR 306.1M (2024) -> EUR 304.3M (2025)."),
+        dict(product_category="Iron & Steel", hs_chapter="all other steel headings (30+ CN4 lines)", period="2024 (EU imports from India, grouped remainder)",
+             export_value_usd=1_727_254_175, export_volume_tonnes=None, yoy_change_pct=None,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly, remainder after the 5 rows above",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7304.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="Grouped for brevity (~34.7% of the sector total, spread across 30+ individually "
+             "smaller headings). Largest individual components: semi-finished products (7207, EUR "
+             "123.2M), other alloy steel flat-rolled (7219 stainless, EUR 197.9M), seamless tubes/pipes "
+             "(7304, EUR 205.9M), other tubes/pipes (7306, EUR 127.6M), tube/pipe fittings (7307, EUR "
+             "184.8M), structures (7308, EUR 133.4M), primary forms/ingots (7206, EUR 207.0M), stainless "
+             "wire (7223, EUR 142.5M)."),
         # ---- Aluminium -- HSN-level EU-import-from-India data, Eurostat Comext queried directly ----
         # Supersedes an earlier "derived" estimate (arithmetically backed out of a GTRI combined
         # steel+aluminium aggregate, flagged low-confidence at the time) with real primary figures across
