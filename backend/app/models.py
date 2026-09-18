@@ -690,3 +690,28 @@ class CreditBenchmark(Base):
     source_url: Mapped[str] = mapped_column(String, nullable=True)
     source_confidence: Mapped[SourceConfidence] = mapped_column(db_enum(SourceConfidence), nullable=False)
     notes: Mapped[str] = mapped_column(String, nullable=True)
+
+
+class IndiaCbamExportExposure(Base):
+    """India's ACTUAL export exposure to EU CBAM, by product category and year --
+    sourced from Lok Sabha Unstarred Questions (Ministry of Steel, JPC data), PIB,
+    and GTRI (Global Trade Research Initiative) analysis. Distinct from the toy
+    CbamGoodsImport/CbamDeclarant demo data elsewhere in this platform, which models
+    a generic EU importer's workflow, not India's real export exposure. India's
+    official Tradestat/DGCIS portal (tradestat.commerce.gov.in) is a JS-only form
+    with no scrapable data endpoint -- confirmed directly, not assumed -- so this
+    is built from parliamentary answers and think-tank analysis instead."""
+
+    __tablename__ = "india_cbam_export_exposure"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    product_category: Mapped[str] = mapped_column(String, nullable=False)
+    hs_chapter: Mapped[str] = mapped_column(String, nullable=True)
+    period: Mapped[str] = mapped_column(String, nullable=False)  # e.g. "FY2023-24"
+    export_value_usd: Mapped[float | None] = mapped_column(Float, nullable=True)
+    export_volume_tonnes: Mapped[float | None] = mapped_column(Float, nullable=True)
+    yoy_change_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
+    source_name: Mapped[str] = mapped_column(String, nullable=False)
+    source_url: Mapped[str | None] = mapped_column(String, nullable=True)
+    source_confidence: Mapped[SourceConfidence] = mapped_column(db_enum(SourceConfidence), nullable=False)
+    notes: Mapped[str | None] = mapped_column(String, nullable=True)

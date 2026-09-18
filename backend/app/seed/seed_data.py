@@ -1007,6 +1007,114 @@ def run():
     for spec in credit_benchmarks:
         db.add(models.CreditBenchmark(**spec))
 
+    # ---------------- India's real CBAM export exposure ----------------
+    # Sept 2026 research pass. India's Tradestat/DGCIS portal (tradestat.commerce.gov.in)
+    # confirmed to be a JS-only form with no scrapable data endpoint (checked directly via
+    # curl, not assumed) -- so this is built from two Lok Sabha Unstarred Question answers
+    # (Ministry of Steel, sourced from the Joint Plant Committee/JPC -- primary), a
+    # corroborating PIB release, and GTRI (Global Trade Research Initiative) analysis for
+    # the more recent/aluminium figures (secondary, think-tank). Distinct from the toy
+    # CbamGoodsImport declarant data used elsewhere in the CBAM module demo.
+    cbam_exposure = [
+        # ---- Iron & Steel (HS 72/73) -- primary, Lok Sabha USQ 3980, 25 Mar 2025 ----
+        dict(product_category="Iron & Steel", hs_chapter="72/73", period="FY2019-20",
+             export_value_usd=1.45e9, export_volume_tonnes=1_950_000, yoy_change_pct=None,
+             source_name="Lok Sabha Unstarred Question 3980, Ministry of Steel (JPC data)",
+             source_url="https://steel.gov.in/sites/default/files/2025-04/lu%203980.pdf",
+             source_confidence=PRIMARY,
+             notes="UK was part of the EU figure through 2020-21 per the official answer's own footnote -- "
+             "this and the next row are not directly comparable to 2021-22 onward."),
+        dict(product_category="Iron & Steel", hs_chapter="72/73", period="FY2020-21",
+             export_value_usd=1.91e9, export_volume_tonnes=2_510_000, yoy_change_pct=None,
+             source_name="Lok Sabha Unstarred Question 3980, Ministry of Steel (JPC data)",
+             source_url="https://steel.gov.in/sites/default/files/2025-04/lu%203980.pdf",
+             source_confidence=PRIMARY,
+             notes="Includes UK (see FY2019-20 note)."),
+        dict(product_category="Iron & Steel", hs_chapter="72/73", period="FY2021-22",
+             export_value_usd=4.28e9, export_volume_tonnes=3_580_000, yoy_change_pct=None,
+             source_name="Lok Sabha Unstarred Question 3980, Ministry of Steel (JPC data)",
+             source_url="https://steel.gov.in/sites/default/files/2025-04/lu%203980.pdf",
+             source_confidence=PRIMARY, notes="EU-27 only, UK excluded from this year onward."),
+        dict(product_category="Iron & Steel", hs_chapter="72/73", period="FY2022-23",
+             export_value_usd=2.79e9, export_volume_tonnes=2_490_000, yoy_change_pct=None,
+             source_name="Lok Sabha Unstarred Question 3980, Ministry of Steel (JPC data)",
+             source_url="https://steel.gov.in/sites/default/files/2025-04/lu%203980.pdf",
+             source_confidence=PRIMARY,
+             notes="Corroborated by a separate PIB release (Ministry of Steel, 'Impact of CBAM on Indian "
+             "Steel Industry', 17 Dec 2024, Release ID 2085233) citing the same JPC-sourced figures."),
+        dict(product_category="Iron & Steel", hs_chapter="72/73", period="FY2023-24",
+             export_value_usd=3.55e9, export_volume_tonnes=4_030_000, yoy_change_pct=None,
+             source_name="Lok Sabha Unstarred Question 3980, Ministry of Steel (JPC data)",
+             source_url="https://steel.gov.in/sites/default/files/2025-04/lu%203980.pdf",
+             source_confidence=PRIMARY, notes=None),
+        dict(product_category="Iron & Steel", hs_chapter="72/73", period="FY2024-25",
+             export_value_usd=3.05e9, export_volume_tonnes=None, yoy_change_pct=-35.1,
+             source_name="GTRI (Global Trade Research Initiative), via AlCircle, 23 Sep 2025",
+             source_url="https://www.alcircle.com/news/indian-steel-and-aluminium-exports-to-eu-plunge-24-4-per-cent-ahead-of-cbam-rollout-gtri-reports-115600",
+             source_confidence=SECONDARY,
+             notes="Steep drop attributed to CBAM front-running by importers/exporters ahead of the "
+             "definitive regime; volume figure not given in this source."),
+        # ---- Aluminium (HS 76) -- secondary, partly derived (flagged) ----
+        dict(product_category="Aluminium", hs_chapter="76", period="FY2023-24 (derived)",
+             export_value_usd=3.0e9, export_volume_tonnes=None, yoy_change_pct=None,
+             source_name="Derived from GTRI's combined steel+aluminium aggregate ($7.71B FY24) minus steel ($3.05B FY25 used as proxy)",
+             source_url="https://www.alcircle.com/news/indian-steel-and-aluminium-exports-to-eu-plunge-24-4-per-cent-ahead-of-cbam-rollout-gtri-reports-115600",
+             source_confidence=SECONDARY,
+             notes="NOT directly published -- arithmetically derived, flagged low-confidence. Conflicts "
+             "with an unsourced ~$1.1B 'stabilised' figure found elsewhere (possibly a narrower product "
+             "line, e.g. unwrought aluminium only) -- needs reconciliation before treating as authoritative."),
+        dict(product_category="Aluminium", hs_chapter="76", period="FY2024-25 (derived)",
+             export_value_usd=2.77e9, export_volume_tonnes=None, yoy_change_pct=-9.8,
+             source_name="GTRI aggregate arithmetic (see FY2023-24 row)",
+             source_url="https://www.alcircle.com/news/indian-steel-and-aluminium-exports-to-eu-plunge-24-4-per-cent-ahead-of-cbam-rollout-gtri-reports-115600",
+             source_confidence=SECONDARY, notes="Same derivation caveat as FY2023-24 row."),
+        dict(product_category="Aluminium", hs_chapter="76", period="YTD Jan 2025 -> YTD Jan 2026 (unwrought)",
+             export_value_usd=None, export_volume_tonnes=10_874.72, yoy_change_pct=-41.7,
+             source_name="AlCircle, 'CBAM hits Indian aluminium export by 41%', 2026",
+             source_url="https://www.alcircle.com/news/cbam-hits-indian-aluminium-export-by-41-indian-carbon-credit-trading-scheme-to-reverse-the-slide-118416",
+             source_confidence=SECONDARY,
+             notes="Volume fell from 18,653.8 t (YTD Jan 2025) to 10,874.72 t (YTD Jan 2026). Underlying "
+             "DGCIS/Tradestat attribution not explicit in the article -- treat as secondary."),
+        # ---- Cement (HS 2523) -- data gap, likely negligible ----
+        dict(product_category="Cement", hs_chapter="2523", period="CY2023 (global total, all destinations)",
+             export_value_usd=45.5e6, export_volume_tonnes=None, yoy_change_pct=-13.4,
+             source_name="trendeconomy.com, India HS 2523 export data 2012-2023",
+             source_url="https://trendeconomy.com/data/h2/India/2523",
+             source_confidence=SECONDARY,
+             notes="This is India's TOTAL global cement export value, not EU-specific -- no EU country "
+             "appears in the top-5 destinations (Sri Lanka 66%, Maldives 19.3%, Nepal 4%, Bhutan 3.7%, "
+             "UAE 1%). No primary EU-specific figure found; the total-export ceiling makes EU exposure "
+             "structurally unlikely to be material. Treat as negligible-to-zero, not zero-confirmed.",
+             ),
+        # ---- Fertilizers (HS 31) -- data gap, inferred negligible ----
+        dict(product_category="Fertilizers", hs_chapter="31", period="No EU export figure found",
+             export_value_usd=None, export_volume_tonnes=None, yoy_change_pct=None,
+             source_name="No DGCIS/PIB/GTRI figure found for India-EU fertilizer exports specifically",
+             source_url=None, source_confidence=SECONDARY,
+             notes="India is a NET IMPORTER of both urea (imports 5-10 MnT/yr against ~31.2 MnT domestic "
+             "production, nearly all absorbed by domestic subsidy-driven consumption) and ammonia (2.2 MnT "
+             "imported in 2022) -- strong indirect evidence EU export exposure is negligible. Not "
+             "quantified; do not fabricate a figure here."),
+        # ---- Hydrogen (HS 2804.10) -- confirmed no export industry ----
+        dict(product_category="Hydrogen", hs_chapter="2804.10", period="2026",
+             export_value_usd=0, export_volume_tonnes=0, yoy_change_pct=None,
+             source_name="Centre for Science and Environment (CSE) 2024 study, via Down To Earth, 2 Jan 2026",
+             source_url="https://www.downtoearth.org.in/climate-change/eu-carbon-border-tax-comes-into-force-raising-costs-for-indian-exporters",
+             source_confidence=SECONDARY,
+             notes="CSE's study states explicitly: 'India does not currently export hydrogen or "
+             "electricity to the EU.' Worth periodic re-check given India's National Green Hydrogen "
+             "Mission could change this within CBAM's own 2026-2034 phase-in horizon."),
+        # ---- Electricity (HS 2716) -- confirmed zero ----
+        dict(product_category="Electricity", hs_chapter="2716", period="2026",
+             export_value_usd=0, export_volume_tonnes=0, yoy_change_pct=None,
+             source_name="Centre for Science and Environment (CSE) 2024 study, via Down To Earth, 2 Jan 2026",
+             source_url="https://www.downtoearth.org.in/climate-change/eu-carbon-border-tax-comes-into-force-raising-costs-for-indian-exporters",
+             source_confidence=SECONDARY,
+             notes="No direct India-EU grid interconnection exists."),
+    ]
+    for spec in cbam_exposure:
+        db.add(models.IndiaCbamExportExposure(**spec))
+
     db.commit()
     db.close()
 

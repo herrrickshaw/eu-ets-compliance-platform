@@ -441,3 +441,17 @@ class GapAnalysisResponse(BaseModel):
     supply_rows_excluded_no_conversion: list[str]
     demand_methodology_note: str
     supply_methodology_note: str
+
+
+class IndiaCbamExportExposureOut(OrmBase):
+    id: int
+    product_category: str
+    hs_chapter: str | None
+    period: str
+    export_value_usd: float | None
+    export_volume_tonnes: float | None
+    yoy_change_pct: float | None
+    source_name: str
+    source_url: str | None
+    source_confidence: str
+    notes: str | None

@@ -31,6 +31,7 @@ export default function IndiaCcts() {
   const { data: prices } = useApi("/india/carbon-prices");
   const { data: supplyCapacity } = useApi("/india/supply-capacity");
   const { data: benchmarks } = useApi("/india/credit-benchmarks");
+  const { data: cbamExposure } = useApi("/india/cbam-export-exposure");
 
   const [overrides, setOverrides] = useState({});
   const [demand, setDemand] = useState(null);
@@ -183,6 +184,70 @@ export default function IndiaCcts() {
             </p>
           </div>
         </div>
+      </Card>
+
+      <Card title="India's real CBAM export exposure — the 'export-driven' compliance cost">
+        <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-600 mb-4">
+          This is a third, distinct demand pool from the two above: not India buying/selling carbon
+          credits, but the CBAM certificate cost India's own exporters will face on EU-bound sales in
+          steel, aluminium, cement, fertilizers, hydrogen, and electricity. India's official Tradestat/
+          DGCIS trade-data portal is a JavaScript-only form with no scrapable endpoint (confirmed directly,
+          not assumed) — so this is built from Lok Sabha Unstarred Question 3980 (Ministry of Steel,
+          Joint Plant Committee data, primary) and GTRI (Global Trade Research Initiative) analysis for
+          the rest.{" "}
+          <strong>
+            Steel and aluminium account for the overwhelming majority of exposure; cement, fertilizers,
+            hydrogen, and electricity exports to the EU are all negligible-to-zero.
+          </strong>{" "}
+          Applying the CBAM phase-in factor from the CBAM tab (2.5% in 2026 → 100% by 2034) to these
+          export values gives the actual near-term "export-driven" liability — nowhere near the full
+          headline export value in the near term.
+        </div>
+        <Table
+          columns={[
+            { key: "product_category", label: "Category" },
+            { key: "period", label: "Period" },
+            { key: "export_value_usd", label: "Export value" },
+            { key: "export_volume_tonnes", label: "Volume" },
+            { key: "yoy_change_pct", label: "YoY" },
+            { key: "confidence", label: "" },
+          ]}
+          rows={cbamExposure ?? []}
+          renderCell={(row, key) => {
+            if (key === "export_value_usd") return row.export_value_usd != null ? `$${(row.export_value_usd / 1e9).toFixed(2)}B` : "no figure found";
+            if (key === "export_volume_tonnes") return row.export_volume_tonnes != null ? `${row.export_volume_tonnes.toLocaleString()} t` : "—";
+            if (key === "yoy_change_pct") return row.yoy_change_pct != null ? `${row.yoy_change_pct > 0 ? "+" : ""}${row.yoy_change_pct}%` : "—";
+            if (key === "confidence") return <span className="text-xs text-slate-400 uppercase">{row.source_confidence}</span>;
+            return row[key];
+          }}
+        />
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-xs text-amber-900 mt-4">
+          <strong>Aggregate estimates found (not reconciled — shown for context, don't average them):</strong>{" "}
+          $8.2B (CY2022, iron ore pellets + iron + steel + aluminium combined, GTRI Mar 2023 — primary PDF
+          returned 404, only available via citation); €6B / ~$7.05B (weakly sourced, "Indian Chamber of
+          Commerce" via a single trade-press article); <strong>9.91% of India's total exports to the EU
+          (2022-23) = 0.2% of India's GDP</strong> (Centre for Science and Environment 2024 study — the most
+          methodologically clear of the three). Separately, GTRI estimates a per-tonne cost gap once CBAM
+          is fully phased in: ~€173.8/t duty on steel (≈16% of 2022 unit export value), with India's own
+          CCTS carbon price projected to stay under $10/tCO2e vs. the EU ETS's ~$71/tCO2e — a roughly{" "}
+          <strong>$61/tCO2e gap</strong> Indian exporters would pay directly unless India's own carbon
+          price rises or a bilateral price-recognition mechanism is negotiated.
+        </div>
+        <details className="mt-3 text-xs text-slate-500">
+          <summary className="cursor-pointer hover:text-slate-700">Per-row notes</summary>
+          <ul className="mt-2 space-y-2">
+            {(cbamExposure ?? [])
+              .filter((r) => r.notes)
+              .map((r) => (
+                <li key={r.id}>
+                  <span className="font-medium text-slate-600">
+                    {r.product_category} ({r.period}):
+                  </span>{" "}
+                  {r.notes}
+                </li>
+              ))}
+          </ul>
+        </details>
       </Card>
 
       <Card title="Obligated sectors — GEI targets (demand side)">

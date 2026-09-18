@@ -162,3 +162,12 @@ def capacity_to_credits(
     return schemas.CapacityToCreditsResponse(
         benchmark=b, capacity_mw=req.capacity_mw, estimated_annual_mwh=mwh, estimated_annual_tco2e=tco2e, note=note
     )
+
+
+@router.get("/cbam-export-exposure", response_model=list[schemas.IndiaCbamExportExposureOut])
+def list_cbam_export_exposure(db: Session = Depends(get_db), _user: models.User = Depends(get_current_user)):
+    return (
+        db.query(models.IndiaCbamExportExposure)
+        .order_by(models.IndiaCbamExportExposure.product_category, models.IndiaCbamExportExposure.period)
+        .all()
+    )
