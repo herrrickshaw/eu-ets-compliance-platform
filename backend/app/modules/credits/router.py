@@ -67,3 +67,12 @@ def retire_unit(unit_id: int, db: Session = Depends(get_db), user: models.User =
     db.commit()
     db.refresh(unit)
     return unit
+
+
+@router.get("/global-market-stats", response_model=list[schemas.GlobalCarbonMarketStatOut])
+def list_global_market_stats(db: Session = Depends(get_db), _user: models.User = Depends(get_current_user)):
+    return (
+        db.query(models.GlobalCarbonMarketStat)
+        .order_by(models.GlobalCarbonMarketStat.category, models.GlobalCarbonMarketStat.id)
+        .all()
+    )

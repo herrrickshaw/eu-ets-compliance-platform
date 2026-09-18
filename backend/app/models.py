@@ -738,3 +738,31 @@ class ShippingEtsComplianceCost(Base):
     source_url: Mapped[str | None] = mapped_column(String, nullable=True)
     source_confidence: Mapped[SourceConfidence] = mapped_column(db_enum(SourceConfidence), nullable=False)
     notes: Mapped[str | None] = mapped_column(String, nullable=True)
+
+
+class GlobalCarbonMarketStat(Base):
+    """How big the global carbon-credit market actually is, and who has what share of
+    it -- market-wide reference data, not tenant-scoped, same pattern as
+    IndiaCbamExportExposure / ShippingEtsComplianceCost. Deliberately covers BOTH
+    compliance markets (EU ETS, China ETS, etc. -- mandatory cap-and-trade) and the
+    voluntary carbon market (VCM), because the two are wildly different in scale and
+    conflating them is a common source of confusion: compliance markets are the
+    overwhelming majority of global carbon-market value. The VCM figures here are
+    primary (read directly from Ecosystem Marketplace/Forest Trends' State of the
+    Voluntary Carbon Market 2025); the compliance-market figures are secondary
+    (World Bank State and Trends of Carbon Pricing 2025, via search synthesis, not
+    a primary document read directly in this session) -- source_confidence per row
+    reflects this honestly rather than treating all rows as equally solid."""
+
+    __tablename__ = "global_carbon_market_stats"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    category: Mapped[str] = mapped_column(String, nullable=False)  # e.g. "compliance_market", "vcm_headline", "vcm_category_share", "context"
+    metric_label: Mapped[str] = mapped_column(String, nullable=False)
+    period: Mapped[str] = mapped_column(String, nullable=False)
+    value: Mapped[float | None] = mapped_column(Float, nullable=True)
+    unit: Mapped[str] = mapped_column(String, nullable=False)
+    source_name: Mapped[str] = mapped_column(String, nullable=False)
+    source_url: Mapped[str | None] = mapped_column(String, nullable=True)
+    source_confidence: Mapped[SourceConfidence] = mapped_column(db_enum(SourceConfidence), nullable=False)
+    notes: Mapped[str | None] = mapped_column(String, nullable=True)
