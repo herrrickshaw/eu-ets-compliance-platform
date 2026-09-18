@@ -154,3 +154,12 @@ def cancel_order(order_id: int, db: Session = Depends(get_db), user: models.User
     order.status = models.OrderStatus.CANCELLED
     db.commit()
     return {"ok": True}
+
+
+@router.get("/market-reality", response_model=list[schemas.EuaTradingMarketStatOut])
+def list_market_reality(db: Session = Depends(get_db), _user: models.User = Depends(get_current_user)):
+    return (
+        db.query(models.EuaTradingMarketStat)
+        .order_by(models.EuaTradingMarketStat.category, models.EuaTradingMarketStat.id)
+        .all()
+    )

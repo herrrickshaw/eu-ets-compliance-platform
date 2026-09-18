@@ -483,3 +483,17 @@ class GlobalCarbonMarketStatOut(OrmBase):
     source_url: str | None
     source_confidence: str
     notes: str | None
+
+
+# ---- Trading: real EUA/carbon-derivatives market stats ----
+class EuaTradingMarketStatOut(OrmBase):
+    id: int
+    category: str
+    metric_label: str
+    period: str
+    value: float | None
+    unit: str
+    source_name: str
+    source_url: str | None
+    source_confidence: str
+    notes: str | None

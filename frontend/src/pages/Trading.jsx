@@ -6,6 +6,22 @@ import Sparkline from "../components/Sparkline";
 
 const DEMO_ORG_ID = 10; // Meridian Carbon Trading LLP
 
+const MARKET_REALITY_CATEGORY_LABELS = {
+  ice_trading_volume: "ICE trading volume (2024, read directly from source)",
+  market_structure: "Market structure & 2025 figures",
+  context: "Context — real price vs. this demo",
+};
+
+function formatRealityValue(row) {
+  if (row.value == null) return "—";
+  if (row.unit.startsWith("USD trillion")) return `$${row.value}T+`;
+  if (row.unit === "USD billion") return `$${row.value}B`;
+  if (row.unit === "million contracts") return `${row.value}M`;
+  if (row.unit === "billion allowances" || row.unit === "billion credits") return `${row.value}B`;
+  if (row.unit === "EUR/tCO2e") return `€${row.value}/t`;
+  return `${row.value.toLocaleString()} ${row.unit}`;
+}
+
 export default function Trading() {
   const { data: instruments } = useApi("/trading/instruments");
   const [selected, setSelected] = useState(null);
@@ -15,6 +31,7 @@ export default function Trading() {
   const { data: orders, reload: reloadOrders } = useApi("/trading/orders?status=open");
   const { data: trades, reload: reloadTrades } = useApi("/trading/trades");
   const { data: positions } = useApi(`/trading/positions?org_id=${DEMO_ORG_ID}`, [instrumentId]);
+  const { data: marketReality } = useApi("/trading/market-reality");
 
   const [side, setSide] = useState("buy");
   const [qty, setQty] = useState(1000);
@@ -178,6 +195,52 @@ export default function Trading() {
             return row[key];
           }}
         />
+      </Card>
+
+      <Card title="What the real EUA market looks like — next to this demo order book">
+        <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-600 mb-4">
+          The order book above is a simulated demo (a random-walk price series starting at €68/t) — not
+          connected to any live feed. For scale: real-world EUA/carbon-derivatives trading is dominated by{" "}
+          <a
+            className="underline"
+            href="https://ir.theice.com/press/news-details/2025/ICE-Announces-Record-Environmental-Market-Trading-in-2024/default.aspx"
+            target="_blank"
+            rel="noreferrer"
+          >
+            ICE Futures Europe
+          </a>{" "}
+          (read directly from ICE's own 24 Jan 2025 release): <strong>20.4 million environmental contracts
+          traded in 2024 (+40% YoY), over $1 trillion in notional value for the fourth straight year</strong>.
+          EEX (Leipzig) runs the EU's primary EUA auction instead of competing head-on in secondary trading.
+        </div>
+        <Table
+          columns={[
+            { key: "category", label: "Category" },
+            { key: "metric_label", label: "Metric" },
+            { key: "period", label: "Period" },
+            { key: "value", label: "Value" },
+            { key: "confidence", label: "" },
+          ]}
+          rows={marketReality ?? []}
+          renderCell={(row, key) => {
+            if (key === "category") return MARKET_REALITY_CATEGORY_LABELS[row.category] ?? row.category;
+            if (key === "value") return formatRealityValue(row);
+            if (key === "confidence") return <span className="text-xs text-slate-400 uppercase">{row.source_confidence}</span>;
+            return row[key];
+          }}
+        />
+        <details className="mt-3 text-xs text-slate-500">
+          <summary className="cursor-pointer hover:text-slate-700">Per-row notes</summary>
+          <ul className="mt-2 space-y-2">
+            {(marketReality ?? [])
+              .filter((r) => r.notes)
+              .map((r) => (
+                <li key={r.id}>
+                  <strong>{r.metric_label}:</strong> {r.notes}
+                </li>
+              ))}
+          </ul>
+        </details>
       </Card>
     </div>
   );

@@ -766,3 +766,28 @@ class GlobalCarbonMarketStat(Base):
     source_url: Mapped[str | None] = mapped_column(String, nullable=True)
     source_confidence: Mapped[SourceConfidence] = mapped_column(db_enum(SourceConfidence), nullable=False)
     notes: Mapped[str | None] = mapped_column(String, nullable=True)
+
+
+class EuaTradingMarketStat(Base):
+    """What the REAL EUA/carbon-derivatives trading market looks like, as a reality
+    check next to this page's own simulated order book (a random-walk demo price
+    series starting at EUR68, not a live feed). Same market-wide reference-data
+    pattern as IndiaCbamExportExposure / ShippingEtsComplianceCost /
+    GlobalCarbonMarketStat. Most rows are PRIMARY -- read directly from ICE's own
+    24 Jan 2025 press release ("ICE Announces Record Environmental Market Trading
+    in 2024") -- with 2025-year figures and qualitative market-structure notes
+    marked SECONDARY where they come from search synthesis rather than a document
+    read directly this session."""
+
+    __tablename__ = "eua_trading_market_stats"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    category: Mapped[str] = mapped_column(String, nullable=False)  # e.g. "ice_trading_volume", "market_structure", "context"
+    metric_label: Mapped[str] = mapped_column(String, nullable=False)
+    period: Mapped[str] = mapped_column(String, nullable=False)
+    value: Mapped[float | None] = mapped_column(Float, nullable=True)
+    unit: Mapped[str] = mapped_column(String, nullable=False)
+    source_name: Mapped[str] = mapped_column(String, nullable=False)
+    source_url: Mapped[str | None] = mapped_column(String, nullable=True)
+    source_confidence: Mapped[SourceConfidence] = mapped_column(db_enum(SourceConfidence), nullable=False)
+    notes: Mapped[str | None] = mapped_column(String, nullable=True)
