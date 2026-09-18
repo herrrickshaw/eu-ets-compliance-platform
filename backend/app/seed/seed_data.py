@@ -713,6 +713,35 @@ def run():
             "quantifiable without an official baseline.",
             potential_avoided_mt_co2e=None,
         ),
+        dict(
+            activity_id=a6["cbg"].id,
+            metric_label="Indore Gobar-Dhan CBG plant (EverEnviro/IEISL) — named-project example",
+            value=550, unit="tonnes/day wet MSW processed -> ~15-18 t/day CBG (~17,000 kg/day peak, 100% "
+            "capacity utilisation reported 2024)", figure_type=CA,
+            as_of_date=date(2022, 2, 19),
+            source_name="Multiple trade press (iamrenew, Natural Gas World, Down To Earth); EverEnviro's own site for the VCS project claim",
+            source_url="https://www.everenviro.com/renewable.html",
+            source_confidence=SECONDARY,
+            conversion_note="IMPORTANT CORRECTION to a common framing: this is NOT 'Indore Municipal "
+            "Corporation (IMC) procuring carbon credits from EverEnviro.' Verified structure: IMC supplies "
+            "segregated wet waste under a 20-year PPP and receives an annual royalty (~Rs 2.5 crore) from "
+            "EverEnviro's subsidiary IEISL, plus buys back CBG for city buses at a discount — IMC is the "
+            "waste supplier/fuel buyer, not a credit buyer. EverEnviro/IEISL (set up by Eversource Capital "
+            "in 2019 — a bootstrapped company, NOT an IOC joint venture for this plant; a separate "
+            "IOC-EverEnviro JV formed Oct 2024 covers only future plants) registered the plant itself under "
+            "Verra VCS (Project 4650, ~130,000 tCO2e/yr PROJECTED per EverEnviro's own marketing copy, not "
+            "independently verified against registry.verra.org, and not an audited issuance figure) and "
+            "would hold/sell those credits. Separately, IMC DOES generate its own carbon-credit revenue "
+            "(Rs 50 lakh in 2020 rising to ~Rs 8-9 crore cumulative) — but via its smart-city arm ISCDL and "
+            "EKI Energy Services, from THREE DIFFERENT, smaller municipal projects (a separate "
+            "bio-methanation plant, a compost plant, a 1.5 MW solar plant) registered under VCS around Jan "
+            "2020 — two years before this EverEnviro plant existed. Both threads are voluntary-market VCS "
+            "projects that predate India's CCTS Offset Mechanism (which only started Jan 2025 and excludes "
+            "pre-2025 projects) — cite as a pre-CCTS voluntary-market precedent, not a current domestic "
+            "Offset Mechanism case. Not converted to a potential_avoided_mt_co2e figure here since the "
+            "130,000 tCO2e/yr number is company-projected, not independently confirmed.",
+            potential_avoided_mt_co2e=None,
+        ),
         # ---- Emerging mobility / fuel cells ----
         dict(
             activity_id=a6["mobility"].id,

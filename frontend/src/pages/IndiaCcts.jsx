@@ -138,6 +138,53 @@ export default function IndiaCcts() {
 
       <DataQualityBanner />
 
+      <Card title="Demand for carbon credits: domestic vs. international">
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="border border-slate-200 rounded-lg p-4">
+            <div className="text-xs font-semibold text-emerald-700 uppercase mb-2">Domestic demand</div>
+            <p className="text-sm text-slate-700 mb-2">
+              <strong>Legal basis:</strong> the Carbon Credit Trading Scheme (CCTS), notified under the
+              Energy Conservation (Amendment) Act 2022 (Ministry of Power/BEE), with sector-specific GHG
+              Emission Intensity (GEI) targets set separately by MoEFCC's Emission Intensity Target Rules.
+            </p>
+            <p className="text-sm text-slate-700 mb-2">
+              <strong>Who demands:</strong> "obligated entities" in the 9 sectors below (steel, aluminium,
+              cement, etc.) that miss their GEI target must buy and surrender Carbon Credit Certificates
+              (CCCs) on India's power exchanges; over-achievers sell theirs.
+            </p>
+            <p className="text-sm text-slate-700">
+              <strong>Eligible supply:</strong> CCCs from over-achieving obligated entities, or from BEE's
+              separate domestic CCTS <em>Offset Mechanism</em> (non-obligated entities using approved
+              methodologies across 6 Phase-1 sectors: energy, industries, agriculture, waste, forestry,
+              transport — the activities badged <span className="text-blue-600">also offset-eligible</span> below).
+              This is what the demand-model calculator further down computes.
+            </p>
+          </div>
+          <div className="border border-slate-200 rounded-lg p-4">
+            <div className="text-xs font-semibold text-blue-700 uppercase mb-2">International demand</div>
+            <p className="text-sm text-slate-700 mb-2">
+              <strong>Legal basis:</strong> Article 6.2 of the Paris Agreement (cooperative approaches,
+              Internationally Transferred Mitigation Outcomes/ITMOs), operationalized in India via
+              MoEFCC/NDAIAPA's Authorization Procedure (2023).
+            </p>
+            <p className="text-sm text-slate-700 mb-2">
+              <strong>Who demands:</strong> <em>other countries</em>, not India — a foreign government wants
+              to buy India-authorized mitigation outcomes to help meet its own NDC. Right now the only live
+              channel is the bilateral India-Japan Joint Crediting Mechanism (MoC signed Aug 2025, Rules of
+              Implementation adopted Jun 2026); no published aggregate demand figure exists for this channel
+              (confirmed data gap, not an omission).
+            </p>
+            <p className="text-sm text-slate-700">
+              <strong>Eligible supply:</strong> only the 13 activities badged{" "}
+              <span className="text-xs px-1 rounded bg-emerald-100 text-emerald-700">international (Article 6.2)</span>{" "}
+              further down. Critically, the <strong>same tonne of avoided CO2e can't serve both pools</strong> —
+              once NDAIAPA authorizes a project's output for international transfer, a "corresponding
+              adjustment" removes it from India's own domestic ledger to prevent double counting.
+            </p>
+          </div>
+        </div>
+      </Card>
+
       <Card title="Obligated sectors — GEI targets (demand side)">
         <Table
           columns={[
