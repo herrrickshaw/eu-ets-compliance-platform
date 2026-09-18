@@ -1054,27 +1054,88 @@ def run():
              source_confidence=SECONDARY,
              notes="Steep drop attributed to CBAM front-running by importers/exporters ahead of the "
              "definitive regime; volume figure not given in this source."),
-        # ---- Aluminium (HS 76) -- secondary, partly derived (flagged) ----
-        dict(product_category="Aluminium", hs_chapter="76", period="FY2023-24 (derived)",
-             export_value_usd=3.0e9, export_volume_tonnes=None, yoy_change_pct=None,
-             source_name="Derived from GTRI's combined steel+aluminium aggregate ($7.71B FY24) minus steel ($3.05B FY25 used as proxy)",
-             source_url="https://www.alcircle.com/news/indian-steel-and-aluminium-exports-to-eu-plunge-24-4-per-cent-ahead-of-cbam-rollout-gtri-reports-115600",
-             source_confidence=SECONDARY,
-             notes="NOT directly published -- arithmetically derived, flagged low-confidence. Conflicts "
-             "with an unsourced ~$1.1B 'stabilised' figure found elsewhere (possibly a narrower product "
-             "line, e.g. unwrought aluminium only) -- needs reconciliation before treating as authoritative."),
-        dict(product_category="Aluminium", hs_chapter="76", period="FY2024-25 (derived)",
-             export_value_usd=2.77e9, export_volume_tonnes=None, yoy_change_pct=-9.8,
-             source_name="GTRI aggregate arithmetic (see FY2023-24 row)",
-             source_url="https://www.alcircle.com/news/indian-steel-and-aluminium-exports-to-eu-plunge-24-4-per-cent-ahead-of-cbam-rollout-gtri-reports-115600",
-             source_confidence=SECONDARY, notes="Same derivation caveat as FY2023-24 row."),
-        dict(product_category="Aluminium", hs_chapter="76", period="YTD Jan 2025 -> YTD Jan 2026 (unwrought)",
-             export_value_usd=None, export_volume_tonnes=10_874.72, yoy_change_pct=-41.7,
-             source_name="AlCircle, 'CBAM hits Indian aluminium export by 41%', 2026",
-             source_url="https://www.alcircle.com/news/cbam-hits-indian-aluminium-export-by-41-indian-carbon-credit-trading-scheme-to-reverse-the-slide-118416",
-             source_confidence=SECONDARY,
-             notes="Volume fell from 18,653.8 t (YTD Jan 2025) to 10,874.72 t (YTD Jan 2026). Underlying "
-             "DGCIS/Tradestat attribution not explicit in the article -- treat as secondary."),
+        # ---- Aluminium -- HSN-level EU-import-from-India data, Eurostat Comext queried directly ----
+        # Supersedes an earlier "derived" estimate (arithmetically backed out of a GTRI combined
+        # steel+aluminium aggregate, flagged low-confidence at the time) with real primary figures across
+        # all 14 CBAM Annex I aluminium headings (7601,7603-7614,7616 -- 7602 scrap and 7615 tableware are
+        # NOT covered). The derived estimate turned out to be materially overstated: real total is
+        # ~$0.9-1.8B/yr depending on year, not the ~$2.8-3.0B previously estimated.
+        dict(product_category="Aluminium", hs_chapter="76 (all 14 CBAM headings)", period="2024 (EU imports from India, TOTAL)",
+             export_value_usd=902_587_282, export_volume_tonnes=None, yoy_change_pct=-49.8,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly, summed across 7601+7603-7614+7616",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7601.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="Real total: EUR 1,666.1M (2023) -> EUR 835.7M (2024, -49.8%) -> EUR 903.9M (2025, "
+             "+8.2%) -- USD approximate at ~1.08/1.05 EUR:USD. This REPLACES the earlier GTRI-arithmetic-"
+             "derived estimate of ~$3.0B/$2.77B, which was overstated by roughly 3x -- likely because "
+             "GTRI's 'combined steel+aluminium' aggregate used a different scope/basis than customs HS "
+             "classification. The 2023->2024 near-halving predates CBAM's Jan 2026 definitive-phase start "
+             "(unlike steel's FY24->FY25 drop, which GTRI attributed to CBAM front-running) -- this "
+             "earlier aluminium decline likely reflects other market factors, not CBAM anticipation."),
+        dict(product_category="Aluminium", hs_chapter="7601", period="2024 (EU imports from India, unwrought aluminium)",
+             export_value_usd=675_445_879, export_volume_tonnes=256_497.277, yoy_change_pct=-55.4,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7601.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="By far the dominant aluminium line (~75-84% of the sector total every year). Steep "
+             "decline: EUR 1,399.9M/589,906t (2023) -> EUR 625.4M/256,497t (2024) -> EUR 623.0M/247,621t "
+             "(2025) -- volume more than halved from 2023 to 2024 and has stayed flat since.",
+             ),
+        dict(product_category="Aluminium", hs_chapter="7616", period="2024 (EU imports from India, other aluminium articles)",
+             export_value_usd=77_472_442, export_volume_tonnes=5475.305, yoy_change_pct=-2.1,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7616.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="Second-largest line, stable: EUR 73.1M (2023) -> EUR 71.7M (2024) -> EUR 76.4M "
+             "(2025)."),
+        dict(product_category="Aluminium", hs_chapter="7607", period="2025 (EU imports from India, aluminium foil -- growth line)",
+             export_value_usd=75_323_150, export_volume_tonnes=17_540.212, yoy_change_pct=106.3,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7607.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="A genuine growth story running counter to the sector's overall decline: EUR 19.4M/"
+             "4,074t (2023) -> EUR 33.8M/8,659t (2024) -> EUR 69.7M/17,540t (2025) -- value +74% and "
+             "volume +103% year-on-year into 2025, more than 3x since 2023. Worth watching: could reflect "
+             "Indian exporters shifting toward higher-value-added downstream products."),
+        dict(product_category="Aluminium", hs_chapter="7605", period="2025 (EU imports from India, aluminium wire -- growth line)",
+             export_value_usd=66_621_053, export_volume_tonnes=23_371.709, yoy_change_pct=94.2,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7605.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="Another growth line: EUR 32.3M/12,636t (2023) -> EUR 31.8M/12,167t (2024, flat) -> "
+             "EUR 61.7M/23,372t (2025, nearly doubled)."),
+        dict(product_category="Aluminium", hs_chapter="7604", period="2024 (EU imports from India, bars/rods/profiles)",
+             export_value_usd=21_652_470, export_volume_tonnes=None, yoy_change_pct=-48.5,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7604.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="Declining: EUR 38.9M (2023) -> EUR 20.0M (2024) -> EUR 13.9M (2025)."),
+        dict(product_category="Aluminium", hs_chapter="7606", period="2024 (EU imports from India, plates/sheets/strip)",
+             export_value_usd=13_867_399, export_volume_tonnes=None, yoy_change_pct=-65.9,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7606.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="Sharp decline: EUR 37.7M (2023) -> EUR 12.8M (2024) -> EUR 8.0M (2025)."),
+        dict(product_category="Aluminium", hs_chapter="7614", period="2024 (EU imports from India, stranded wire/cables)",
+             export_value_usd=22_117_220, export_volume_tonnes=None, yoy_change_pct=-5.4,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7614.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="Stable: EUR 21.6M (2023) -> EUR 20.5M (2024) -> EUR 23.3M (2025)."),
+        dict(product_category="Aluminium", hs_chapter="7603", period="2025 (EU imports from India, powders/flakes)",
+             export_value_usd=9_866_526, export_volume_tonnes=None, yoy_change_pct=201.9,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7603.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="Small but growing ~4x: EUR 2.3M (2023) -> EUR 3.0M (2024) -> EUR 9.1M (2025)."),
+        dict(product_category="Aluminium", hs_chapter="7608/7609/7610/7611/7612/7613", period="2024 (EU imports from India, tubes/fittings/structures/reservoirs/casks/gas containers, grouped)",
+             export_value_usd=17_930_055, export_volume_tonnes=None, yoy_change_pct=None,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly, 6 small headings summed",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7609.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="Grouped for brevity -- all individually small: 7608 tubes/pipes EUR 1.2M, 7609 "
+             "fittings EUR 4.3M, 7610 structures EUR 8.8M, 7611 reservoirs EUR 151 (negligible), 7612 "
+             "casks/drums EUR 2.0M, 7613 compressed-gas containers EUR 0.27M (all 2024 figures)."),
         # ---- Cement -- HSN-level EU-import-from-India mirror data (Oct 2026 research pass) ----
         # CBAM Annex I cement-sector CN codes cross-checked across 3 secondary sources (cbamguide.com,
         # cbam-services.com, carbonchain.com) -- EUR-Lex primary text itself returned empty/bot-blocked.
