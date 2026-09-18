@@ -1,0 +1,245 @@
+from __future__ import annotations
+
+from datetime import date, datetime
+
+from pydantic import BaseModel, ConfigDict
+
+
+class OrmBase(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+
+# ---- Organizations ----
+class OrganizationOut(OrmBase):
+    id: int
+    name: str
+    org_type: str
+    country: str | None
+    lei_or_eori: str | None
+
+
+# ---- ETS core ----
+class InstallationOut(OrmBase):
+    id: int
+    org_id: int
+    name: str
+    country: str
+    sector: str
+    ets_scheme: str
+
+
+class AllowanceAccountOut(OrmBase):
+    id: int
+    org_id: int
+    installation_id: int | None
+    account_type: str
+    instrument: str
+    balance: float
+
+
+class ComplianceStatusOut(OrmBase):
+    id: int
+    installation_id: int
+    year: int
+    verified_emissions_t: float
+    free_allocation_t: float
+    allowances_surrendered_t: float
+    surrender_deadline: date
+    status: str
+
+
+class SurrenderRequest(BaseModel):
+    installation_id: int
+    year: int
+    amount_t: float
+
+
+# ---- Shipping MRV ----
+class VesselOut(OrmBase):
+    id: int
+    org_id: int
+    imo_number: str
+    name: str
+    vessel_type: str
+    gross_tonnage: float
+
+
+class MonitoringPlanOut(OrmBase):
+    id: int
+    vessel_id: int
+    version: int
+    status: str
+    methodology: str
+    submitted_at: datetime | None
+
+
+class VoyageOut(OrmBase):
+    id: int
+    vessel_id: int
+    departure_port: str
+    arrival_port: str
+    departure_time: datetime
+    arrival_time: datetime
+    distance_nm: float
+    fuel_type: str
+    fuel_consumed_mt: float
+    intra_eu: bool
+
+
+class EmissionReportOut(OrmBase):
+    id: int
+    vessel_id: int
+    year: int
+    total_co2_t: float
+    ets_eligible_co2_t: float
+    status: str
+
+
+class SubmitEmissionReportRequest(BaseModel):
+    vessel_id: int
+    year: int
+
+
+# ---- CBAM ----
+class CbamDeclarantOut(OrmBase):
+    id: int
+    org_id: int
+    eori_number: str
+    auth_status: str
+
+
+class CbamDefaultValueOut(OrmBase):
+    cn_code: str
+    good_name: str
+    country: str
+    direct_emissions_factor: float
+    indirect_emissions_factor: float
+    markup_pct: float
+    valid_from: date
+
+
+class CbamGoodsImportOut(OrmBase):
+    id: int
+    declarant_id: int
+    cn_code: str
+    good_name: str
+    country_of_origin: str
+    quantity_t: float
+    import_date: date
+    emission_source: str
+    direct_emissions_t: float
+    indirect_emissions_t: float
+
+
+class CbamGoodsImportCreate(BaseModel):
+    declarant_id: int
+    cn_code: str
+    country_of_origin: str
+    quantity_t: float
+    import_date: date
+    actual_direct_emissions_t: float | None = None
+    actual_indirect_emissions_t: float | None = None
+
+
+class CbamDeclarationOut(OrmBase):
+    id: int
+    declarant_id: int
+    year: int
+    quarter: int
+    total_embedded_emissions_t: float
+    certificates_surrendered_t: float
+    status: str
+
+
+# ---- Credits ----
+class CreditProjectOut(OrmBase):
+    id: int
+    program_id: int
+    methodology_id: int
+    developer_org_id: int
+    name: str
+    country: str
+    status: str
+
+
+class CreditUnitOut(OrmBase):
+    id: int
+    issuance_id: int
+    quantity: float
+    status: str
+    current_owner_org_id: int | None
+
+
+class CreditPurchaseRequest(BaseModel):
+    unit_id: int
+    buyer_org_id: int
+
+
+# ---- Verification ----
+class VerificationRecordOut(OrmBase):
+    id: int
+    subject_type: str
+    subject_id: int
+    verifier_org_id: int
+    status: str
+    findings: str | None
+    submitted_at: datetime
+    resolved_at: datetime | None
+
+
+class VerifyRequest(BaseModel):
+    subject_type: str
+    subject_id: int
+    verifier_org_id: int
+    approve: bool
+    findings: str | None = None
+
+
+# ---- Trading ----
+class InstrumentOut(OrmBase):
+    id: int
+    instrument_type: str
+    symbol: str
+    reference_credit_project_id: int | None
+
+
+class OrderOut(OrmBase):
+    id: int
+    org_id: int
+    instrument_id: int
+    side: str
+    quantity: float
+    limit_price_eur: float
+    status: str
+    created_at: datetime
+
+
+class OrderCreate(BaseModel):
+    org_id: int
+    instrument_id: int
+    side: str
+    quantity: float
+    limit_price_eur: float
+
+
+class TradeOut(OrmBase):
+    id: int
+    buy_order_id: int
+    sell_order_id: int
+    instrument_id: int
+    quantity: float
+    price_eur: float
+    executed_at: datetime
+
+
+class PositionOut(OrmBase):
+    id: int
+    org_id: int
+    instrument_id: int
+    quantity: float
+    avg_cost_eur: float
+
+
+class PriceHistoryOut(OrmBase):
+    price_date: date
+    price_eur: float

@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "eu-ets-frontend",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["/Users/umashankar/eu-ets-compliance-platform/frontend/node_modules/vite/bin/vite.js"],
+      "cwd": "/Users/umashankar/eu-ets-compliance-platform/frontend",
+      "port": 5173
+    }
+  ]
+}
