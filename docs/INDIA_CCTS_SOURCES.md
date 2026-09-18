@@ -406,6 +406,40 @@ precision than the secondary source offered:
   narrowing to the CN8 hydrogen-specific code would have wrongly
   suggested a nonzero hydrogen export flow.
 
+**Closing out the remaining secondary rows** (a follow-up pass, same Sept
+2026 session): after cement/fertilizer/aluminium/steel/hydrogen/
+electricity were each given at least one primary pass, several individual
+product-line rows within cement and fertilizers were still resting on
+WITS/UN Comtrade secondary citations rather than a direct Eurostat query
+-- these were closed out too, upgrading every row in the table to primary
+except two that are deliberately left secondary (see below):
+- **Cement's clinkers, white/other Portland, and aluminous/other-hydraulic
+  lines** (previously 4 secondary WITS rows) were re-queried directly at
+  CN8 and consolidated into 2 primary rows (the single largest line,
+  aluminous cement 2523 30 00, plus a grouped remainder of the other four
+  tiny lines) -- corroborating WITS almost exactly (e.g. clinkers 2024:
+  WITS $790 vs Eurostat direct EUR 732 [~$791], same underlying customs
+  record). Also fixed a stale code comment claiming Eurostat Comext
+  "returned 404/blocked" for cement CN8 queries -- that was a tooling gap
+  from an earlier session, contradicted by every other category in this
+  table successfully querying Eurostat directly since.
+- **Fertilizers' ammonia (2814), potassium nitrate (2834 21 00), and 3105
+  multi-nutrient-blend lines** (previously 3 secondary WITS rows) were
+  re-queried directly and corroborate WITS closely (potassium nitrate:
+  WITS $1,659,700 vs Eurostat $1,656,046 for the same period). The
+  multi-year Eurostat query surfaced a real trend the single-year WITS
+  snapshot couldn't show: potassium nitrate more than tripled from EUR
+  553,907 (2023) to EUR 2,086,582 (2025), and the 3105 blends line nearly
+  tripled too (EUR 444,457 to EUR 1,139,189 over the same window,
+  excluding CBAM-excluded CN 3105 60 00 throughout).
+- **Two rows are deliberately left secondary, not overlooked**: cement's
+  "CY2023 India global total, all destinations" row (a genuinely
+  different, wider scope than an EU-import mirror -- there is nothing to
+  re-query against Eurostat for that specific figure) and steel's
+  FY2024-25 GTRI row (kept alongside, not replaced by, the primary
+  Eurostat rows, for the same different-measurement-basis reason
+  explained in the steel section above).
+
 **A note on cross-verification, applied consistently across all four
 categories**: the WITS/Comtrade/GTRI secondary figures were never treated
 as wrong by default — they were used as the trigger to go get the primary
