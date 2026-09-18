@@ -1327,22 +1327,36 @@ def run():
              source_confidence=SECONDARY,
              notes="CN 3105 60 00 (P+K only, no nitrogen) is explicitly excluded from CBAM's fertiliser "
              "scope; this figure is the remainder (N-containing multi-nutrient blends)."),
-        # ---- Hydrogen (HS 2804.10) -- confirmed no export industry ----
-        dict(product_category="Hydrogen", hs_chapter="2804.10", period="2026",
+        # ---- Hydrogen (CN 2804 10 00) -- upgraded to PRIMARY via direct Eurostat CN8 query ----
+        dict(product_category="Hydrogen", hs_chapter="2804 10 00", period="2023-2025 (EU imports from India, calendar years, CBAM-covered CN8 only)",
              export_value_usd=0, export_volume_tonnes=0, yoy_change_pct=None,
-             source_name="Centre for Science and Environment (CSE) 2024 study, via Down To Earth, 2 Jan 2026",
-             source_url="https://www.downtoearth.org.in/climate-change/eu-carbon-border-tax-comes-into-force-raising-costs-for-indian-exporters",
-             source_confidence=SECONDARY,
-             notes="CSE's study states explicitly: 'India does not currently export hydrogen or "
-             "electricity to the EU.' Worth periodic re-check given India's National Green Hydrogen "
-             "Mission could change this within CBAM's own 2026-2034 phase-in horizon."),
-        # ---- Electricity (HS 2716) -- confirmed zero ----
-        dict(product_category="Electricity", hs_chapter="2716", period="2026",
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly at CN8 (2804 10 00)",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.28041000.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="Directly confirms, at the exact CBAM-relevant CN8 code, the CSE (2024 study, via Down "
+             "To Earth, 2 Jan 2026) claim that 'India does not currently export hydrogen ... to the EU.' "
+             "Not literally zero every year: 2023 recorded EUR 334 (a single de minimis shipment), 2024 "
+             "and 2025 both EUR 0 -- functionally no export industry, not a hard zero forever. Note the "
+             "broader CN4 heading 2804 ('Hydrogen, rare gases and other non-metals') is NOT all-zero -- it "
+             "shows real trade (EUR 154,046 in 2024) -- but that trade is in OTHER gases within the same "
+             "heading (nitrogen 2804 30, oxygen 2804 40, silicon 2804 61/69, arsenic 2804 80; these "
+             "CN8-identifiable lines sum to only EUR 43,396 of the EUR 154,046 CN4 total, with the "
+             "remainder most likely confidentiality-suppressed at CN8 by Eurostat), not hydrogen itself, "
+             "and none of it falls within CBAM's Annex I hydrogen scope (CN 2804 10 00 only). Worth "
+             "periodic re-check given India's National Green Hydrogen Mission could change this within "
+             "CBAM's own 2026-2034 phase-in horizon."),
+        # ---- Electricity (CN 2716) -- upgraded to PRIMARY via direct Eurostat query ----
+        dict(product_category="Electricity", hs_chapter="2716", period="2023-2025 (EU imports from India, calendar years)",
              export_value_usd=0, export_volume_tonnes=0, yoy_change_pct=None,
-             source_name="Centre for Science and Environment (CSE) 2024 study, via Down To Earth, 2 Jan 2026",
-             source_url="https://www.downtoearth.org.in/climate-change/eu-carbon-border-tax-comes-into-force-raising-costs-for-indian-exporters",
-             source_confidence=SECONDARY,
-             notes="No direct India-EU grid interconnection exists."),
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.2716.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="Directly confirms the CSE (2024 study, via Down To Earth, 2 Jan 2026) claim of zero "
+             "India-to-EU electricity trade, consistent with there being no direct India-EU grid "
+             "interconnection: zero recorded EU imports of electricity from India in every year queried "
+             "(2023, 2024, 2025). A genuinely zero-trade product code returns an empty but valid dataset "
+             "in this API, distinguishable from an invalid code (which instead returns an explicit SDMX "
+             "fault) -- so this is a confirmed absence of trade, not a query error."),
     ]
     for spec in cbam_exposure:
         db.add(models.IndiaCbamExportExposure(**spec))

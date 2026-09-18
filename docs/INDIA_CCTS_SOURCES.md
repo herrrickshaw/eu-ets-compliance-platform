@@ -280,11 +280,10 @@ there is no evidence this is imminent as of this research pass.
 ## India's CBAM export exposure (`IndiaCbamExportExposure`) — Eurostat Comext direct-query methodology
 
 A separate research thread (Sept 2026) built out `IndiaCbamExportExposure`:
-what India actually exports to the EU in the four CBAM-covered goods
-categories that matter (cement, fertilizers, aluminium, iron & steel —
-hydrogen and electricity carry essentially zero trade and were confirmed,
-not modeled, as negligible via a CSE 2024 study). The intended primary
-source was India's own government export-statistics portal
+what India actually exports to the EU in the six CBAM-covered goods
+categories (cement, fertilizers, aluminium, iron & steel, hydrogen,
+electricity). The intended primary source was India's own government
+export-statistics portal
 (Tradestat/DGCIS), but that site is a JS-rendered form with no stable query
 URL and was confirmed unscrapable. The fallback — used for all four
 categories — is the **EU's own mirror data**: Eurostat Comext records every
@@ -382,6 +381,30 @@ across the other 30+ smaller headings, largest components named in its
 `notes` field: 7207 semis, 7219 stainless flat, 7304 seamless tubes, 7306
 other tubes, 7307 fittings, 7308 structures, 7206 primary forms, 7223
 stainless wire).
+
+**Hydrogen and electricity**: originally seeded as two secondary rows,
+each a single sentence from a Centre for Science and Environment (CSE)
+2024 study (via Down To Earth, 2 Jan 2026) stating India exports neither
+to the EU. Both were upgraded to primary confidence by querying Eurostat
+directly across 2023-2025, which confirmed the claim but with more
+precision than the secondary source offered:
+- **Electricity (CN 2716)** is genuinely, cleanly zero every year
+  queried — Eurostat returns a valid-but-empty dataset for a real product
+  code with no recorded trade, which is distinguishable in this API from
+  querying an invalid code (that returns an explicit SDMX fault instead).
+  Consistent with there being no direct India-EU grid interconnection.
+- **Hydrogen is *not* a hard zero every year**: the CBAM-relevant CN8 code
+  (2804 10 00) shows EUR 334 in 2023 (a single de minimis shipment), then
+  EUR 0 in 2024 and 2025 — functionally no export industry, but a more
+  precise finding than "zero." A second, easy-to-misread trap surfaced
+  here too: the broader CN4 heading 2804 ("Hydrogen, rare gases and other
+  non-metals") is **not** all-zero — it shows real trade (EUR 154,046 in
+  2024) — but that trade is entirely in *other* gases sharing the same
+  4-digit heading (nitrogen, oxygen, silicon, arsenic), not hydrogen
+  itself, and none of it is CBAM-covered (Annex I's hydrogen scope is CN
+  2804 10 00 specifically, not all of 2804). Querying only at CN4 without
+  narrowing to the CN8 hydrogen-specific code would have wrongly
+  suggested a nonzero hydrogen export flow.
 
 **A note on cross-verification, applied consistently across all four
 categories**: the WITS/Comtrade/GTRI secondary figures were never treated
