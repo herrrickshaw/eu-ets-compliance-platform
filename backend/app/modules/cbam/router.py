@@ -173,3 +173,139 @@ def reconcile_declaration(
     db.commit()
     db.refresh(decl)
     return decl
+
+
+@router.get("/phase-in-schedule", response_model=list[schemas.CbamPhaseInScheduleOut])
+def list_phase_in_schedule(db: Session = Depends(get_db), _user: models.User = Depends(get_current_user)):
+    return db.query(models.CbamPhaseInSchedule).order_by(models.CbamPhaseInSchedule.year).all()
+
+
+DEMAND_METHODOLOGY_NOTE = (
+    "CBAM certificates are NOT volume-capped the way EU ETS allowances or voluntary carbon credits are — "
+    "the EU sells as many as a declarant needs, priced weekly off the EUA auction average (Reg. (EU) "
+    "2023/956 Art. 21). So there is no scarcity-driven supply-vs-demand gap to model here. The real gap is "
+    "temporal: total_embedded_emissions_t is your full eventual liability (what you'll owe once free "
+    "allocation to the equivalent EU ETS sector hits zero, in 2034); actual_obligation_t is what you "
+    "actually owe this year, scaled by that year's cbam_factor_pct (2.5% in 2026, ramping to 100% by "
+    "2034 per Reg. (EU) 2025/2083); deferred_liability_t is the difference — emissions you're not yet "
+    "paying for, but will be as the phase-in advances. reference_price is this platform's latest seeded "
+    "EUA price (illustrative, not a live feed) standing in for the weekly CBAM certificate price."
+)
+
+
+@router.get("/demand-analysis", response_model=schemas.CbamDemandAnalysisResponse)
+def demand_analysis(year: int, db: Session = Depends(get_db), user: models.User = Depends(get_current_user)):
+    org_ids = get_my_org_ids(db, user.tenant_id)
+    declarant_ids = [
+        d.id for d in db.query(models.CbamDeclarant).filter(models.CbamDeclarant.org_id.in_(org_ids)).all()
+    ]
+
+    imports = (
+        db.query(models.CbamGoodsImport)
+        .filter(
+            models.CbamGoodsImport.declarant_id.in_(declarant_ids),
+            models.CbamGoodsImport.import_date >= f"{year}-01-01",
+            models.CbamGoodsImport.import_date < f"{year + 1}-01-01",
+        )
+        .all()
+        if declarant_ids
+        else []
+    )
+    total_embedded = sum(i.direct_emissions_t + i.indirect_emissions_t for i in imports)
+
+    schedule = db.query(models.CbamPhaseInSchedule).filter_by(year=year).first()
+    if schedule is None:
+        schedule = (
+            db.query(models.CbamPhaseInSchedule)
+            .filter(models.CbamPhaseInSchedule.year >= year)
+            .order_by(models.CbamPhaseInSchedule.year)
+            .first()
+        )
+        if schedule is None:
+            schedule = (
+                db.query(models.CbamPhaseInSchedule).order_by(models.CbamPhaseInSchedule.year.desc()).first()
+            )
+    factor_pct = schedule.cbam_factor_pct if schedule else 100.0
+
+    actual_obligation = total_embedded * (factor_pct / 100)
+    deferred = total_embedded - actual_obligation
+
+    eua = db.query(models.Instrument).filter_by(instrument_type=models.InstrumentType.EUA).first()
+    latest_price = (
+        db.query(models.PriceHistory)
+        .filter_by(instrument_id=eua.id)
+        .order_by(models.PriceHistory.price_date.desc())
+        .first()
+        if eua
+        else None
+    )
+
+    return schemas.CbamDemandAnalysisResponse(
+        year=year,
+        declarant_count=len(declarant_ids),
+        total_embedded_emissions_t=round(total_embedded, 3),
+        cbam_factor_pct=factor_pct,
+        actual_obligation_t=round(actual_obligation, 3),
+        deferred_liability_t=round(deferred, 3),
+        reference_price_eur_per_t=latest_price.price_eur if latest_price else None,
+        reference_price_date=latest_price.price_date if latest_price else None,
+        actual_obligation_cost_eur=round(actual_obligation * latest_price.price_eur, 2) if latest_price else None,
+        full_liability_cost_eur=round(total_embedded * latest_price.price_eur, 2) if latest_price else None,
+        methodology_note=DEMAND_METHODOLOGY_NOTE,
+    )
+
+
+@router.get("/demand-projection", response_model=schemas.CbamProjectionResponse)
+def demand_projection(base_year: int, db: Session = Depends(get_db), user: models.User = Depends(get_current_user)):
+    """Holds base_year's actual import volume constant and projects the obligation
+    across the whole 2026-2034 phase-in schedule — the clearest way to see the ramp."""
+    org_ids = get_my_org_ids(db, user.tenant_id)
+    declarant_ids = [
+        d.id for d in db.query(models.CbamDeclarant).filter(models.CbamDeclarant.org_id.in_(org_ids)).all()
+    ]
+    imports = (
+        db.query(models.CbamGoodsImport)
+        .filter(
+            models.CbamGoodsImport.declarant_id.in_(declarant_ids),
+            models.CbamGoodsImport.import_date >= f"{base_year}-01-01",
+            models.CbamGoodsImport.import_date < f"{base_year + 1}-01-01",
+        )
+        .all()
+        if declarant_ids
+        else []
+    )
+    total_embedded = sum(i.direct_emissions_t + i.indirect_emissions_t for i in imports)
+
+    eua = db.query(models.Instrument).filter_by(instrument_type=models.InstrumentType.EUA).first()
+    latest_price = (
+        db.query(models.PriceHistory)
+        .filter_by(instrument_id=eua.id)
+        .order_by(models.PriceHistory.price_date.desc())
+        .first()
+        if eua
+        else None
+    )
+    price = latest_price.price_eur if latest_price else None
+
+    schedule = db.query(models.CbamPhaseInSchedule).order_by(models.CbamPhaseInSchedule.year).all()
+    years = [
+        schemas.CbamProjectionYear(
+            year=s.year,
+            cbam_factor_pct=s.cbam_factor_pct,
+            obligation_t=round(total_embedded * (s.cbam_factor_pct / 100), 3),
+            obligation_cost_eur=round(total_embedded * (s.cbam_factor_pct / 100) * price, 2) if price else None,
+        )
+        for s in schedule
+    ]
+
+    return schemas.CbamProjectionResponse(
+        base_year=base_year,
+        total_embedded_emissions_t=round(total_embedded, 3),
+        reference_price_eur_per_t=price,
+        years=years,
+        note=(
+            f"Illustrative projection only: holds {base_year}'s actual embedded-emissions volume "
+            "constant across every scheduled year — real import volumes and the EUA-linked certificate "
+            "price will both move. Shows the shape of the phase-in ramp, not a forecast."
+        ),
+    )

@@ -215,6 +215,27 @@ def run():
     )
     db.flush()
 
+    # CBAM phase-in schedule — Reg. (EU) 2023/956 Art. 31(a), as amended by the Omnibus
+    # Regulation (EU) 2025/2083 (17 Oct 2025, which also deferred CBAM certificate SALES
+    # from Jan 2026 to Feb 2027 and cut the quarterly certificate-holding buffer from 80%
+    # to 50% of estimated embedded emissions — buffer/timing details not modeled here,
+    # only the annual cbam_factor_pct that determines the surrender obligation itself).
+    # Cross-checked across multiple corroborating secondary sources (ICAP, cbamguide.com,
+    # OPIS); the primary Official Journal text was not read directly this session.
+    cbam_phase_in = [
+        (2026, 97.5, 2.5, "First compliance year; certificate purchase itself deferred to Feb 2027 by the Omnibus amendment."),
+        (2027, 95.0, 5.0, None),
+        (2028, 90.0, 10.0, None),
+        (2029, 77.5, 22.5, None),
+        (2030, 51.5, 48.5, "Largest single-year jump in the schedule: +26 points from 2029."),
+        (2031, 39.0, 61.0, None),
+        (2032, 26.5, 73.5, None),
+        (2033, 14.0, 86.0, None),
+        (2034, 0.0, 100.0, "Free allocation to the equivalent EU ETS sector reaches zero — full embedded-emissions liability."),
+    ]
+    for year, free_pct, cbam_pct, note in cbam_phase_in:
+        db.add(models.CbamPhaseInSchedule(year=year, free_allocation_pct=free_pct, cbam_factor_pct=cbam_pct, note=note))
+
     # ---------------- Module 4: Carbon credit sourcing ----------------
     verra = models.CreditProgram(name="Verra (VCS)")
     gold_standard = models.CreditProgram(name="Gold Standard")

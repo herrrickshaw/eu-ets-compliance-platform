@@ -8,8 +8,15 @@ export default function Cbam() {
   const { data: defaults } = useApi("/cbam/default-values");
   const { data: imports } = useApi("/cbam/imports");
   const { data: declarations, reload } = useApi("/cbam/declarations");
+  const { data: phaseInSchedule } = useApi("/cbam/phase-in-schedule");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState(null);
+
+  const [analysisYear, setAnalysisYear] = useState(2026);
+  const [analysis, setAnalysis] = useState(null);
+  const [projection, setProjection] = useState(null);
+  const [analysisBusy, setAnalysisBusy] = useState(false);
+  const [analysisErr, setAnalysisErr] = useState(null);
 
   const declarantEori = (id) => declarants?.find((d) => d.id === id)?.eori_number ?? `#${id}`;
 
@@ -23,6 +30,23 @@ export default function Cbam() {
       setErr(e.message);
     } finally {
       setBusy(false);
+    }
+  }
+
+  async function runDemandAnalysis() {
+    setAnalysisBusy(true);
+    setAnalysisErr(null);
+    try {
+      const [a, p] = await Promise.all([
+        api.get(`/cbam/demand-analysis?year=${analysisYear}`),
+        api.get(`/cbam/demand-projection?base_year=${analysisYear}`),
+      ]);
+      setAnalysis(a);
+      setProjection(p);
+    } catch (e) {
+      setAnalysisErr(e.message);
+    } finally {
+      setAnalysisBusy(false);
     }
   }
 
@@ -98,6 +122,112 @@ export default function Cbam() {
             return row[key];
           }}
         />
+      </Card>
+
+      <Card title="Certificate demand & phase-in ramp (not a supply-demand gap)">
+        <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-600 mb-4">
+          CBAM certificates aren't volume-capped like EUAs or voluntary carbon credits — the EU sells as
+          many as a declarant needs, priced weekly off the EUA auction average. So there's no scarcity-driven
+          supply-vs-demand gap here. The real gap is <strong>temporal</strong>: free allocation to the
+          equivalent EU ETS sector phases out 2026→2034 (Reg. (EU) 2023/956 Art. 31(a), amended by the
+          Omnibus Regulation (EU) 2025/2083), so only a rising share of your embedded emissions actually
+          requires a surrendered certificate today — the rest is deferred liability that lands as the
+          phase-in advances.
+        </div>
+        <Table
+          columns={[
+            { key: "year", label: "Year" },
+            { key: "free_allocation_pct", label: "Free allocation remaining" },
+            { key: "cbam_factor_pct", label: "CBAM factor (certificate obligation)" },
+            { key: "note", label: "Note" },
+          ]}
+          rows={phaseInSchedule ?? []}
+          renderCell={(row, key) => {
+            if (key === "free_allocation_pct" || key === "cbam_factor_pct") return `${row[key]}%`;
+            if (key === "note") return row.note ?? "—";
+            return row[key];
+          }}
+        />
+        <div className="mt-4 flex items-end gap-3">
+          <div>
+            <label className="block text-xs text-slate-500 mb-1">Base year (uses your declared imports for that year)</label>
+            <select
+              value={analysisYear}
+              onChange={(e) => setAnalysisYear(Number(e.target.value))}
+              className="border border-slate-300 rounded-lg px-2 py-1.5 text-sm"
+            >
+              {(phaseInSchedule ?? []).map((s) => (
+                <option key={s.year} value={s.year}>
+                  {s.year}
+                </option>
+              ))}
+            </select>
+          </div>
+          <Button onClick={runDemandAnalysis} disabled={analysisBusy}>
+            Run demand analysis
+          </Button>
+        </div>
+        {analysisErr && <div className="text-sm text-rose-600 mt-2">{analysisErr}</div>}
+        {analysis && (
+          <div className="mt-4 space-y-4">
+            <div className="grid grid-cols-4 gap-4">
+              <div>
+                <div className="text-xs text-slate-500">Full eventual liability</div>
+                <div className="text-lg font-bold">{analysis.total_embedded_emissions_t.toLocaleString()} t</div>
+                {analysis.full_liability_cost_eur != null && (
+                  <div className="text-xs text-slate-400">€{analysis.full_liability_cost_eur.toLocaleString()}</div>
+                )}
+              </div>
+              <div>
+                <div className="text-xs text-slate-500">Actual obligation this year ({analysis.cbam_factor_pct}%)</div>
+                <div className="text-lg font-bold">{analysis.actual_obligation_t.toLocaleString()} t</div>
+                {analysis.actual_obligation_cost_eur != null && (
+                  <div className="text-xs text-slate-400">€{analysis.actual_obligation_cost_eur.toLocaleString()}</div>
+                )}
+              </div>
+              <div>
+                <div className="text-xs text-slate-500">Deferred liability</div>
+                <div className="text-lg font-bold text-amber-600">{analysis.deferred_liability_t.toLocaleString()} t</div>
+              </div>
+              <div>
+                <div className="text-xs text-slate-500">Reference price</div>
+                <div className="text-lg font-bold">
+                  {analysis.reference_price_eur_per_t != null ? `€${analysis.reference_price_eur_per_t}/t` : "n/a"}
+                </div>
+                <div className="text-xs text-slate-400">{analysis.reference_price_date}</div>
+              </div>
+            </div>
+            {analysis.declarant_count === 0 && (
+              <div className="text-sm text-amber-600">
+                No declarants belong to your tenant, or no imports were declared in {analysisYear} — figures are zero.
+              </div>
+            )}
+            <p className="text-xs text-slate-400">{analysis.methodology_note}</p>
+          </div>
+        )}
+        {projection && (
+          <div className="mt-5 pt-5 border-t border-slate-200">
+            <div className="text-xs font-semibold text-slate-500 uppercase mb-2">
+              Ramp if {projection.base_year}'s import volume repeats every year
+            </div>
+            <Table
+              columns={[
+                { key: "year", label: "Year" },
+                { key: "cbam_factor_pct", label: "CBAM factor" },
+                { key: "obligation_t", label: "Obligation (t)" },
+                { key: "obligation_cost_eur", label: "Cost (€)" },
+              ]}
+              rows={projection.years}
+              renderCell={(row, key) => {
+                if (key === "cbam_factor_pct") return `${row[key]}%`;
+                if (key === "obligation_t") return row[key].toLocaleString();
+                if (key === "obligation_cost_eur") return row[key] != null ? `€${row[key].toLocaleString()}` : "n/a";
+                return row[key];
+              }}
+            />
+            <p className="text-xs text-slate-400 mt-2">{projection.note}</p>
+          </div>
+        )}
       </Card>
 
       <Card title="Default emission values (reference table)">

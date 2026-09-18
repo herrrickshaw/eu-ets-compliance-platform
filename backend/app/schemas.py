@@ -188,6 +188,43 @@ class CbamDeclarationOut(OrmBase):
     status: str
 
 
+class CbamPhaseInScheduleOut(OrmBase):
+    id: int
+    year: int
+    free_allocation_pct: float
+    cbam_factor_pct: float
+    note: str | None
+
+
+class CbamDemandAnalysisResponse(BaseModel):
+    year: int
+    declarant_count: int
+    total_embedded_emissions_t: float  # full liability at 100% CBAM factor
+    cbam_factor_pct: float
+    actual_obligation_t: float
+    deferred_liability_t: float
+    reference_price_eur_per_t: float | None
+    reference_price_date: date | None
+    actual_obligation_cost_eur: float | None
+    full_liability_cost_eur: float | None
+    methodology_note: str
+
+
+class CbamProjectionYear(BaseModel):
+    year: int
+    cbam_factor_pct: float
+    obligation_t: float
+    obligation_cost_eur: float | None
+
+
+class CbamProjectionResponse(BaseModel):
+    base_year: int
+    total_embedded_emissions_t: float
+    reference_price_eur_per_t: float | None
+    years: list[CbamProjectionYear]
+    note: str
+
+
 # ---- Credits ----
 class CreditProjectOut(OrmBase):
     id: int

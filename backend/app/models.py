@@ -347,6 +347,26 @@ class CbamDeclaration(Base):
     status: Mapped[CbamDeclarationStatus] = mapped_column(db_enum(CbamDeclarationStatus), default=CbamDeclarationStatus.DRAFT)
 
 
+class CbamPhaseInSchedule(Base):
+    """CBAM's real regulatory phase-in (Reg. (EU) 2023/956 Art. 31(a), as amended by
+    the Omnibus Regulation (EU) 2025/2083, 17 Oct 2025): free allocation to the
+    equivalent EU ETS sector phases OUT 2026-2034, so the share of embedded emissions
+    actually requiring a surrendered certificate (the 'CBAM factor') ramps from 2.5%
+    in 2026 to 100% by 2034. This is NOT a supply-vs-demand gap in the EU ETS/CCTS
+    sense — CBAM certificates aren't volume-capped; the EU sells as many as declarants
+    need, priced weekly off the EUA auction average (Art. 21) — so there's no scarcity
+    to model. The only real "gap" is temporal: the difference between what a declarant
+    will eventually owe (100% basis) and what they actually owe today."""
+
+    __tablename__ = "cbam_phase_in_schedule"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    year: Mapped[int] = mapped_column(Integer, unique=True, nullable=False)
+    free_allocation_pct: Mapped[float] = mapped_column(Float, nullable=False)
+    cbam_factor_pct: Mapped[float] = mapped_column(Float, nullable=False)  # = 100 - free_allocation_pct
+    note: Mapped[str | None] = mapped_column(String, nullable=True)
+
+
 # --------------------------------------------------------------------------
 # Module 4: Carbon credit sourcing/marketplace — CAD Trust hierarchy
 # --------------------------------------------------------------------------
