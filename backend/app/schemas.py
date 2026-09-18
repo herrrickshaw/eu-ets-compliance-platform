@@ -366,6 +366,34 @@ class IndiaSupplyCapacityOut(OrmBase):
     potential_avoided_mt_co2e: float | None
 
 
+class CreditBenchmarkOut(OrmBase):
+    id: int
+    technology: str
+    region: str
+    capacity_factor_pct: float | None
+    mwh_per_mw_per_year: float | None
+    grid_emission_factor_tco2_per_mwh: float | None
+    tco2e_per_mw_per_year: float | None
+    methodology: str
+    source_name: str
+    source_url: str | None
+    source_confidence: str
+    notes: str | None
+
+
+class CapacityToCreditsRequest(BaseModel):
+    benchmark_id: int
+    capacity_mw: float
+
+
+class CapacityToCreditsResponse(BaseModel):
+    benchmark: CreditBenchmarkOut
+    capacity_mw: float
+    estimated_annual_mwh: float | None
+    estimated_annual_tco2e: float | None
+    note: str
+
+
 class GapAnalysisResponse(BaseModel):
     total_demand_mt_co2e: float
     total_near_term_supply_mt_co2e: float  # awarded_operational + current_actual rows only

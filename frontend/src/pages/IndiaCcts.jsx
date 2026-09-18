@@ -30,6 +30,7 @@ export default function IndiaCcts() {
   const { data: activities } = useApi("/india/article6-activities");
   const { data: prices } = useApi("/india/carbon-prices");
   const { data: supplyCapacity } = useApi("/india/supply-capacity");
+  const { data: benchmarks } = useApi("/india/credit-benchmarks");
 
   const [overrides, setOverrides] = useState({});
   const [demand, setDemand] = useState(null);
@@ -38,6 +39,12 @@ export default function IndiaCcts() {
   const [gapBusy, setGapBusy] = useState(false);
   const [err, setErr] = useState(null);
   const [gapErr, setGapErr] = useState(null);
+
+  const [calcBenchmarkId, setCalcBenchmarkId] = useState(null);
+  const [calcMw, setCalcMw] = useState(1);
+  const [calcResult, setCalcResult] = useState(null);
+  const [calcBusy, setCalcBusy] = useState(false);
+  const [calcErr, setCalcErr] = useState(null);
 
   function setOverride(sectorId, field, value) {
     setOverrides((prev) => ({
@@ -83,6 +90,23 @@ export default function IndiaCcts() {
       setGapErr(e.message);
     } finally {
       setGapBusy(false);
+    }
+  }
+
+  async function runCapacityCalc() {
+    if (!calcBenchmarkId) return;
+    setCalcBusy(true);
+    setCalcErr(null);
+    try {
+      const result = await api.post("/india/capacity-to-credits", {
+        benchmark_id: calcBenchmarkId,
+        capacity_mw: Number(calcMw),
+      });
+      setCalcResult(result);
+    } catch (e) {
+      setCalcErr(e.message);
+    } finally {
+      setCalcBusy(false);
     }
   }
 
@@ -333,6 +357,18 @@ export default function IndiaCcts() {
       </Card>
 
       <Card title="Article 6.2 eligible activities (full list)">
+        <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-600 mb-4">
+          <strong>Historical India VCM context</strong> (CEEW, "Unlocking India's Voluntary Carbon Market,"
+          Aug 2025, primary source, read directly): India issued <strong>278 million voluntary carbon
+          credits between 2010 and 2022 — 17% of global VCM supply</strong>. Of 598 India-linked Verra VCS
+          projects (registered + unregistered) CEEW analyzed, sectoral participation splits{" "}
+          <strong>Energy industries 46%, AFOLU 24%, Energy demand 24%, all others combined just 6%</strong>{" "}
+          — a similar concentration to the CCTS demand side above, and a reminder that sectors like
+          transport, waste handling, and mining/CCS remain almost entirely untapped despite moderate-to-high
+          mitigation potential. This is historical VCM issuance (mixed project types, not Article 6.2
+          specifically, which didn't exist as a mechanism for most of this period) — shown as scale context,
+          not a current Article 6.2 supply estimate.
+        </div>
         <div className="grid md:grid-cols-2 gap-4">
           <div>
             <div className="text-xs font-semibold text-slate-500 uppercase mb-2">Mitigation ({mitigationActivities.length})</div>
@@ -404,6 +440,112 @@ export default function IndiaCcts() {
             ))}
           </ul>
         </details>
+      </Card>
+
+      <Card title="Capacity → credits benchmarks (Verra VMR0017 / CDM ACM0002 / Gold Standard)">
+        <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-600 mb-4">
+          None of these registries publish a default capacity factor — the real methodology formula is{" "}
+          <strong>baseline emissions = actual metered generation (MWh) × grid emission factor (tCO2/MWh)</strong>{" "}
+          (Verra's VMR0017 supersedes CDM's ACM0002/AMS-I.D from Apr 2026 and Gold Standard adopts the same
+          family of methodologies). The figures below use the best available <em>real</em> capacity factor per
+          technology — derived from MNRE's own official capacity+generation statistics, a regulatory
+          tariff-setting benchmark, or a real operating project — not an invented assumption.
+        </div>
+        <Table
+          columns={[
+            { key: "technology", label: "Technology" },
+            { key: "region", label: "Region / basis" },
+            { key: "cf", label: "Capacity factor" },
+            { key: "mwh", label: "MWh/MW/yr" },
+            { key: "tco2e", label: "tCO2e/MW/yr" },
+            { key: "source", label: "Source" },
+          ]}
+          rows={benchmarks ?? []}
+          renderCell={(row, key) => {
+            if (key === "cf") return row.capacity_factor_pct != null ? `${row.capacity_factor_pct}%` : "—";
+            if (key === "mwh") return row.mwh_per_mw_per_year != null ? row.mwh_per_mw_per_year.toLocaleString() : "—";
+            if (key === "tco2e") return row.tco2e_per_mw_per_year != null ? row.tco2e_per_mw_per_year.toLocaleString() : "n/a — grid-dependent";
+            if (key === "source")
+              return row.source_url ? (
+                <a href={row.source_url} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">
+                  {row.source_name}
+                </a>
+              ) : (
+                row.source_name
+              );
+            return row[key];
+          }}
+        />
+        <details className="mt-3 text-xs text-slate-500">
+          <summary className="cursor-pointer hover:text-slate-700">Notes per benchmark</summary>
+          <ul className="mt-2 space-y-2">
+            {(benchmarks ?? []).map((b) => (
+              <li key={b.id}>
+                <span className="font-medium text-slate-600">
+                  {b.technology} — {b.region}:
+                </span>{" "}
+                {b.notes}
+              </li>
+            ))}
+          </ul>
+        </details>
+
+        <div className="mt-5 pt-5 border-t border-slate-200">
+          <div className="text-xs font-semibold text-slate-500 uppercase mb-3">Calculator</div>
+          <div className="flex flex-wrap items-end gap-3">
+            <div>
+              <label className="block text-xs text-slate-500 mb-1">Technology / benchmark</label>
+              <select
+                value={calcBenchmarkId ?? ""}
+                onChange={(e) => setCalcBenchmarkId(Number(e.target.value))}
+                className="border border-slate-300 rounded-lg px-2 py-1.5 text-sm w-80"
+              >
+                <option value="" disabled>
+                  Select a benchmark
+                </option>
+                {(benchmarks ?? []).map((b) => (
+                  <option key={b.id} value={b.id}>
+                    {b.technology} — {b.region}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs text-slate-500 mb-1">Capacity (MW)</label>
+              <input
+                type="number"
+                value={calcMw}
+                onChange={(e) => setCalcMw(e.target.value)}
+                className="border border-slate-300 rounded-lg px-2 py-1.5 text-sm w-28"
+              />
+            </div>
+            <button
+              onClick={runCapacityCalc}
+              disabled={calcBusy || !calcBenchmarkId}
+              className="px-3 py-1.5 rounded-lg text-sm font-medium bg-slate-900 text-white hover:bg-slate-700 disabled:opacity-40"
+            >
+              Estimate
+            </button>
+          </div>
+          {calcErr && <div className="text-sm text-rose-600 mt-2">{calcErr}</div>}
+          {calcResult && (
+            <div className="mt-4 grid grid-cols-2 gap-4">
+              <div>
+                <div className="text-xs text-slate-500">Estimated annual generation</div>
+                <div className="text-xl font-bold">
+                  {calcResult.estimated_annual_mwh != null ? `${calcResult.estimated_annual_mwh.toLocaleString()} MWh/yr` : "n/a"}
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-slate-500">Estimated annual credits</div>
+                <div className="text-xl font-bold">
+                  {calcResult.estimated_annual_tco2e != null ? `${calcResult.estimated_annual_tco2e.toLocaleString()} tCO2e/yr` : "n/a — grid-dependent, see notes"}
+                </div>
+              </div>
+              <p className="col-span-2 text-xs text-slate-400">{calcResult.note}</p>
+            </div>
+          )}
+        </div>
       </Card>
     </div>
   );

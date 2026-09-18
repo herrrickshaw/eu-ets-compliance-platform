@@ -127,3 +127,38 @@ def gap_analysis(
         demand_methodology_note=METHODOLOGY_NOTE,
         supply_methodology_note=SUPPLY_METHODOLOGY_NOTE,
     )
+
+
+@router.get("/credit-benchmarks", response_model=list[schemas.CreditBenchmarkOut])
+def list_credit_benchmarks(db: Session = Depends(get_db), _user: models.User = Depends(get_current_user)):
+    return db.query(models.CreditBenchmark).order_by(models.CreditBenchmark.technology).all()
+
+
+@router.post("/capacity-to-credits", response_model=schemas.CapacityToCreditsResponse)
+def capacity_to_credits(
+    req: schemas.CapacityToCreditsRequest, db: Session = Depends(get_db), _user: models.User = Depends(get_current_user)
+):
+    """Real CDM ACM0002 / Verra VMR0017 formula: annual generation (MWh) x grid
+    emission factor (tCO2/MWh). No registry defines a fixed default capacity
+    factor — it's a project-specific estimate, not a methodology parameter — so
+    this uses each benchmark's best-available real capacity-factor figure."""
+    b = db.get(models.CreditBenchmark, req.benchmark_id)
+    if b is None:
+        raise HTTPException(404, "Benchmark not found")
+
+    mwh = None
+    tco2e = None
+    if b.mwh_per_mw_per_year is not None:
+        mwh = round(req.capacity_mw * b.mwh_per_mw_per_year, 2)
+    if b.tco2e_per_mw_per_year is not None:
+        tco2e = round(req.capacity_mw * b.tco2e_per_mw_per_year, 2)
+
+    note = (
+        f"{req.capacity_mw} MW x {b.mwh_per_mw_per_year or '?'} MWh/MW/yr "
+        f"x {b.grid_emission_factor_tco2_per_mwh or '?'} tCO2/MWh ({b.methodology}). "
+        "This is an estimate from a benchmark capacity factor, not metered generation — "
+        "real crediting under ACM0002/VMR0017 always uses actual metered output."
+    )
+    return schemas.CapacityToCreditsResponse(
+        benchmark=b, capacity_mw=req.capacity_mw, estimated_annual_mwh=mwh, estimated_annual_tco2e=tco2e, note=note
+    )

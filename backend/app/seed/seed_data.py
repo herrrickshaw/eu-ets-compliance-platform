@@ -494,16 +494,20 @@ def run():
     # ---------------- India supply-capacity (Article 6.2 gap analysis) ----------------
     # Sourced from a Sept 2026 research pass reading primary PIB/MNRE/MoPNG/NITI Aayog/
     # steel.gov.in/BEE documents directly where noted; secondary trade-press cited only
-    # where no primary figure could be located. CEA's FY2024-25 grid emission factor
-    # (0.710 tCO2/MWh, Combined Margin 0.736) is the one universally-reusable PRIMARY
-    # conversion constant — CEA "CO2 Baseline Database for the Indian Power Sector v21.0",
-    # Nov 2025, https://cea.nic.in/wp-content/uploads/baseline/2025/12/User_Guide_V_21.0.pdf
-    # Capacity-factor assumptions used below to convert MW->MWh/year are STANDARD
-    # ILLUSTRATIVE industry ranges, explicitly NOT India-specific-sourced this session —
-    # see docs/INDIA_CCTS_SOURCES.md. Where no defensible conversion exists, or the time
-    # horizon is too far out to compare (e.g. a 2050 target), potential_avoided_mt_co2e
-    # is left null on purpose, not zero-filled.
-    CEA_GRID_FACTOR = 0.710  # tCO2/MWh, FY2024-25, CEA CO2 Baseline Database v21.0 (primary)
+    # where no primary figure could be located. A follow-up research pass reading the
+    # actual CDM ACM0002 / Verra VMR0017 methodology text confirmed the correct baseline
+    # factor for this kind of calculation is CEA's Combined Margin (CM) — not a simple
+    # weighted average — so this uses CM = 0.736 tCO2/MWh (FY2024-25 vintage), from CEA
+    # "CO2 Baseline Database for the Indian Power Sector v21.0", Nov 2025,
+    # https://cea.nic.in/wp-content/uploads/baseline/2025/12/User_Guide_V_21.0.pdf
+    # Capacity-factor assumptions below are a mix of: (a) real India national
+    # fleet-average CUFs derived from MNRE's own capacity+generation statistics
+    # (solar ~17.5-19%, wind ~20%; see docs/INDIA_CCTS_SOURCES.md and the
+    # credit_benchmarks table for the full derivation), used where directly
+    # applicable, and (b) illustrative assumptions for hybrid/enabling-infrastructure
+    # rows (FDRE/RTC, the Ladakh corridor's solar+wind blend) where no direct
+    # benchmark exists — each row's conversion_note says which.
+    CEA_GRID_FACTOR = 0.736  # tCO2/MWh, Combined Margin, FY2024-25 vintage, CEA CO2 Baseline Database v21.0 (primary)
 
     AT = models.FigureType.ASPIRATIONAL_TARGET
     AO = models.FigureType.AWARDED_OPERATIONAL
@@ -534,10 +538,10 @@ def run():
             source_url="https://www.pv-magazine-india.com/2026/08/07/secis-1-gw-fdre-rtc-power-tender-discovers-inr-5-25-kwh-tariff/",
             source_confidence=SECONDARY,
             conversion_note="2,500 MW x 35% capacity factor (illustrative — FDRE/RTC firm-power tenders "
-            "typically run higher CF than plain solar, not India-specific-sourced) x 8,760 h x CEA grid "
-            "factor 0.710 tCO2/MWh = 5.44 Mt CO2e/yr. This is only a sample of awarded tenders, not a "
-            "complete national FDRE tally.",
-            potential_avoided_mt_co2e=5.44,
+            "typically run higher CF than plain solar, not India-specific-sourced) x 8,760 h x CEA "
+            "Combined Margin 0.736 tCO2/MWh = 5.64 Mt CO2e/yr. This is only a sample of awarded tenders, "
+            "not a complete national FDRE tally.",
+            potential_avoided_mt_co2e=5.64,
         ),
         # ---- Solar thermal power ----
         dict(
@@ -562,12 +566,13 @@ def run():
             source_name="PIB — Cabinet approves VGF scheme for Offshore Wind Energy Projects",
             source_url="https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=2026700",
             source_confidence=PRIMARY,
-            conversion_note="1,000 MW x 42% offshore capacity factor (illustrative industry-typical value, "
-            "not India-specific-sourced) x 8,760 h x CEA grid factor 0.710 tCO2/MWh = 2.61 Mt CO2e/yr. "
-            "IMPORTANT: SECI's first 500 MW Gujarat tender (issued Sep 2024) drew ZERO bids by its "
-            "extended Jul 2025 deadline — this capacity is funded/approved but nothing is under "
-            "construction yet.",
-            potential_avoided_mt_co2e=2.61,
+            conversion_note="1,000 MW x 42% offshore capacity factor (real observed international offshore "
+            "project range 42-46% — Norther Belgium 43.1%, Alpha Ventus Germany 42-42.7%, European fleet "
+            "avg ~45.8%; India has no operational offshore wind to derive its own CF, so the international "
+            "low end is used) x 8,760 h x CEA Combined Margin 0.736 tCO2/MWh = 2.71 Mt CO2e/yr. IMPORTANT: "
+            "SECI's first 500 MW Gujarat tender (issued Sep 2024) drew ZERO bids by its extended Jul 2025 "
+            "deadline — this capacity is funded/approved but nothing is under construction yet.",
+            potential_avoided_mt_co2e=2.71,
         ),
         dict(
             activity_id=a6["offshore_wind"].id,
@@ -577,10 +582,11 @@ def run():
             source_name="MNRE offshore wind policy (widely reported; exact primary PIB URL not located)",
             source_url="https://mnre.gov.in/en/off-shore-wind/",
             source_confidence=SECONDARY,
-            conversion_note="30,000 MW x 42% CF (same illustrative assumption as above) x 8,760 h x 0.710 "
-            "tCO2/MWh = 78.4 Mt CO2e/yr IF fully built by 2030. Given the first tender drew zero bids, "
-            "treat this as a distant upper bound, not a plausible near-term figure.",
-            potential_avoided_mt_co2e=78.4,
+            conversion_note="30,000 MW x 42% CF (same real international-project-derived assumption as "
+            "above) x 8,760 h x CEA Combined Margin 0.736 tCO2/MWh = 81.2 Mt CO2e/yr IF fully built by "
+            "2030. Given the first tender drew zero bids, treat this as a distant upper bound, not a "
+            "plausible near-term figure.",
+            potential_avoided_mt_co2e=81.2,
         ),
         # ---- Green hydrogen ----
         dict(
@@ -755,11 +761,13 @@ def run():
             source_name="PIB — CCEA approves Green Energy Corridor Phase-II (Ladakh)",
             source_url="https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=1968732",
             source_confidence=PRIMARY,
-            conversion_note="13,000 MW x 30% blended solar+wind capacity factor (illustrative, not "
-            "India-specific-sourced) x 8,760 h x CEA grid factor 0.710 tCO2/MWh = 24.26 Mt CO2e/yr. "
+            conversion_note="13,000 MW x 19% blended solar+wind capacity factor (real India national "
+            "fleet-average CUFs: solar ~17.5-19% MNRE-derived/regulatory benchmark, wind ~19.8-20% — "
+            "averaged; Ladakh's own high-altitude solar resource could run higher but no site-specific "
+            "figure was found) x 8,760 h x CEA Combined Margin 0.736 tCO2/MWh = 15.92 Mt CO2e/yr. "
             "Cabinet-approved and funded (₹20,773.70 crore, 40% CFA) — infrastructure under "
             "implementation, targeted completion FY2029-30, not yet operational.",
-            potential_avoided_mt_co2e=24.26,
+            potential_avoided_mt_co2e=15.92,
         ),
         # ---- Green ammonia ----
         dict(
@@ -807,6 +815,103 @@ def run():
     ]
     for spec in supply_rows:
         db.add(models.IndiaSupplyCapacity(**spec))
+
+    # ---------------- Credit benchmarks: capacity -> credits, per technology ----------------
+    # Grounded in the REAL MRV formula (CDM ACM0002 / Verra VMR0017, adopted as-is by Gold
+    # Standard): baseline emissions = actual metered generation (MWh) x grid emission factor
+    # (tCO2/MWh). No registry publishes a default capacity factor — it's a project-specific
+    # estimate, not a methodology parameter — so capacity_factor_pct below is the best
+    # available REAL figure: either derived from MNRE's own official capacity+generation
+    # statistics (Renewable Energy Statistics 2024-25), an official MNRE/CERC regulatory
+    # tariff-setting benchmark, or a real operating project's observed output. Sourced from
+    # a Sept 2026 research pass; see docs/INDIA_CCTS_SOURCES.md for full derivation and caveats.
+    ACM0002_VMR0017 = "CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor"
+
+    credit_benchmarks = [
+        dict(
+            technology="Solar PV", region="India (national fleet average, FY2024-25)",
+            capacity_factor_pct=17.5, mwh_per_mw_per_year=1530,
+            grid_emission_factor_tco2_per_mwh=0.736, tco2e_per_mw_per_year=1126,
+            methodology=ACM0002_VMR0017,
+            source_name="MNRE Renewable Energy Statistics 2024-25 (capacity+generation, CUF derived) + CEA CO2 Baseline Database v21.0 (grid factor)",
+            source_url="https://cdnbbsr.s3waas.gov.in/s3716e1b8c6cd17b771da77391355749f3/uploads/2025/11/202511061627678782.pdf",
+            source_confidence=PRIMARY,
+            notes="CUF is DERIVED by dividing MNRE's official FY2024-25 generation by average installed "
+            "capacity — not an officially-published CUF table (none was found). Blends old+new plants "
+            "and all site qualities; individual projects range ~14-26%+.",
+        ),
+        dict(
+            technology="Solar PV", region="India (MNRE/CERC regulatory tariff-setting benchmark)",
+            capacity_factor_pct=19.0, mwh_per_mw_per_year=1664,
+            grid_emission_factor_tco2_per_mwh=0.736, tco2e_per_mw_per_year=1225,
+            methodology=ACM0002_VMR0017,
+            source_name="MNRE/CERC regulatory CUF benchmark used in tariff determination",
+            source_url=None,
+            source_confidence=SECONDARY,
+            notes="The 19% figure is widely cited as the regulatory benchmark used in Indian solar tariff "
+            "determinations; CERC's Renewable Energy Tariff Regulations 2024 is the likely primary source "
+            "but was not fetched directly in this research pass.",
+        ),
+        dict(
+            technology="Solar PV", region="India — Kamuthi Solar Park, Tamil Nadu (real operating project)",
+            capacity_factor_pct=23.8, mwh_per_mw_per_year=2083,
+            grid_emission_factor_tco2_per_mwh=0.736, tco2e_per_mw_per_year=1533,
+            methodology=ACM0002_VMR0017,
+            source_name="Kamuthi Solar Power Project (648 MWp, ~1.35 TWh/yr observed)",
+            source_url="https://en.wikipedia.org/wiki/Kamuthi_Solar_Power_Project",
+            source_confidence=SECONDARY,
+            notes="A high-performing tracker-equipped real project, shown to illustrate the real range "
+            "above the national fleet average — not a typical/default figure.",
+        ),
+        dict(
+            technology="Onshore wind", region="India (national fleet average, FY2024-25)",
+            capacity_factor_pct=19.8, mwh_per_mw_per_year=1735,
+            grid_emission_factor_tco2_per_mwh=0.736, tco2e_per_mw_per_year=1277,
+            methodology=ACM0002_VMR0017,
+            source_name="MNRE Renewable Energy Statistics 2024-25 (capacity+generation, CUF derived) + CEA CO2 Baseline Database v21.0",
+            source_url="https://cdnbbsr.s3waas.gov.in/s3716e1b8c6cd17b771da77391355749f3/uploads/2025/11/202511061627678782.pdf",
+            source_confidence=PRIMARY,
+            notes="Derived the same way as the solar fleet average. Site-level range is wide (~12-30%+) — "
+            "older CDM-era Tamil Nadu/Gujarat sites averaged only ~11.8-18.5%, modern tall-tower turbines "
+            "in good wind-class sites do meaningfully better.",
+        ),
+        dict(
+            technology="Small hydro", region="India (national fleet average, FY2024-25)",
+            capacity_factor_pct=26.2, mwh_per_mw_per_year=2290,
+            grid_emission_factor_tco2_per_mwh=0.736, tco2e_per_mw_per_year=1685,
+            methodology=ACM0002_VMR0017,
+            source_name="MNRE Renewable Energy Statistics 2024-25",
+            source_url="https://cdnbbsr.s3waas.gov.in/s3716e1b8c6cd17b771da77391355749f3/uploads/2025/11/202511061627678782.pdf",
+            source_confidence=PRIMARY,
+            notes="Derived the same way as solar/wind fleet averages.",
+        ),
+        dict(
+            technology="Biomass / bagasse / waste-to-energy power", region="India (national fleet average, FY2024-25)",
+            capacity_factor_pct=16.2, mwh_per_mw_per_year=1415,
+            grid_emission_factor_tco2_per_mwh=0.736, tco2e_per_mw_per_year=1041,
+            methodology=ACM0002_VMR0017,
+            source_name="MNRE Renewable Energy Statistics 2024-25",
+            source_url="https://cdnbbsr.s3waas.gov.in/s3716e1b8c6cd17b771da77391355749f3/uploads/2025/11/202511061627678782.pdf",
+            source_confidence=PRIMARY,
+            notes="MNRE's 'bio-power' category conflates biomass, bagasse cogeneration, and "
+            "waste-to-energy — a true biomass-only figure would differ. Some biomass sub-types may also "
+            "need a small project-emissions (PEy) deduction for fossil co-firing/transport, not applied here.",
+        ),
+        dict(
+            technology="Offshore wind", region="International (no operational India project to derive a local figure)",
+            capacity_factor_pct=44.0, mwh_per_mw_per_year=3854,
+            grid_emission_factor_tco2_per_mwh=None, tco2e_per_mw_per_year=None,
+            methodology=ACM0002_VMR0017,
+            source_name="Real operating farms: Norther (Belgium) 43.1%, Alpha Ventus (Germany) 42-42.7%, European offshore fleet avg ~45.8%",
+            source_url="https://en.wikipedia.org/wiki/Norther_Offshore_Wind_Farm",
+            source_confidence=SECONDARY,
+            notes="Deliberately left without a tCO2e/MW figure: the grid emission factor to multiply by "
+            "depends entirely on which country's grid the project sits under — there's no single 'global "
+            "offshore' EF. Use the mwh_per_mw_per_year figure with whatever host-country grid factor applies.",
+        ),
+    ]
+    for spec in credit_benchmarks:
+        db.add(models.CreditBenchmark(**spec))
 
     db.commit()
     db.close()

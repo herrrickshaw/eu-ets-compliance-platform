@@ -94,6 +94,106 @@ FY2025-27 compliance window) and aspirational (2030/2050 policy targets, an
 upper bound only). Blending them would be actively misleading given how far
 some of these targets are from built capacity today.
 
+## Capacity → credits benchmarks (`CreditBenchmark`) — real MRV methodology, real CFs
+
+A follow-up research pass read the actual CDM ACM0002 and Verra VMR0017 (which
+supersedes ACM0002/AMS-I.D for VCS from Apr 2026, and is the methodology family
+Gold Standard also builds on) methodology text directly. Two corrections this
+produced:
+
+1. **No registry publishes a default capacity factor.** The real formula is
+   `baseline emissions = actual metered generation (MWh) × grid emission factor
+   (tCO2/MWh)` — capacity factor is a project-specific estimate a developer
+   makes, not a methodology parameter. `CreditBenchmark` rows therefore use the
+   best available *real* CF: derived from MNRE's own "Renewable Energy
+   Statistics 2024-25" capacity+generation tables (solar ~17.5%, wind ~19.8%,
+   small hydro ~26.2%, biomass/bagasse/WtE ~16.2% — these are MY OWN
+   DERIVATION from official MNRE numbers, not an officially-published CUF
+   table, since none was found), a regulatory tariff-setting benchmark (19%
+   solar, widely cited in CERC tariff determinations), or a real operating
+   project (Kamuthi Solar Park, Tamil Nadu, 648 MWp, ~23.8% observed CF).
+2. **The correct India grid-emission-factor parameter for this kind of
+   calculation is CEA's Combined Margin (CM), not a simple weighted
+   average.** `CEA_GRID_FACTOR` in `seed_data.py` was corrected from 0.710
+   (weighted average) to **0.736 tCO2/MWh** (Combined Margin, FY2024-25
+   vintage) — this is literally the `EFy` term in the ACM0002/VMR0017 baseline
+   equation. This correction, combined with fixing the Ladakh HVDC corridor's
+   capacity-factor assumption (see below), meaningfully changed the gap-analysis
+   result: near-term gap moved from ~2.3 Mt to ~10.4 Mt CO2e.
+
+**Also corrected as part of this pass**: the Ladakh Green Energy Corridor-II row
+in `IndiaSupplyCapacity` originally used an arbitrary 30% "blended solar+wind"
+capacity factor. With real India fleet averages in hand (solar ~17.5-19%, wind
+~19.8-20%), this was corrected to 19% — dropping that row's potential avoided
+emissions from 24.26 to 15.92 Mt CO2e/yr, which is most of why the near-term gap
+widened. The offshore-wind rows' 42% CF assumption turned out to already be
+reasonably grounded (real projects: Norther/Belgium 43.1%, Alpha Ventus/Germany
+42-42.7%, European fleet average ~45.8%) and needed no change beyond the grid-
+factor correction.
+
+**Known access limits from this research pass**: `cdm.unfccc.int` (UNFCCC's own
+PDD database) is protected by Incapsula bot-detection and could not be fetched
+directly — the Indian solar/wind CDM project examples cited are search-
+synthesized, only internally consistency-checked (recomputing implied CF from
+stated generation/capacity), not independently verified against a primary PDD.
+`cdmpipeline.org` (UNEP DTU's historical CDM/JI Pipeline aggregator, once the
+best source for "CERs issued per MW" across the whole Indian portfolio) has
+expired and is now a squatted domain — do not point future research at it.
+CarbonPlan's OffsetsDB (`carbonplan.org/research/offsets-db`) is a live,
+downloadable alternative confirming renewable energy is 88.1% of India's
+historical credit issuance (wind 35.9%, centralized solar 26.3%), but row-level
+per-project data was not pulled from it in this pass.
+
+## "CMAI" and other quantifying bodies — what was and wasn't useful
+
+The user asked to check "CMAI" specifically. Identified with high confidence as
+the **Carbon Markets Association of India** (`cma-india.in`) — a policy-
+advocacy/convening body (MoUs with IICA, AREAS, VCMI), **not a quantitative
+data publisher**. No capacity-to-credits or issuance-benchmark figures exist on
+its site or in its public materials; cite it only as a policy/industry-body
+reference if at all, never as a methodology source.
+
+Other bodies checked, condensed: **Ecosystem Marketplace**'s State of the VCM
+2025 report has market-level volume/price by category (renewable energy: 22.3
+MtCO2e transacted in 2024 at avg $2.67/t) but no per-MW figures. **IGES**'s JCM
+database can't help yet — the India-Japan JCM Memorandum of Cooperation is only
+from Aug 2025, too new for meaningful project data. **BeZero/Sylvera** (carbon
+credit rating agencies) turned out to be largely out of scope — they focus on
+nature-based/removal credits, not grid-connected renewable energy. **S&P
+Global/ICE/LSEG** publish price/liquidity data, not engineering benchmarks.
+
+**CEEW was the one genuinely valuable additional find.** Their Aug 2025 issue
+brief "Unlocking India's Voluntary Carbon Market: Challenges and the Path
+Forward" (Kesh, Sharma, Chaturvedi) was fetched successfully via `curl` (where
+an earlier attempt via WebFetch failed) and read directly, all 46 pages. Key
+figures pulled into the platform:
+- **India issued 278 million voluntary carbon credits between 2010 and 2022 —
+  17% of global VCM supply** (their Introduction, citing Dyck et al. 2023 and
+  S&P Global Commodity Insights).
+- Of 598 India-linked Verra VCS projects (registered + unregistered) in their
+  dataset: **Energy industries 46.06%, AFOLU 23.95%, Energy demand 23.62%,
+  everything else combined just 6.37%** — a concentration pattern strikingly
+  similar to the CCTS demand side's sector list.
+- A global (not India-specific) additionality-risk data point worth flagging:
+  since 2010, over 750 million voluntary carbon credits have been issued by
+  1,700 renewable energy projects worldwide (~30% of all VCM credits), but
+  these credits contributed **less than 4% of total revenue** for large-scale
+  wind/hydro/solar installations (citing Loffler et al. 2024) — i.e. most such
+  projects would very plausibly have been built anyway, a real financial-
+  additionality concern for exactly the technology types this platform's
+  supply-capacity model covers.
+- The report itself is about *registration-process bottlenecks* (average
+  Indian AFOLU project takes 1,689 days to register vs. 623 days for the rest
+  of Asia; 71% of unregistered Indian energy-industries projects are already
+  past the regional benchmark timeline), not capacity-to-credits engineering
+  ratios — so it did not change any `CreditBenchmark` figures, only added
+  market-scale context.
+
+This confirms the general pattern already flagged in this document: reliable
+quantitative capacity→credits ratios come from MNRE/CEA official statistics and
+real project data (CDM PDDs, Kamuthi Solar Park), not from market-analysis or
+policy-advocacy organizations, which publish volume/price/timeline data instead.
+
 ## The demand-model calculator is illustrative, not official
 
 No public source publishes India's obligated-sector emissions or CCC demand/supply

@@ -635,3 +635,31 @@ class IndiaSupplyCapacity(Base):
     potential_avoided_mt_co2e: Mapped[float | None] = mapped_column(Float, nullable=True)
 
     activity: Mapped[Article6EligibleActivity] = relationship()
+
+
+class CreditBenchmark(Base):
+    """Per-technology capacity -> credits benchmark, i.e. 'how many tCO2e/MW/year',
+    grounded in the real MRV formula used by CDM ACM0002 / Verra's VMR0017 (which
+    superseded ACM0002/AMS-I.D for VCS from Apr 2026) and adopted as-is by Gold
+    Standard: baseline emissions = actual metered generation (MWh) x grid emission
+    factor (tCO2/MWh). No registry publishes a fixed default capacity factor —
+    that's a project-specific estimate, not a methodology parameter — so
+    capacity_factor_pct here is the best available REAL benchmark (an official
+    MNRE/CERC figure, or an India national fleet average derived from MNRE's own
+    capacity+generation statistics) rather than an invented assumption, with each
+    row's confidence and derivation documented in `notes`."""
+
+    __tablename__ = "credit_benchmarks"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    technology: Mapped[str] = mapped_column(String, nullable=False)
+    region: Mapped[str] = mapped_column(String, nullable=False)  # e.g. "India (national fleet avg)"
+    capacity_factor_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
+    mwh_per_mw_per_year: Mapped[float | None] = mapped_column(Float, nullable=True)
+    grid_emission_factor_tco2_per_mwh: Mapped[float | None] = mapped_column(Float, nullable=True)
+    tco2e_per_mw_per_year: Mapped[float | None] = mapped_column(Float, nullable=True)
+    methodology: Mapped[str] = mapped_column(String, nullable=False)  # e.g. "CDM ACM0002 / Verra VMR0017"
+    source_name: Mapped[str] = mapped_column(String, nullable=False)
+    source_url: Mapped[str] = mapped_column(String, nullable=True)
+    source_confidence: Mapped[SourceConfidence] = mapped_column(db_enum(SourceConfidence), nullable=False)
+    notes: Mapped[str] = mapped_column(String, nullable=True)
