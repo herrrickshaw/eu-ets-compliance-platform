@@ -1117,38 +1117,57 @@ def run():
              notes="The largest of the cement-sector lines, but still ~$97K/yr -- immaterial next to "
              "steel/aluminium's billions. CONFIRMED: cement CBAM exposure is genuinely negligible for "
              "India at the actual CN-code level, not just at the global-total level."),
-        dict(product_category="Cement", hs_chapter="2507 00 (80)", period="2024 (EU imports from India, kaolinic clays -- HS6, overstated)",
-             export_value_usd=13_816_440, export_volume_tonnes=113_325, yoy_change_pct=None,
-             source_name="UN Comtrade via WITS, full HS6 heading 250700",
-             source_url="https://wits.worldbank.org/trade/comtrade/en/country/EUN/year/2024/tradeflow/Imports/partner/ALL/product/250700",
-             source_confidence=SECONDARY,
-             notes="CBAM Annex I only covers CN 2507 00 80 (other kaolinic clays, a cement-sector "
-             "precursor), but WITS/Comtrade only reports at HS6 (250700), which also includes non-CBAM "
-             "raw kaolin (2507 00 20) -- this figure OVERSTATES the CBAM-relevant slice. True 2507 00 80 "
-             "value could not be isolated (needs Eurostat Comext CN8 data, not accessible this session).",
+        dict(product_category="Cement", hs_chapter="2507 00 80", period="2024 (EU imports from India, kaolinic clays -- CN8, precise)",
+             export_value_usd=7_111_476, export_volume_tonnes=84_754.888, yoy_change_pct=None,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly (product=25070080, reporter=EU27_2020, partner=IN)",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.25070080.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="CORRECTS the earlier HS6-level estimate: true CN8 figure is EUR 6,584,700 (~$7.11M "
+             "at ~1.08 USD/EUR, approximate) / 84,754.9 t for 2024, and EUR 6,078,690 (~$6.38M) / "
+             "83,965.3 t for 2025 -- roughly HALF the earlier $13.8M HS6 figure, which also swept in "
+             "non-CBAM-covered raw kaolin (CN 2507 00 20 = EUR 6,979,061 in 2024, almost exactly the "
+             "other half). This is the single most material CBAM-relevant cement-sector line for India, "
+             "even though still tiny next to steel/aluminium.",
              ),
         # ---- Fertilizers -- HSN-level EU-import-from-India mirror data ----
         # CBAM Annex I fertiliser scope is WIDER than a narrow urea-only assumption: all of CN 3102, plus
         # 2808 (nitric acid), 2814 (ammonia), 2834 21 00 (potassium nitrate -- easy to miss, sits in HS
         # ch.28 not ch.31), and 3105 except 3105 60 00 (P+K only, no nitrogen, explicitly carved out).
-        dict(product_category="Fertilizers", hs_chapter="3102 (all)", period="2023 (EU imports from India, nitrogenous fertilisers)",
-             export_value_usd=954_150, export_volume_tonnes=1030.430, yoy_change_pct=None,
-             source_name="UN Comtrade via WITS",
-             source_url="https://wits.worldbank.org/trade/comtrade/en/country/EUN/year/2023/tradeflow/Imports/partner/ALL/product/3102",
-             source_confidence=SECONDARY,
-             notes="Which 8-digit subheading (urea/ammonium nitrate/UAN/etc.) drives this figure could "
-             "not be isolated at HS6 -- needs Eurostat Comext CN8, not accessible this session. Almost "
-             "certainly not urea itself, given India's large net-importer position there."),
-        dict(product_category="Fertilizers", hs_chapter="3102 (all)", period="2024 (EU imports from India, nitrogenous fertilisers)",
-             export_value_usd=897_550, export_volume_tonnes=1099.100, yoy_change_pct=None,
-             source_name="UN Comtrade via WITS",
-             source_url="https://wits.worldbank.org/trade/comtrade/en/country/EUN/year/2024/tradeflow/Imports/partner/ALL/product/3102",
-             source_confidence=SECONDARY, notes=None),
-        dict(product_category="Fertilizers", hs_chapter="3102 (all)", period="2025 (EU imports from India, nitrogenous fertilisers)",
-             export_value_usd=1_259_760, export_volume_tonnes=972.156, yoy_change_pct=None,
-             source_name="UN Comtrade via WITS",
-             source_url="https://wits.worldbank.org/trade/comtrade/en/country/EUN/year/2025/tradeflow/Imports/partner/ALL/product/3102",
-             source_confidence=SECONDARY, notes=None),
+        # CN8 breakdown below (Eurostat Comext, queried directly, PRIMARY) supersedes the earlier
+        # HS6-level "3102 (all)" WITS/UN Comtrade aggregate rows (SECONDARY) -- the two sources corroborate
+        # closely (EUR 829,236 summed across these CN8 lines for 2024 vs. WITS's $897,550 HS6 aggregate
+        # for the same year), giving confidence in both, but CN8 is the more precise and useful figure.
+        dict(product_category="Fertilizers", hs_chapter="3102 10 (10+90)", period="2024 (EU imports from India, urea)",
+             export_value_usd=637_300, export_volume_tonnes=1164.527, yoy_change_pct=None,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly (31021010 higher-N + 31021090 other)",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.31021090.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="The single largest fertiliser-sector CN8 line, as expected. EUR-denominated: "
+             "31021010 (higher-N split) EUR 616,420 (2023) -> EUR 479,892 (2024) -> no trade recorded "
+             "(2025); 31021090 (other) EUR 57,177 (2023) -> EUR 110,016 (2024) -> EUR 334,420 (2025), "
+             "rising sharply. Still tiny relative to India's status as a large net urea IMPORTER overall "
+             "-- this is a narrow specialty/blended export line, not bulk urea trade."),
+        dict(product_category="Fertilizers", hs_chapter="3102 21/29", period="2024 (EU imports from India, ammonium sulphate)",
+             export_value_usd=142_535, export_volume_tonnes=160.593, yoy_change_pct=None,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly (31022100 crystals + 31022900 other)",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.31022900.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="31022900 (bulk of this line) rose from EUR 131,698 (2024) to EUR 539,954 (2025) -- "
+             "worth re-checking if this trend continues, though still a small absolute figure."),
+        dict(product_category="Fertilizers", hs_chapter="3102 50", period="2024 (EU imports from India, sodium nitrate)",
+             export_value_usd=114_548, export_volume_tonnes=125.254, yoy_change_pct=None,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly (product=31025000)",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.31025000.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="Declining: EUR 133,070 (2023) -> EUR 106,063 (2024) -> EUR 32,867 (2025)."),
+        dict(product_category="Fertilizers", hs_chapter="3102 60/80/90", period="2024 (EU imports from India, other nitrogenous fertiliser lines)",
+             export_value_usd=1391, export_volume_tonnes=0.609, yoy_change_pct=None,
+             source_name="Eurostat Comext SDMX API, DS-045409, queried directly (31026000+31028000+31029000)",
+             source_url="https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.31029000.1.VALUE_IN_EUROS",
+             source_confidence=PRIMARY,
+             notes="Rounding-error scale across all remaining CN8 lines under 3102 combined. CN 3102 30 "
+             "(ammonium nitrate) and 3102 40 (ammonium nitrate/calcium carbonate mixtures) show NO trade "
+             "recorded from India at all across 2023-2025 -- zero, not a data gap."),
         dict(product_category="Fertilizers", hs_chapter="2814", period="2024 (EU imports from India, ammonia)",
              export_value_usd=6870, export_volume_tonnes=0.007, yoy_change_pct=None,
              source_name="UN Comtrade via WITS",
