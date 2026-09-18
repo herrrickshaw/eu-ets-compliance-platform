@@ -110,3 +110,12 @@ def submit_emission_report(
     db.commit()
     db.refresh(report)
     return report
+
+
+@router.get("/ets-compliance-cost", response_model=list[schemas.ShippingEtsComplianceCostOut])
+def list_ets_compliance_cost(db: Session = Depends(get_db), _user: models.User = Depends(get_current_user)):
+    return (
+        db.query(models.ShippingEtsComplianceCost)
+        .order_by(models.ShippingEtsComplianceCost.category, models.ShippingEtsComplianceCost.id)
+        .all()
+    )

@@ -3,11 +3,30 @@ import { useApi } from "../hooks";
 import { api } from "../api";
 import { Card, Table, Badge, Button } from "../components/ui";
 
+const COST_CATEGORY_LABELS = {
+  aggregate_cost: "Industry-wide aggregate cost (2024, 40% phase-in)",
+  context: "Context",
+  pass_through: "Pass-through to shippers/passengers",
+  route_case_study: "Route case study",
+  projection: "Illustrative projection (not official)",
+};
+
+function formatCostValue(row) {
+  if (row.value == null) return "—";
+  if (row.unit.startsWith("EUR million")) return `€${row.value.toLocaleString()}M`;
+  if (row.unit.startsWith("EUR per voyage")) return `€${row.value.toLocaleString()}`;
+  if (row.unit === "million EUAs") return `${row.value}M EUAs`;
+  if (row.unit === "Mt CO2") return `${row.value} Mt`;
+  if (row.unit.startsWith("%")) return `${row.value}%`;
+  return `${row.value.toLocaleString()} ${row.unit}`;
+}
+
 export default function ShippingMrv() {
   const { data: vessels } = useApi("/shipping/vessels");
   const { data: plans } = useApi("/shipping/monitoring-plans");
   const { data: voyages } = useApi("/shipping/voyages");
   const { data: reports, reload } = useApi("/shipping/emission-reports");
+  const { data: etsCosts } = useApi("/shipping/ets-compliance-cost");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState(null);
 
@@ -83,6 +102,55 @@ export default function ShippingMrv() {
             return row[key];
           }}
         />
+      </Card>
+
+      <Card title="What EU ETS compliance actually costs shipping — real 2024 figures">
+        <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-xs text-slate-600 mb-4">
+          Industry-wide figures, distinct from the fleet demo above (which models one tenant's own MRV
+          workflow). Sourced primarily from the European Commission's own first monitoring report on the
+          ETS maritime extension,{" "}
+          <a
+            className="underline"
+            href="https://climate.ec.europa.eu/document/download/1bb8387b-bdc4-4489-9d76-7ff30239704d_en?filename=First+report+on+the+implementation+of+the+ETS+extension+to+maritime+transport.pdf"
+            target="_blank"
+            rel="noreferrer"
+          >
+            COM(2025) 110 final
+          </a>{" "}
+          (18 Mar 2025). <strong>Headline: ~€2,200M industry-wide cost in 2024 (40% phase-in), a ~3.7%
+          increase in total shipping costs</strong>, mostly passed through to shippers/passengers via
+          explicit surcharges. 2025 (70% phase-in) and full 2026+ (100%) figures are not yet published —
+          the one "projection" row below is this platform's own illustrative extrapolation, not an
+          official figure, and is flagged as such.
+        </div>
+        <Table
+          columns={[
+            { key: "category", label: "Category" },
+            { key: "metric_label", label: "Metric" },
+            { key: "period", label: "Period" },
+            { key: "value", label: "Value" },
+            { key: "confidence", label: "" },
+          ]}
+          rows={etsCosts ?? []}
+          renderCell={(row, key) => {
+            if (key === "category") return COST_CATEGORY_LABELS[row.category] ?? row.category;
+            if (key === "value") return formatCostValue(row);
+            if (key === "confidence") return <span className="text-xs text-slate-400 uppercase">{row.source_confidence}</span>;
+            return row[key];
+          }}
+        />
+        <details className="mt-3 text-xs text-slate-500">
+          <summary className="cursor-pointer hover:text-slate-700">Per-row notes</summary>
+          <ul className="mt-2 space-y-2">
+            {(etsCosts ?? [])
+              .filter((r) => r.notes)
+              .map((r) => (
+                <li key={r.id}>
+                  <strong>{r.metric_label}:</strong> {r.notes}
+                </li>
+              ))}
+          </ul>
+        </details>
       </Card>
 
       <Card title="Voyage log">

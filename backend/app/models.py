@@ -715,3 +715,26 @@ class IndiaCbamExportExposure(Base):
     source_url: Mapped[str | None] = mapped_column(String, nullable=True)
     source_confidence: Mapped[SourceConfidence] = mapped_column(db_enum(SourceConfidence), nullable=False)
     notes: Mapped[str | None] = mapped_column(String, nullable=True)
+
+
+class ShippingEtsComplianceCost(Base):
+    """What EU ETS maritime compliance actually costs shipping companies -- real
+    industry-wide figures, distinct from the toy Vessel/Voyage/EmissionReport demo
+    data elsewhere in this module, which models one tenant's own MRV workflow, not
+    the sector-wide cost picture. Sourced primarily from the European Commission's
+    own first monitoring report on the ETS maritime extension (COM(2025) 110 final,
+    18 Mar 2025), which draws on THETIS-MRV data directly -- the closest thing to
+    an official cost figure that exists for this still-new (Jan 2024) scheme."""
+
+    __tablename__ = "shipping_ets_compliance_cost"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    category: Mapped[str] = mapped_column(String, nullable=False)  # e.g. "aggregate_cost", "pass_through", "route_case_study", "context", "projection"
+    metric_label: Mapped[str] = mapped_column(String, nullable=False)
+    period: Mapped[str] = mapped_column(String, nullable=False)  # e.g. "2024 (40% phase-in)"
+    value: Mapped[float | None] = mapped_column(Float, nullable=True)
+    unit: Mapped[str] = mapped_column(String, nullable=False)  # e.g. "EUR million", "%", "EUR/TEU"
+    source_name: Mapped[str] = mapped_column(String, nullable=False)
+    source_url: Mapped[str | None] = mapped_column(String, nullable=True)
+    source_confidence: Mapped[SourceConfidence] = mapped_column(db_enum(SourceConfidence), nullable=False)
+    notes: Mapped[str | None] = mapped_column(String, nullable=True)
