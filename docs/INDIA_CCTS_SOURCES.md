@@ -165,8 +165,12 @@ Global/ICE/LSEG** publish price/liquidity data, not engineering benchmarks.
 **CEEW was the one genuinely valuable additional find.** Their Aug 2025 issue
 brief "Unlocking India's Voluntary Carbon Market: Challenges and the Path
 Forward" (Kesh, Sharma, Chaturvedi) was fetched successfully via `curl` (where
-an earlier attempt via WebFetch failed) and read directly, all 46 pages. Key
-figures pulled into the platform:
+an earlier attempt via WebFetch failed) and read directly, all 46 pages. The
+PDF is saved locally at
+[`docs/references/ceew_unlocking_indias_voluntary_carbon_market_2025.pdf`](references/ceew_unlocking_indias_voluntary_carbon_market_2025.pdf)
+(original: https://ceew.in/sites/default/files/voluntary-carbon-offset-mechanism-and-challenges-in-carbon-credit-trading-scheme-market-for-india.pdf)
+so the exact source text is available without re-fetching. Key figures pulled
+into the platform:
 - **India issued 278 million voluntary carbon credits between 2010 and 2022 —
   17% of global VCM supply** (their Introduction, citing Dyck et al. 2023 and
   S&P Global Commodity Insights).
