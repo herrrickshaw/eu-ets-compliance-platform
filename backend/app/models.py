@@ -575,7 +575,12 @@ class Article6Category(str, enum.Enum):
 class Article6EligibleActivity(Base):
     """India's MoEFCC/NDAIAPA list of activities eligible for Article 6.2 ITMO
     transfer (finalized 17 Feb 2023) — the supply side. No official aggregate
-    pipeline volume (tCO2e) is published for any of these (confirmed data gap)."""
+    pipeline volume (tCO2e) is published for any of these (confirmed data gap).
+
+    Also carries one deliberately domestic-only row (ethanol/1G biofuel) — NOT
+    on MoEFCC's list, kept here so the international-vs-domestic distinction is
+    explicit in the model rather than a silent omission. See
+    docs/INDIA_CCTS_SOURCES.md for the full investigation."""
 
     __tablename__ = "article6_eligible_activities"
 
@@ -583,6 +588,8 @@ class Article6EligibleActivity(Base):
     category: Mapped[Article6Category] = mapped_column(db_enum(Article6Category), nullable=False)
     name: Mapped[str] = mapped_column(String, nullable=False)
     also_ccts_offset_eligible: Mapped[bool] = mapped_column(Boolean, default=False)
+    internationally_tradeable: Mapped[bool] = mapped_column(Boolean, default=True)
+    notes: Mapped[str | None] = mapped_column(String, nullable=True)
 
 
 class IndiaCarbonPriceComparison(Base):

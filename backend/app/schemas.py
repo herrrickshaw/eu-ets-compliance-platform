@@ -335,6 +335,8 @@ class Article6ActivityOut(OrmBase):
     category: str
     name: str
     also_ccts_offset_eligible: bool
+    internationally_tradeable: bool
+    notes: str | None
 
 
 class IndiaCarbonPriceOut(OrmBase):

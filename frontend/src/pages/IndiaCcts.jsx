@@ -369,13 +369,33 @@ export default function IndiaCcts() {
           specifically, which didn't exist as a mechanism for most of this period) — shown as scale context,
           not a current Article 6.2 supply estimate.
         </div>
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-xs text-amber-900 mb-4">
+          <strong>Domestic vs. internationally tradeable:</strong> the 13 activities below marked{" "}
+          <span className="text-xs px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700">international (Article 6.2)</span>{" "}
+          are MoEFCC/NDAIAPA's actual ITMO-eligible list — confirmed to also be the eligible-activity set
+          under the newly-operational India-Japan Joint Crediting Mechanism (JCM), India's first live
+          Article 6.2 bilateral framework. <strong>Ethanol/1G biofuel is deliberately kept domestic-only</strong>{" "}
+          — investigated and excluded from this internationally-tradeable set (confirmed absent from both
+          the MoEFCC and mirrored JCM lists), but plausibly usable for India's own CCTS domestic compliance
+          demand at the sector level. Brazil's CBIOs, US RINs/45Z/LCFS, and the EU's RED III mechanism are
+          similarly domestic/regional compliance instruments with no bilateral Article 6.2 channel to India
+          — none of them can be modeled as inbound international supply either. See each row's notes, and{" "}
+          <code>docs/INDIA_CCTS_SOURCES.md</code> for the full investigation.
+        </div>
         <div className="grid md:grid-cols-2 gap-4">
           <div>
             <div className="text-xs font-semibold text-slate-500 uppercase mb-2">Mitigation ({mitigationActivities.length})</div>
             <ul className="space-y-1 text-sm">
               {mitigationActivities.map((a) => (
-                <li key={a.id} className="flex items-center gap-2">
+                <li key={a.id} className="flex items-center gap-2 flex-wrap">
                   <span className="text-slate-700">{a.name}</span>
+                  <span
+                    className={`text-xs px-1.5 py-0.5 rounded ${
+                      a.internationally_tradeable ? "bg-emerald-100 text-emerald-700" : "bg-slate-200 text-slate-600"
+                    }`}
+                  >
+                    {a.internationally_tradeable ? "international (Article 6.2)" : "domestic only"}
+                  </span>
                   {a.also_ccts_offset_eligible && (
                     <span className="text-xs px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">also offset-eligible</span>
                   )}
@@ -387,9 +407,16 @@ export default function IndiaCcts() {
             <div className="text-xs font-semibold text-slate-500 uppercase mb-2">Alternate materials &amp; removal</div>
             <ul className="space-y-1 text-sm">
               {otherActivities.map((a) => (
-                <li key={a.id} className="flex items-center gap-2">
+                <li key={a.id} className="flex items-center gap-2 flex-wrap">
                   <span className="text-slate-700">{a.name}</span>
                   <span className="text-xs text-slate-400">({a.category.replace(/_/g, " ")})</span>
+                  <span
+                    className={`text-xs px-1.5 py-0.5 rounded ${
+                      a.internationally_tradeable ? "bg-emerald-100 text-emerald-700" : "bg-slate-200 text-slate-600"
+                    }`}
+                  >
+                    {a.internationally_tradeable ? "international (Article 6.2)" : "domestic only"}
+                  </span>
                   {a.also_ccts_offset_eligible && (
                     <span className="text-xs px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">also offset-eligible</span>
                   )}
@@ -398,6 +425,18 @@ export default function IndiaCcts() {
             </ul>
           </div>
         </div>
+        <details className="mt-3 text-xs text-slate-500">
+          <summary className="cursor-pointer hover:text-slate-700">Per-activity notes (ethanol exclusion reasoning, etc.)</summary>
+          <ul className="mt-2 space-y-2">
+            {(activities ?? [])
+              .filter((a) => a.notes)
+              .map((a) => (
+                <li key={a.id}>
+                  <span className="font-medium text-slate-600">{a.name}:</span> {a.notes}
+                </li>
+              ))}
+          </ul>
+        </details>
       </Card>
 
       <Card title="Comparable compliance-carbon pricing (Korea, China, Japan, EU)">

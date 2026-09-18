@@ -218,6 +218,65 @@ intensity` and `illustrative_abatement_pool = baseline_emissions x
 target_reduction_pct_avg`, and accepts per-sector overrides so this can be
 re-modeled with better assumptions as real data becomes available.
 
+## Ethanol/biofuel — investigated and deliberately excluded from international supply
+
+A dedicated research pass (Sept 2026) checked whether Brazil (RenovaBio/CBIOs),
+the USA (RFS RINs, California LCFS, the 45Z Clean Fuel Production Credit), the
+EU (RED III), or India's own Ethanol Blended Petrol (EBP) programme could
+plausibly supply carbon credits into India's Article 6.2/CCTS demand-supply
+picture. Conclusion: **no**, for two independent and reinforcing reasons, with
+one narrow future watch-item — reflected in the `Article6EligibleActivity`
+model as an explicit `internationally_tradeable=False` row (`Ethanol / 1G
+crop-based biofuel (India's EBP programme)`), not a silent omission.
+
+**1. No international inflow pathway exists.** CBIOs, RINs, 45Z, and California
+LCFS credits are domestic/state compliance instruments; the EU's RED III
+doesn't even generate a discrete tradeable credit unit (certified biofuel just
+gets a zero emission factor under EU ETS — an accounting convention, not a
+credit). None of the three jurisdictions has a bilateral Article 6.2 agreement
+with India. Brazil is separately drafting its own Article 6.2 ITMO framework
+(public consultation opened Jul 2026), but that's a distinct instrument from
+CBIOs, is being courted toward China rather than India in public reporting, and
+it's unconfirmed whether ethanol activities would even qualify under Brazil's
+own future eligible-activity list.
+
+**2. India's own ethanol program is excluded from the Article 6.2 list by
+design, not oversight — confirmed two independent ways**: MoEFCC/NDAIAPA's
+13-category list, and the eligible-activities list under the newly-operational
+India-Japan Joint Crediting Mechanism (JCM, MoC signed Aug 2025 — India's first
+live Article 6.2 bilateral framework), which mirrors the same 13 categories.
+Three converging structural reasons: (a) EBP/E20 (India crossed 20% blending
+around Nov 2025, ~5 years ahead of schedule, mandatory nationwide from Apr
+2026) is a national *mandate*, so its reduction is business-as-usual, not
+additional; (b) BEE's one bioenergy CCTS Offset methodology (BM 001) requires
+dedicated plantations, incompatible with India's existing sugarcane/maize/rice
+1G feedstock base; (c) a real, documented food-security/ILUC-style
+controversy — maize's share of ethanol feedstock rose from ~6% (ESY2022-23) to
+~50% (ESY2024-25), with ~29% of India's 2024-25 maize crop diverted to ethanol
+and 5.2 million tonnes of rice pulled from state reserves.
+
+**Kept as a domestic-only row, not a supply gap.** Per the sector-level logic
+already used for CCUS/energy-efficiency (`also_ccts_offset_eligible=True`
+reflects Phase-1 CCTS Offset sector coverage — energy/agriculture here — not a
+methodology-confirmed one-to-one fit), ethanol is marked
+`also_ccts_offset_eligible=True`: plausibly usable for India's own *domestic*
+CCTS compliance demand at the sector level, even though BM 001 as written
+doesn't cleanly cover existing 1G feedstock. It stays `internationally_tradeable
+=False` and is excluded from every Article 6.2 international-supply
+calculation in this platform. Avoided-emissions figures for ethanol blending
+were also found to be genuinely inconsistent across official Indian sources
+(Minister Gadkari cited 73.6 Mt CO2e avoided from E20; a separate NITI-linked
+figure cites ~93 Mt CO2e since ESY2014-15; another report cites 54.4 Mt "in a
+decade") — flagged rather than picked, since none of these are used in any
+calculation here.
+
+**Narrow watch-item**: 2G/cellulosic ethanol (non-food biomass feedstock) is
+structurally more compatible with BM 001's plantation-style logic and avoids
+the food-security objection. If NDAIAPA revises its 13-category list (reviewable
+roughly every 3 years) or BEE issues a dedicated 2G methodology, that specific
+sub-activity could plausibly graduate to `internationally_tradeable=True` — but
+there is no evidence this is imminent as of this research pass.
+
 ## Re-verifying this data
 
 If this module is going into anything user-facing beyond a prototype demo, verify

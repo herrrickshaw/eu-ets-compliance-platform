@@ -439,10 +439,49 @@ def run():
     ]
     a6 = {}
     for key, name, category, also_offset in article6_activities:
-        obj = models.Article6EligibleActivity(category=category, name=name, also_ccts_offset_eligible=also_offset)
+        obj = models.Article6EligibleActivity(
+            category=category, name=name, also_ccts_offset_eligible=also_offset, internationally_tradeable=True
+        )
         db.add(obj)
         db.flush()
         a6[key] = obj
+
+    # Ethanol/1G biofuel — investigated (Sept 2026) and deliberately kept OUT of the
+    # internationally-tradeable set. Confirmed two independent ways: MoEFCC's 13-category
+    # Article 6.2 list, and the newly-mirrored India-Japan JCM eligible-activities list —
+    # neither includes ethanol/liquid biofuel. Reasons: India's EBP/E20 blending is a
+    # national MANDATE, so its reduction is business-as-usual, not additional; and there's
+    # a real, documented food-security/ILUC-style controversy (maize's share of ethanol
+    # feedstock rose from ~6% to ~50% of the feedstock mix in three years). Brazil's CBIOs,
+    # the US's RINs/45Z/LCFS, and the EU's RED III biofuel mechanism are likewise domestic/
+    # regional compliance instruments, not ITMOs, with no bilateral Article 6.2 channel to
+    # India — none of those can be modeled as inbound international supply either.
+    # Kept domestic-only: BEE's CCTS Offset Mechanism Phase 1 does cover the "energy" and
+    # "agriculture" sectors ethanol production falls under, so it's plausibly eligible for
+    # DOMESTIC obligated-entity compliance demand the same way CCUS/energy-efficiency are
+    # marked also_ccts_offset_eligible below (sector-level eligibility, not a
+    # methodology-confirmed one-to-one fit) — BEE's one bioenergy methodology (BM 001) as
+    # currently written requires dedicated plantations, which doesn't cleanly cover India's
+    # existing sugarcane/maize/rice feedstock base. 2G/cellulosic ethanol (non-food
+    # feedstock) would fit BM 001 better; no evidence a dedicated methodology is imminent.
+    a6["ethanol"] = models.Article6EligibleActivity(
+        category=models.Article6Category.MITIGATION,
+        name="Ethanol / 1G crop-based biofuel (India's EBP programme)",
+        also_ccts_offset_eligible=True,
+        internationally_tradeable=False,
+        notes="Domestic-only: not on MoEFCC's Article 6.2 list (confirmed absent, and absent from the "
+        "mirrored India-Japan JCM list too) — the EBP/E20 mandate fails the additionality test, and "
+        "maize-feedstock diversion (6%->50% of feedstock in 3 years) raises a real food-security/ILUC "
+        "concern. Sector-level domestic CCTS Offset eligibility (energy/agriculture) is plausible in "
+        "principle, but BEE's one bioenergy methodology (BM 001) requires dedicated plantations, "
+        "incompatible with India's existing sugarcane/maize/rice feedstock — not a clean methodology fit "
+        "for 1G ethanol as it stands. Brazil's CBIOs, US RINs/45Z/LCFS, and the EU's RED III mechanism "
+        "are domestic/regional compliance instruments, not internationally-transferable ITMOs, with no "
+        "bilateral Article 6.2 channel to India — excluded as a source of inbound international supply "
+        "for the same reason. 2G/cellulosic ethanol is a plausible future addition if BEE issues a "
+        "dedicated methodology; no evidence this is imminent.",
+    )
+    db.add(a6["ethanol"])
 
     india_prices = [
         dict(
