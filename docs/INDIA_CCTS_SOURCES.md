@@ -277,6 +277,122 @@ roughly every 3 years) or BEE issues a dedicated 2G methodology, that specific
 sub-activity could plausibly graduate to `internationally_tradeable=True` — but
 there is no evidence this is imminent as of this research pass.
 
+## India's CBAM export exposure (`IndiaCbamExportExposure`) — Eurostat Comext direct-query methodology
+
+A separate research thread (Sept 2026) built out `IndiaCbamExportExposure`:
+what India actually exports to the EU in the four CBAM-covered goods
+categories that matter (cement, fertilizers, aluminium, iron & steel —
+hydrogen and electricity carry essentially zero trade and were confirmed,
+not modeled, as negligible via a CSE 2024 study). The intended primary
+source was India's own government export-statistics portal
+(Tradestat/DGCIS), but that site is a JS-rendered form with no stable query
+URL and was confirmed unscrapable. The fallback — used for all four
+categories — is the **EU's own mirror data**: Eurostat Comext records every
+tonne and euro the EU imports *from* India, which is definitionally the
+same trade flow as "India exports to the EU," just recorded on the buyer's
+side. This is a real primary source (an official EU statistical agency
+publishing its own customs-derived import records), not a derived or
+modeled estimate, even though it isn't literally an Indian government
+document.
+
+**Working query pattern**, discovered via a HEAD-request redirect check
+and confirmed against the live API:
+```
+https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.{CN_CODE}.1.{INDICATOR}?format=SDMX-CSV&startPeriod={YEAR}&endPeriod={YEAR}
+```
+`A`=annual, `EU27_2020`=reporter, `IN`=partner (India), `1`=flow (import),
+`{CN_CODE}`=CN4/CN6/CN8 product code, `{INDICATOR}`=`VALUE_IN_EUROS` or
+`QUANTITY_IN_100KG` (`QUANTITY_IN_KG` is not a valid indicator and returns
+an SDMX fault). Omitting the indicator returns all available indicators
+for that code/year. An invalid or non-existent product code returns a
+distinct `INVALID_QUERY_DIMENSION_VALUE` SOAP fault, which is how several
+wrong/retired CN codes were caught during this research rather than
+silently returning zero.
+
+**Repeatable per-category workflow**: (1) verify the exact CBAM Annex I
+CN-code scope for the sector via web search — several sectors turned out
+to have partial-heading exclusions, not clean HS-chapter cutoffs (see
+steel below); (2) query Eurostat Comext directly per code and year;
+(3) cross-check the sum against any existing independently-sourced
+aggregate (WITS, GTRI, Lok Sabha answers) as a sanity check, not a
+replacement; (4) write seed rows with full `source_url`/`notes`
+provenance; (5) reseed, restart, verify via the API and in the browser,
+then commit.
+
+**Cement**: expanded from one vague global-total row to 6 rows. Caught a
+real overstatement in the process — the earlier HS6-level estimate for
+kaolinic clay (CN 2507 00 80, sourced from Comtrade/WITS at $13.8M) turned
+out, once queried at the true CN8 level, to have folded in non-CBAM-covered
+raw kaolin (CN 2507 00 20) alongside the actually-covered kaolinic clay —
+the real CN 2507 00 80 figure is roughly half that, ~€6.58M in 2024.
+
+**Fertilizers**: expanded first to 6 WITS-sourced secondary rows, then the
+`3102` (all) aggregate rows were replaced with 4 precise CN8-level primary
+rows (urea, ammonium sulphate, sodium nitrate, other minor 3102 lines),
+since Eurostat's product-level granularity let the aggregate be broken
+apart into its real components instead of estimated as one bucket.
+
+**Aluminium**: the earlier figures (~$3.0B/$2.77B) were *derived* — backed
+out arithmetically from a GTRI press figure that combined steel and
+aluminium into one aggregate. Once queried directly, the real Eurostat
+totals were materially lower (~€835.7M-1,666.1M depending on year, i.e.
+~$0.9-1.8B) — roughly 3x smaller than the derived estimate. Replaced
+entirely (not added alongside) with 10 primary rows: a TOTAL plus the 7
+largest individual CN-heading lines and one grouped-remainder row for
+several smaller headings. The GTRI aggregate's scope/basis vs. customs HS
+classification is the likely explanation for the gap, though this wasn't
+independently confirmed.
+
+**Iron & Steel** (most recent pass, most structurally complex — 35+
+individual CN4 headings vs. aluminium's ~14): unlike aluminium, the
+existing Lok Sabha/PIB fiscal-year rows (FY2019-20 through FY2024-25,
+already primary-sourced from a written Parliament answer, plus one
+GTRI-sourced FY2024-25 secondary row) were **kept, not replaced** — the
+new Eurostat rows were **added** as a complementary CN-level breakdown.
+The two sets of rows use genuinely different, non-comparable bases (India
+fiscal year + India-self-reported export value, vs. EU calendar year +
+EU-reported CIF import value), so their totals were never expected to
+match and neither one supersedes the other; the Eurostat rows exist to
+supply the *product-mix* detail (which specific steel goods, at what
+value) that the fiscal-year aggregate rows don't carry.
+
+Scope verification for steel surfaced a real nuance that was resolved
+*before* writing any figures, not corrected after the fact: CBAM Annex I
+covers Chapter 72 (22 headings; CN 7204, ferrous scrap, is explicitly
+excluded) plus all of Chapter 73 (7301-7308) — 35 headings in total. Within
+that, heading **7202 (ferro-alloys) is itself only partially covered**:
+most 7202 sub-headings (ferro-molybdenum, -tungsten, -titanium, -vanadium,
+-niobium, -phosphorus, -magnesium, -nickel, "other") are excluded from
+CBAM like scrap is; only ferro-manganese (7202 11/19), ferro-silicon
+(7202 21/29), ferro-silico-manganese (7202 30), and ferro-chromium
+(7202 41/49) are actually covered. These 7 covered CN6 codes were queried
+individually and summed (€343.6M of India's €352.8M total 7202 exports to
+the EU in 2024, i.e. 97.5% of the heading) rather than using the raw HS4
+total, so the seeded figure reflects only the CBAM-covered subset.
+
+Seven new primary rows were added: a 2024 TOTAL across all 35 headings
+(€4,610.7M / ~$4.98B — with 2023 at €4,755.9M and 2025 at €3,649.7M in the
+row's notes, showing a directional -20.8% 2024→2025 drop broadly
+consistent with, though not numerically reconciled to, GTRI's separately-
+reported FY24→FY25 -35.1% figure), the five largest individual CN
+headings by value (7208 hot-rolled flat ~$1.12B, 7210 coated/clad flat
+~$948M, 7222 other alloy bars ~$479M, 7202-covered ferro-alloys ~$371M,
+7209 cold-rolled flat ~$331M), and one grouped-remainder row (~$1.73B
+across the other 30+ smaller headings, largest components named in its
+`notes` field: 7207 semis, 7219 stainless flat, 7304 seamless tubes, 7306
+other tubes, 7307 fittings, 7308 structures, 7206 primary forms, 7223
+stainless wire).
+
+**A note on cross-verification, applied consistently across all four
+categories**: the WITS/Comtrade/GTRI secondary figures were never treated
+as wrong by default — they were used as the trigger to go get the primary
+Eurostat figure, and in most cases (fertilizer's individual product lines,
+steel's overall direction of travel) they corroborated reasonably well
+once the scope was matched correctly. The two real corrections found
+(cement's kaolinic-clay overstatement, aluminium's ~3x-high derived
+estimate) were both caught *because* Eurostat was queried directly, not
+assumed from the secondary source.
+
 ## Re-verifying this data
 
 If this module is going into anything user-facing beyond a prototype demo, verify
