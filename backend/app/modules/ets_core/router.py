@@ -88,3 +88,12 @@ def surrender_allowances(
     db.commit()
     db.refresh(status_row)
     return status_row
+
+
+@router.get("/system-stats", response_model=list[schemas.EtsCoreSystemStatOut])
+def list_system_stats(db: Session = Depends(get_db), _user: models.User = Depends(get_current_user)):
+    return (
+        db.query(models.EtsCoreSystemStat)
+        .order_by(models.EtsCoreSystemStat.category, models.EtsCoreSystemStat.id)
+        .all()
+    )

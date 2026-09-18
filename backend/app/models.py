@@ -791,3 +791,27 @@ class EuaTradingMarketStat(Base):
     source_url: Mapped[str | None] = mapped_column(String, nullable=True)
     source_confidence: Mapped[SourceConfidence] = mapped_column(db_enum(SourceConfidence), nullable=False)
     notes: Mapped[str | None] = mapped_column(String, nullable=True)
+
+
+class EtsCoreSystemStat(Base):
+    """What the EU ETS system actually looks like at full scale, next to this page's
+    own 2-3-installation demo. Same market-wide reference-data pattern as the other
+    three additions this session. All rows are SECONDARY: sourced via ICAP (the
+    International Carbon Action Partnership's EU ETS policy summary, a well-
+    maintained tracker used elsewhere in this platform for India CCTS research) and
+    the EEA's own EU ETS data-viewer page, both via search synthesis/WebFetch
+    summarization rather than a primary document read page-by-page this session --
+    marked honestly rather than inflated to primary."""
+
+    __tablename__ = "ets_core_system_stats"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    category: Mapped[str] = mapped_column(String, nullable=False)  # e.g. "system_scale", "allocation", "market_stability_reserve", "compliance", "context"
+    metric_label: Mapped[str] = mapped_column(String, nullable=False)
+    period: Mapped[str] = mapped_column(String, nullable=False)
+    value: Mapped[float | None] = mapped_column(Float, nullable=True)
+    unit: Mapped[str] = mapped_column(String, nullable=False)
+    source_name: Mapped[str] = mapped_column(String, nullable=False)
+    source_url: Mapped[str | None] = mapped_column(String, nullable=True)
+    source_confidence: Mapped[SourceConfidence] = mapped_column(db_enum(SourceConfidence), nullable=False)
+    notes: Mapped[str | None] = mapped_column(String, nullable=True)
