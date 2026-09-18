@@ -88,3 +88,12 @@ def decide(req: schemas.VerifyRequest, db: Session = Depends(get_db), user: mode
     db.commit()
     db.refresh(record)
     return record
+
+
+@router.get("/integrity-stats", response_model=list[schemas.VerificationIntegrityStatOut])
+def list_integrity_stats(db: Session = Depends(get_db), _user: models.User = Depends(get_current_user)):
+    return (
+        db.query(models.VerificationIntegrityStat)
+        .order_by(models.VerificationIntegrityStat.category, models.VerificationIntegrityStat.id)
+        .all()
+    )

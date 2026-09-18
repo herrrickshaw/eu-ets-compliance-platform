@@ -815,3 +815,29 @@ class EtsCoreSystemStat(Base):
     source_url: Mapped[str | None] = mapped_column(String, nullable=True)
     source_confidence: Mapped[SourceConfidence] = mapped_column(db_enum(SourceConfidence), nullable=False)
     notes: Mapped[str | None] = mapped_column(String, nullable=True)
+
+
+class VerificationIntegrityStat(Base):
+    """What real MRV/verification integrity looks like -- both the failure mode
+    (Verra's 2023 REDD+ "phantom credits" controversy, a landmark and still-
+    contested case study directly on point for a verification/audit page) and the
+    market's institutional response (ICVCM's Core Carbon Principles labeling
+    framework). Same market-wide reference-data pattern as the other four
+    additions this session. All rows SECONDARY -- via search synthesis, not a
+    primary document read directly this session -- and the Verra rows are
+    additionally CONTESTED (Verra publicly disputes the investigation's framing),
+    so this is flagged in both the data and the UI rather than presented as
+    settled fact."""
+
+    __tablename__ = "verification_integrity_stats"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    category: Mapped[str] = mapped_column(String, nullable=False)  # e.g. "integrity_controversy", "integrity_response"
+    metric_label: Mapped[str] = mapped_column(String, nullable=False)
+    period: Mapped[str] = mapped_column(String, nullable=False)
+    value: Mapped[float | None] = mapped_column(Float, nullable=True)
+    unit: Mapped[str] = mapped_column(String, nullable=False)
+    source_name: Mapped[str] = mapped_column(String, nullable=False)
+    source_url: Mapped[str | None] = mapped_column(String, nullable=True)
+    source_confidence: Mapped[SourceConfidence] = mapped_column(db_enum(SourceConfidence), nullable=False)
+    notes: Mapped[str | None] = mapped_column(String, nullable=True)

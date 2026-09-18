@@ -3,9 +3,22 @@ import { useApi } from "../hooks";
 import { api } from "../api";
 import { Card, Table, Badge, Button } from "../components/ui";
 
+const INTEGRITY_CATEGORY_LABELS = {
+  integrity_controversy: "The Verra REDD+ 'phantom credits' controversy (2023, contested)",
+  integrity_response: "The market's response: ICVCM Core Carbon Principles",
+};
+
+function formatIntegrityValue(row) {
+  if (row.value == null) return "—";
+  if (row.unit.startsWith("%")) return `${row.value}%`;
+  if (row.unit === "million credits") return `${row.value}M`;
+  return `${row.value.toLocaleString()} ${row.unit}`;
+}
+
 export default function Verification() {
   const { data: records, reload } = useApi("/verification/records");
   const { data: orgs } = useApi("/orgs");
+  const { data: integrityStats } = useApi("/verification/integrity-stats");
   const [busyId, setBusyId] = useState(null);
   const [err, setErr] = useState(null);
 
@@ -74,6 +87,45 @@ export default function Verification() {
             return row[key];
           }}
         />
+      </Card>
+
+      <Card title="Why verification matters — a real-world integrity failure, and the market's fix">
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-xs text-amber-900 mb-4">
+          <strong>Contested, not settled:</strong> in Jan 2023, a joint Guardian/Die Zeit/SourceMaterial
+          investigation alleged that {">"}90% of Verra's rainforest (REDD+) offset credits were "phantom
+          credits" with little real climate benefit — a landmark case study in why a verification/audit
+          stage exists at all, and a reminder that third-party accreditation alone doesn't guarantee
+          integrity. Verra publicly disputes the investigation's framing (see the row below) — both sides
+          are shown, not a verdict.
+        </div>
+        <Table
+          columns={[
+            { key: "category", label: "Category" },
+            { key: "metric_label", label: "Metric" },
+            { key: "period", label: "Period" },
+            { key: "value", label: "Value" },
+            { key: "confidence", label: "" },
+          ]}
+          rows={integrityStats ?? []}
+          renderCell={(row, key) => {
+            if (key === "category") return INTEGRITY_CATEGORY_LABELS[row.category] ?? row.category;
+            if (key === "value") return formatIntegrityValue(row);
+            if (key === "confidence") return <span className="text-xs text-slate-400 uppercase">{row.source_confidence}</span>;
+            return row[key];
+          }}
+        />
+        <details className="mt-3 text-xs text-slate-500">
+          <summary className="cursor-pointer hover:text-slate-700">Per-row notes</summary>
+          <ul className="mt-2 space-y-2">
+            {(integrityStats ?? [])
+              .filter((r) => r.notes)
+              .map((r) => (
+                <li key={r.id}>
+                  <strong>{r.metric_label}:</strong> {r.notes}
+                </li>
+              ))}
+          </ul>
+        </details>
       </Card>
     </div>
   );
