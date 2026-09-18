@@ -9,6 +9,43 @@ class OrmBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+# ---- Auth / multi-tenancy ----
+class TenantOut(OrmBase):
+    id: int
+    name: str
+    slug: str
+
+
+class UserOut(OrmBase):
+    id: int
+    tenant_id: int
+    email: str
+    role: str
+
+
+class RegisterRequest(BaseModel):
+    tenant_name: str
+    email: str
+    password: str
+
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserOut
+    tenant: TenantOut
+
+
+class MeResponse(BaseModel):
+    user: UserOut
+    tenant: TenantOut
+
+
 # ---- Organizations ----
 class OrganizationOut(OrmBase):
     id: int
@@ -243,3 +280,72 @@ class PositionOut(OrmBase):
 class PriceHistoryOut(OrmBase):
     price_date: date
     price_eur: float
+
+
+# ---- India CCTS ----
+class IndiaCctsSectorOut(OrmBase):
+    id: int
+    key: str
+    name: str
+    status: str
+    notification_ref: str | None
+    notification_date: date | None
+    baseline_year: str
+    compliance_years: str
+    obligated_entities_est: int | None
+    target_reduction_pct_low: float | None
+    target_reduction_pct_high: float | None
+    target_reduction_pct_avg: float | None
+    default_volume_mt: float
+    default_intensity_tco2_per_t: float
+    source_confidence: str
+    source_note: str | None
+
+
+class SectorAssumptionOverride(BaseModel):
+    sector_id: int
+    volume_mt: float | None = None
+    intensity_tco2_per_t: float | None = None
+
+
+class DemandModelRequest(BaseModel):
+    overrides: list[SectorAssumptionOverride] = []
+
+
+class SectorDemandOut(BaseModel):
+    sector_id: int
+    sector_key: str
+    sector_name: str
+    status: str
+    volume_mt: float
+    intensity_tco2_per_t: float
+    target_reduction_pct_avg: float
+    baseline_emissions_mt_co2e: float
+    illustrative_abatement_pool_mt_co2e: float
+
+
+class DemandModelResponse(BaseModel):
+    sectors: list[SectorDemandOut]
+    total_illustrative_demand_mt_co2e: float
+    methodology_note: str
+
+
+class Article6ActivityOut(OrmBase):
+    id: int
+    category: str
+    name: str
+    also_ccts_offset_eligible: bool
+
+
+class IndiaCarbonPriceOut(OrmBase):
+    id: int
+    market: str
+    instrument: str
+    price_native: float
+    price_native_high: float | None
+    currency: str
+    price_usd: float | None
+    price_eur: float | None
+    price_date: date
+    trend_note: str | None
+    source_confidence: str

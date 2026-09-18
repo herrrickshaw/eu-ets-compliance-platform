@@ -23,7 +23,7 @@ export function Stat({ label, value, sub, tone = "slate" }) {
   );
 }
 
-export function Badge({ status }) {
+export function Badge({ status, label }) {
   const map = {
     compliant: "bg-emerald-100 text-emerald-700",
     open: "bg-slate-100 text-slate-600",
@@ -38,6 +38,8 @@ export function Badge({ status }) {
     doc_issued: "bg-emerald-100 text-emerald-700",
     reconciled: "bg-emerald-100 text-emerald-700",
     held: "bg-blue-100 text-blue-700",
+    final: "bg-emerald-100 text-emerald-700",
+    contested: "bg-rose-100 text-rose-700",
     issued: "bg-emerald-100 text-emerald-700",
     staged: "bg-amber-100 text-amber-700",
     retired: "bg-slate-200 text-slate-600",
@@ -47,7 +49,7 @@ export function Badge({ status }) {
   };
   return (
     <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${map[status] || "bg-slate-100 text-slate-600"}`}>
-      {status?.replace(/_/g, " ")}
+      {(label ?? status)?.replace(/_/g, " ")}
     </span>
   );
 }

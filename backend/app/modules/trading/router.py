@@ -2,18 +2,20 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from ... import models, schemas
+from ...auth.deps import get_current_user, get_my_org_ids
 from ...db import get_db
 
 router = APIRouter(prefix="/api/trading", tags=["Trading"])
 
 
 @router.get("/instruments", response_model=list[schemas.InstrumentOut])
-def list_instruments(db: Session = Depends(get_db)):
+def list_instruments(db: Session = Depends(get_db), _user: models.User = Depends(get_current_user)):
     return db.query(models.Instrument).all()
 
 
 @router.get("/orders", response_model=list[schemas.OrderOut])
-def list_orders(status: str | None = None, db: Session = Depends(get_db)):
+def list_orders(status: str | None = None, db: Session = Depends(get_db), _user: models.User = Depends(get_current_user)):
+    """The open order book is public market data, like a real exchange — visible cross-tenant."""
     q = db.query(models.Order)
     if status:
         q = q.filter(models.Order.status == status)
@@ -21,7 +23,9 @@ def list_orders(status: str | None = None, db: Session = Depends(get_db)):
 
 
 @router.get("/trades", response_model=list[schemas.TradeOut])
-def list_trades(instrument_id: int | None = None, db: Session = Depends(get_db)):
+def list_trades(
+    instrument_id: int | None = None, db: Session = Depends(get_db), _user: models.User = Depends(get_current_user)
+):
     q = db.query(models.Trade)
     if instrument_id:
         q = q.filter(models.Trade.instrument_id == instrument_id)
@@ -29,15 +33,21 @@ def list_trades(instrument_id: int | None = None, db: Session = Depends(get_db))
 
 
 @router.get("/positions", response_model=list[schemas.PositionOut])
-def list_positions(org_id: int | None = None, db: Session = Depends(get_db)):
-    q = db.query(models.Position)
+def list_positions(
+    org_id: int | None = None, db: Session = Depends(get_db), user: models.User = Depends(get_current_user)
+):
+    """Positions are private — always scoped to the caller's tenant, regardless of org_id passed."""
+    my_org_ids = get_my_org_ids(db, user.tenant_id)
+    q = db.query(models.Position).filter(models.Position.org_id.in_(my_org_ids))
     if org_id:
+        if org_id not in my_org_ids:
+            raise HTTPException(403, "org_id does not belong to your tenant")
         q = q.filter(models.Position.org_id == org_id)
     return q.all()
 
 
 @router.get("/prices/{instrument_id}", response_model=list[schemas.PriceHistoryOut])
-def price_history(instrument_id: int, db: Session = Depends(get_db)):
+def price_history(instrument_id: int, db: Session = Depends(get_db), _user: models.User = Depends(get_current_user)):
     return (
         db.query(models.PriceHistory)
         .filter_by(instrument_id=instrument_id)
@@ -63,9 +73,13 @@ def _apply_fill(db: Session, org_id: int, instrument_id: int, side: models.Order
 
 
 @router.post("/orders", response_model=schemas.OrderOut)
-def place_order(req: schemas.OrderCreate, db: Session = Depends(get_db)):
+def place_order(req: schemas.OrderCreate, db: Session = Depends(get_db), user: models.User = Depends(get_current_user)):
     """Simple price-time-priority matching against resting opposite-side orders
     on the same instrument, then rests any unfilled remainder."""
+    org = db.get(models.Organization, req.org_id)
+    if org is None or org.tenant_id != user.tenant_id:
+        raise HTTPException(403, "org_id does not belong to your tenant")
+
     side = models.OrderSide(req.side)
     if side == models.OrderSide.BUY:
         opposite = models.OrderSide.SELL
@@ -128,10 +142,13 @@ def place_order(req: schemas.OrderCreate, db: Session = Depends(get_db)):
 
 
 @router.delete("/orders/{order_id}")
-def cancel_order(order_id: int, db: Session = Depends(get_db)):
+def cancel_order(order_id: int, db: Session = Depends(get_db), user: models.User = Depends(get_current_user)):
     order = db.query(models.Order).get(order_id)
     if order is None:
         raise HTTPException(404, "Order not found")
+    org = db.get(models.Organization, order.org_id)
+    if org is None or org.tenant_id != user.tenant_id:
+        raise HTTPException(403, "This order does not belong to your tenant")
     if order.status != models.OrderStatus.OPEN:
         raise HTTPException(400, "Only open orders can be cancelled")
     order.status = models.OrderStatus.CANCELLED

@@ -45,6 +45,40 @@ def _now() -> datetime:
 
 
 # --------------------------------------------------------------------------
+# Auth & multi-tenancy: every Organization belongs to exactly one Tenant
+# (the billing/login boundary — a customer's account on the platform). A
+# Tenant can in principle own several Organizations (a group with
+# subsidiaries); the demo seeds one Tenant per Organization.
+# --------------------------------------------------------------------------
+class Tenant(Base):
+    __tablename__ = "tenants"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    slug: Mapped[str] = mapped_column(String, unique=True, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=_now)
+
+
+class UserRole(str, enum.Enum):
+    OWNER = "owner"
+    ADMIN = "admin"
+    MEMBER = "member"
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    tenant_id: Mapped[int] = mapped_column(ForeignKey("tenants.id"), nullable=False)
+    email: Mapped[str] = mapped_column(String, unique=True, nullable=False)
+    hashed_password: Mapped[str] = mapped_column(String, nullable=False)
+    role: Mapped[UserRole] = mapped_column(db_enum(UserRole), default=UserRole.MEMBER)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=_now)
+
+    tenant: Mapped[Tenant] = relationship()
+
+
+# --------------------------------------------------------------------------
 # Shared: organizations — every actor in the system is one of these
 # --------------------------------------------------------------------------
 class OrgType(str, enum.Enum):
@@ -61,10 +95,13 @@ class Organization(Base):
     __tablename__ = "organizations"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    tenant_id: Mapped[int] = mapped_column(ForeignKey("tenants.id"), nullable=False)
     name: Mapped[str] = mapped_column(String, nullable=False)
     org_type: Mapped[OrgType] = mapped_column(db_enum(OrgType), nullable=False)
     country: Mapped[str] = mapped_column(String, nullable=True)
     lei_or_eori: Mapped[str] = mapped_column(String, nullable=True)
+
+    tenant: Mapped[Tenant] = relationship()
 
 
 # --------------------------------------------------------------------------
@@ -482,3 +519,86 @@ class PriceHistory(Base):
     instrument_id: Mapped[int] = mapped_column(ForeignKey("instruments.id"))
     price_date: Mapped[date] = mapped_column(Date, nullable=False)
     price_eur: Mapped[float] = mapped_column(Float, nullable=False)
+
+
+# --------------------------------------------------------------------------
+# Module 7: India CCTS — obligated-sector GEI targets (demand side),
+# Article 6.2 eligible activities (supply side), and comparative Asian
+# compliance-carbon pricing. Sourced from a research pass over BEE/MoEFCC/
+# ICAP/PIB-secondary reporting — NOT from a primary gazette text (see each
+# row's source_confidence + docs/INDIA_CCTS_SOURCES.md for caveats). Where
+# official tCO2e figures don't exist (confirmed data gap — see docs), the
+# "demand" figure is an explicitly-labeled illustrative model, not an
+# official number: obligated_entities/target% are sourced, production
+# volume/intensity defaults are editable assumptions.
+# --------------------------------------------------------------------------
+class GeiStatus(str, enum.Enum):
+    FINAL = "final"
+    DRAFT = "draft"
+    CONTESTED = "contested"  # sources disagree on whether this is finalized
+
+
+class SourceConfidence(str, enum.Enum):
+    PRIMARY = "primary"  # a gazette/S.O./G.S.R. text or official portal, directly cited
+    SECONDARY = "secondary"  # reputable secondary reporting (ICAP, law firm briefs, press) citing the primary source
+    MODELED = "modeled"  # no official figure exists; this is an illustrative estimate
+
+
+class IndiaCctsSector(Base):
+    __tablename__ = "india_ccts_sectors"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    key: Mapped[str] = mapped_column(String, unique=True, nullable=False)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    status: Mapped[GeiStatus] = mapped_column(db_enum(GeiStatus), nullable=False)
+    notification_ref: Mapped[str] = mapped_column(String, nullable=True)
+    notification_date: Mapped[date | None] = mapped_column(Date, nullable=True)
+    baseline_year: Mapped[str] = mapped_column(String, default="FY2023-24")
+    compliance_years: Mapped[str] = mapped_column(String, default="FY2025-26, FY2026-27")
+    obligated_entities_est: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    target_reduction_pct_low: Mapped[float | None] = mapped_column(Float, nullable=True)
+    target_reduction_pct_high: Mapped[float | None] = mapped_column(Float, nullable=True)
+    target_reduction_pct_avg: Mapped[float | None] = mapped_column(Float, nullable=True)
+    # Illustrative demand-model defaults — editable via the API, not official BEE data:
+    default_volume_mt: Mapped[float] = mapped_column(Float, default=0.0)  # annual sector output, illustrative
+    default_intensity_tco2_per_t: Mapped[float] = mapped_column(Float, default=0.0)  # baseline emission intensity
+    source_confidence: Mapped[SourceConfidence] = mapped_column(db_enum(SourceConfidence), nullable=False)
+    source_note: Mapped[str] = mapped_column(String, nullable=True)
+
+
+class Article6Category(str, enum.Enum):
+    MITIGATION = "mitigation"
+    ALTERNATE_MATERIALS = "alternate_materials"
+    REMOVAL = "removal"
+
+
+class Article6EligibleActivity(Base):
+    """India's MoEFCC/NDAIAPA list of activities eligible for Article 6.2 ITMO
+    transfer (finalized 17 Feb 2023) — the supply side. No official aggregate
+    pipeline volume (tCO2e) is published for any of these (confirmed data gap)."""
+
+    __tablename__ = "article6_eligible_activities"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    category: Mapped[Article6Category] = mapped_column(db_enum(Article6Category), nullable=False)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    also_ccts_offset_eligible: Mapped[bool] = mapped_column(Boolean, default=False)
+
+
+class IndiaCarbonPriceComparison(Base):
+    """Comparative compliance-carbon pricing: Korea K-ETS, China national ETS,
+    Japan (J-Credit + GX-ETS corridor), EUA for context."""
+
+    __tablename__ = "india_carbon_price_comparison"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    market: Mapped[str] = mapped_column(String, nullable=False)
+    instrument: Mapped[str] = mapped_column(String, nullable=False)
+    price_native: Mapped[float] = mapped_column(Float, nullable=False)
+    price_native_high: Mapped[float | None] = mapped_column(Float, nullable=True)  # for a corridor/band
+    currency: Mapped[str] = mapped_column(String, nullable=False)
+    price_usd: Mapped[float | None] = mapped_column(Float, nullable=True)
+    price_eur: Mapped[float | None] = mapped_column(Float, nullable=True)
+    price_date: Mapped[date] = mapped_column(Date, nullable=False)
+    trend_note: Mapped[str] = mapped_column(String, nullable=True)
+    source_confidence: Mapped[SourceConfidence] = mapped_column(db_enum(SourceConfidence), nullable=False)

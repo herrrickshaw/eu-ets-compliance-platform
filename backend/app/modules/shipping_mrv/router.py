@@ -4,44 +4,78 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from ... import models, schemas
+from ...auth.deps import get_current_user, get_my_org_ids
 from ...db import get_db
 
 router = APIRouter(prefix="/api/shipping", tags=["Shipping MRV"])
 
 
 @router.get("/vessels", response_model=list[schemas.VesselOut])
-def list_vessels(db: Session = Depends(get_db)):
-    return db.query(models.Vessel).all()
+def list_vessels(db: Session = Depends(get_db), user: models.User = Depends(get_current_user)):
+    org_ids = get_my_org_ids(db, user.tenant_id)
+    return db.query(models.Vessel).filter(models.Vessel.org_id.in_(org_ids)).all()
 
 
 @router.get("/monitoring-plans", response_model=list[schemas.MonitoringPlanOut])
-def list_monitoring_plans(vessel_id: int | None = None, db: Session = Depends(get_db)):
-    q = db.query(models.MonitoringPlan)
+def list_monitoring_plans(
+    vessel_id: int | None = None, db: Session = Depends(get_db), user: models.User = Depends(get_current_user)
+):
+    org_ids = get_my_org_ids(db, user.tenant_id)
+    q = (
+        db.query(models.MonitoringPlan)
+        .join(models.Vessel, models.MonitoringPlan.vessel_id == models.Vessel.id)
+        .filter(models.Vessel.org_id.in_(org_ids))
+    )
     if vessel_id:
         q = q.filter(models.MonitoringPlan.vessel_id == vessel_id)
     return q.all()
 
 
 @router.get("/voyages", response_model=list[schemas.VoyageOut])
-def list_voyages(vessel_id: int | None = None, db: Session = Depends(get_db)):
-    q = db.query(models.Voyage)
+def list_voyages(
+    vessel_id: int | None = None, db: Session = Depends(get_db), user: models.User = Depends(get_current_user)
+):
+    org_ids = get_my_org_ids(db, user.tenant_id)
+    q = (
+        db.query(models.Voyage)
+        .join(models.Vessel, models.Voyage.vessel_id == models.Vessel.id)
+        .filter(models.Vessel.org_id.in_(org_ids))
+    )
     if vessel_id:
         q = q.filter(models.Voyage.vessel_id == vessel_id)
     return q.all()
 
 
 @router.get("/emission-reports", response_model=list[schemas.EmissionReportOut])
-def list_emission_reports(vessel_id: int | None = None, db: Session = Depends(get_db)):
-    q = db.query(models.EmissionReport)
+def list_emission_reports(
+    vessel_id: int | None = None, db: Session = Depends(get_db), user: models.User = Depends(get_current_user)
+):
+    org_ids = get_my_org_ids(db, user.tenant_id)
+    q = (
+        db.query(models.EmissionReport)
+        .join(models.Vessel, models.EmissionReport.vessel_id == models.Vessel.id)
+        .filter(models.Vessel.org_id.in_(org_ids))
+    )
     if vessel_id:
         q = q.filter(models.EmissionReport.vessel_id == vessel_id)
     return q.all()
 
 
 @router.post("/emission-reports/submit", response_model=schemas.EmissionReportOut)
-def submit_emission_report(req: schemas.SubmitEmissionReportRequest, db: Session = Depends(get_db)):
+def submit_emission_report(
+    req: schemas.SubmitEmissionReportRequest,
+    db: Session = Depends(get_db),
+    user: models.User = Depends(get_current_user),
+):
     """Aggregate the year's voyages into a draft report, THETIS-MRV style: fuel -> CO2,
     weighting intra-EU legs at 100% ETS exposure and extra-EU legs at 50% (Art. 3ga MRV Reg)."""
+    vessel = db.get(models.Vessel, req.vessel_id)
+    if vessel is None:
+        raise HTTPException(404, "Vessel not found")
+    org = db.get(models.Organization, vessel.org_id)
+    if org is None or org.tenant_id != user.tenant_id:
+        raise HTTPException(403, "This vessel does not belong to your tenant")
+
     CO2_PER_TONNE_FUEL = 3.114  # IMO/EU standard VLSFO emission factor, tCO2 per tonne fuel
 
     voyages = (

@@ -2,14 +2,26 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from ... import models, schemas
+from ...auth.deps import get_current_user, get_my_org_ids
 from ...db import get_db
 
 router = APIRouter(prefix="/api/cbam", tags=["CBAM"])
 
 
+def _require_declarant_in_tenant(db: Session, declarant_id: int, tenant_id: int) -> models.CbamDeclarant:
+    declarant = db.get(models.CbamDeclarant, declarant_id)
+    if declarant is None:
+        raise HTTPException(404, "Declarant not found")
+    org = db.get(models.Organization, declarant.org_id)
+    if org is None or org.tenant_id != tenant_id:
+        raise HTTPException(403, "This declarant does not belong to your tenant")
+    return declarant
+
+
 @router.get("/declarants", response_model=list[schemas.CbamDeclarantOut])
-def list_declarants(db: Session = Depends(get_db)):
-    return db.query(models.CbamDeclarant).all()
+def list_declarants(db: Session = Depends(get_db), user: models.User = Depends(get_current_user)):
+    org_ids = get_my_org_ids(db, user.tenant_id)
+    return db.query(models.CbamDeclarant).filter(models.CbamDeclarant.org_id.in_(org_ids)).all()
 
 
 @router.get("/default-values", response_model=list[schemas.CbamDefaultValueOut])
@@ -21,18 +33,29 @@ def list_default_values(cn_code: str | None = None, db: Session = Depends(get_db
 
 
 @router.get("/imports", response_model=list[schemas.CbamGoodsImportOut])
-def list_imports(declarant_id: int | None = None, db: Session = Depends(get_db)):
-    q = db.query(models.CbamGoodsImport)
+def list_imports(
+    declarant_id: int | None = None, db: Session = Depends(get_db), user: models.User = Depends(get_current_user)
+):
+    org_ids = get_my_org_ids(db, user.tenant_id)
+    q = (
+        db.query(models.CbamGoodsImport)
+        .join(models.CbamDeclarant, models.CbamGoodsImport.declarant_id == models.CbamDeclarant.id)
+        .filter(models.CbamDeclarant.org_id.in_(org_ids))
+    )
     if declarant_id:
         q = q.filter(models.CbamGoodsImport.declarant_id == declarant_id)
     return q.all()
 
 
 @router.post("/imports", response_model=schemas.CbamGoodsImportOut)
-def create_import(req: schemas.CbamGoodsImportCreate, db: Session = Depends(get_db)):
+def create_import(
+    req: schemas.CbamGoodsImportCreate, db: Session = Depends(get_db), user: models.User = Depends(get_current_user)
+):
     """Trader Portal: declare an import consignment. Falls back to the EU default-value
     table (with its escalating mark-up) unless actual verified emissions are supplied —
     mirrors the CBAM Transitional Registry's 50%-default-value ceiling rule."""
+    _require_declarant_in_tenant(db, req.declarant_id, user.tenant_id)
+
     if req.actual_direct_emissions_t is not None:
         direct_t = req.actual_direct_emissions_t
         indirect_t = req.actual_indirect_emissions_t or 0.0
@@ -85,17 +108,32 @@ def create_import(req: schemas.CbamGoodsImportCreate, db: Session = Depends(get_
 
 
 @router.get("/declarations", response_model=list[schemas.CbamDeclarationOut])
-def list_declarations(declarant_id: int | None = None, db: Session = Depends(get_db)):
-    q = db.query(models.CbamDeclaration)
+def list_declarations(
+    declarant_id: int | None = None, db: Session = Depends(get_db), user: models.User = Depends(get_current_user)
+):
+    org_ids = get_my_org_ids(db, user.tenant_id)
+    q = (
+        db.query(models.CbamDeclaration)
+        .join(models.CbamDeclarant, models.CbamDeclaration.declarant_id == models.CbamDeclarant.id)
+        .filter(models.CbamDeclarant.org_id.in_(org_ids))
+    )
     if declarant_id:
         q = q.filter(models.CbamDeclaration.declarant_id == declarant_id)
     return q.all()
 
 
 @router.post("/declarations/{declarant_id}/{year}/{quarter}/reconcile", response_model=schemas.CbamDeclarationOut)
-def reconcile_declaration(declarant_id: int, year: int, quarter: int, db: Session = Depends(get_db)):
+def reconcile_declaration(
+    declarant_id: int,
+    year: int,
+    quarter: int,
+    db: Session = Depends(get_db),
+    user: models.User = Depends(get_current_user),
+):
     """Data Reconciliation for Monitoring & Control: roll up the quarter's imports
     into one declaration and net off certificates already held."""
+    _require_declarant_in_tenant(db, declarant_id, user.tenant_id)
+
     imports = (
         db.query(models.CbamGoodsImport)
         .filter(
