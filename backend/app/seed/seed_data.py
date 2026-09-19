@@ -1024,9 +1024,9 @@ def run():
     # fleet-average CUFs derived from MNRE's own capacity+generation statistics
     # (solar ~17.5-19%, wind ~20%; see docs/INDIA_CCTS_SOURCES.md and the
     # credit_benchmarks table for the full derivation), used where directly
-    # applicable, and (b) illustrative assumptions for hybrid/enabling-infrastructure
-    # rows (FDRE/RTC, the Ladakh corridor's solar+wind blend) where no direct
-    # benchmark exists — each row's conversion_note says which.
+    # applicable, (b) a tender's own stated minimum demand-fulfilment ratio for firm
+    # FDRE-RTC supply, and (c) illustrative assumptions for enabling-infrastructure
+    # rows where no direct benchmark exists — each row's conversion_note says which.
     CEA_GRID_FACTOR = 0.736  # tCO2/MWh, Combined Margin, FY2024-25 vintage, CEA CO2 Baseline Database v21.0 (primary)
 
     AT = models.FigureType.ASPIRATIONAL_TARGET
@@ -1051,17 +1051,23 @@ def run():
         ),
         dict(
             activity_id=a6["re_storage"].id,
-            metric_label="SECI FDRE tenders awarded (illustrative sample, not exhaustive)",
-            value=2.5, unit="GW (1.5 GW FDRE + 1 GW FDRE-RTC, 2026 tenders)", figure_type=AO,
+            metric_label="SECI FDRE-RTC Tranche-V awarded (1 GW round-the-clock; one tender, not a national tally)",
+            value=1.0, unit="GW (contracted round-the-clock supply, Aug 2026 award)", figure_type=AO,
             as_of_date=date(2026, 8, 7),
             source_name="pv-magazine India (secondary — SECI's own results page could not be reached)",
             source_url="https://www.pv-magazine-india.com/2026/08/07/secis-1-gw-fdre-rtc-power-tender-discovers-inr-5-25-kwh-tariff/",
             source_confidence=SECONDARY,
-            conversion_note="2,500 MW x 35% capacity factor (illustrative — FDRE/RTC firm-power tenders "
-            "typically run higher CF than plain solar, not India-specific-sourced) x 8,760 h x CEA "
-            "Combined Margin 0.736 tCO2/MWh = 5.64 Mt CO2e/yr. This is only a sample of awarded tenders, "
-            "not a complete national FDRE tally.",
-            potential_avoided_mt_co2e=5.64,
+            conversion_note="1,000 MW contracted RTC supply x 90% minimum annual demand-fulfilment ratio "
+            "(the tender's own stated floor, so this is a lower bound on delivered energy) x 8,760 h = "
+            "7,884 GWh/yr x CEA Combined Margin 0.736 tCO2/MWh = 5.80 Mt CO2e/yr. Replaces an earlier "
+            "row that applied an unsourced 35% capacity factor to 2.5 GW (1.5 GW FDRE + 1 GW RTC): the "
+            "tender's contracted MW is firm supply with a stated 90% annual DFR, not installed "
+            "solar/wind nameplate, so a plain-RE capacity factor was the wrong basis; and the 1.5 GW FDRE "
+            "half could not be confirmed against any source read this session, so it is dropped rather "
+            "than kept. Winners: Kengeri Prime 180 MW, Resolven Four 150, Hexa Climate 150, Hero Solar "
+            "120, EMIF II 100, Purvah 70, Juniper Green 230 (INR 5.25-5.26/kWh, 25-yr PPAs). Awarded, "
+            "not yet operating.",
+            potential_avoided_mt_co2e=5.80,
         ),
         # ---- Solar thermal power ----
         dict(

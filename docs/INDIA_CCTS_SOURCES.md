@@ -80,12 +80,28 @@ citation in the row's `source_url`:
   directly from its primary source with high confidence, and the constant used
   throughout `seed_data.py` to convert MW capacity into potential avoided tCO2e.
 
-**Capacity-factor assumptions used to convert MW → MWh/year** (35% for
-FDRE/RTC, 42% for offshore wind, 30% blended for the Ladakh corridor) are
-standard illustrative industry ranges, **explicitly not India-specific-sourced**
-in any research pass — see each row's `conversion_note` in the seed data. If
-replacing these, CEA/MNRE publish actual plant-load-factor (PLF/CUF) statistics
-by state/region that would be a better source than these placeholders.
+**Capacity-factor assumptions used to convert MW → MWh/year** — status as of
+the Sept 2026 India CCTS page audit (this paragraph originally listed 35% for
+FDRE/RTC, 42% offshore, 30% Ladakh as unsourced placeholders; two of the three
+have since been replaced, see below):
+- **FDRE-RTC (was 35%, now replaced).** The 35% was applied to a "2.5 GW
+  (1.5 GW FDRE + 1 GW RTC)" sample and was the wrong basis: a firm-power
+  tender's contracted MW is supply, not installed nameplate. The row now covers
+  only the 1 GW SECI FDRE-RTC Tranche-V award (Aug 2026, INR 5.25–5.26/kWh, 25-yr
+  PPAs) and converts it using the tender's own stated **90% minimum annual
+  demand-fulfilment ratio**: 1,000 MW × 0.90 × 8,760 h × 0.736 = 5.80 Mt CO2e/yr
+  (a lower bound, since 90% is a floor). The "1.5 GW FDRE" half could not be
+  confirmed against any source read, so it was dropped rather than kept. Source
+  remains secondary (pv-magazine India / trade press; SECI's own results page was
+  unreachable). Near-term gap moved 10.36 → ~10.20 Mt.
+- **Ladakh corridor (was 30%, corrected earlier to 19%)** — see the CEA/MNRE
+  section above.
+- **Offshore wind 42%** — grounded in real international projects (Norther/Belgium
+  43.1%, Alpha Ventus/Germany ~42–42.7%, European fleet ~45.8%), not India data,
+  since India has no operating offshore wind; still an analogue, flagged as such
+  in the row's `conversion_note`.
+- **Green-hydrogen (9–10 tCO2/tH2), biomethane, and CCS conversion factors**
+  remain standard industry-range midpoints, not India-specific-sourced.
 
 The gap-analysis endpoint (`POST /api/india/gap-analysis`) deliberately reports
 **two separate supply totals** rather than one blended number: near-term
