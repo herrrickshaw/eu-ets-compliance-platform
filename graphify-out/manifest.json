@@ -1,0 +1,338 @@
+{
+  ".claude/launch.json": {
+    "mtime": 1789706705.788711,
+    "seen": 1789968663.113927,
+    "ast_hash": "0ea8c2d1f9b62bbb5e2dacc9ade640f7",
+    "semantic_hash": ""
+  },
+  "backend/app/__init__.py": {
+    "mtime": 1789706270.0397463,
+    "seen": 1789968663.113934,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "backend/app/auth/__init__.py": {
+    "mtime": 1789708861.7802808,
+    "seen": 1789968663.1139379,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "backend/app/auth/deps.py": {
+    "mtime": 1789708877.2899582,
+    "seen": 1789968663.11394,
+    "ast_hash": "a4dd4f71d53f3def630039c95fc9c3a0",
+    "semantic_hash": ""
+  },
+  "backend/app/auth/router.py": {
+    "mtime": 1789708897.8461144,
+    "seen": 1789968663.113943,
+    "ast_hash": "92a1b1fe3c5d10bccd3bc7bfd25b4de1",
+    "semantic_hash": ""
+  },
+  "backend/app/auth/security.py": {
+    "mtime": 1789708871.5358076,
+    "seen": 1789968663.113945,
+    "ast_hash": "4a7500437534bb2e7cae4781e644661f",
+    "semantic_hash": ""
+  },
+  "backend/app/db.py": {
+    "mtime": 1789706072.6171565,
+    "seen": 1789968663.1139479,
+    "ast_hash": "d5e701f65e79d6c57d5e8b5f47aabfcf",
+    "semantic_hash": ""
+  },
+  "backend/app/main.py": {
+    "mtime": 1789709250.0672657,
+    "seen": 1789968663.11395,
+    "ast_hash": "09deac8836fee696319708db5c3474b8",
+    "semantic_hash": ""
+  },
+  "backend/app/models.py": {
+    "mtime": 1789735058.2955134,
+    "seen": 1789968663.113952,
+    "ast_hash": "2fd06d83b45fddd12d89760cbc7ae975",
+    "semantic_hash": ""
+  },
+  "backend/app/modules/__init__.py": {
+    "mtime": 1789706270.042265,
+    "seen": 1789968663.113954,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "backend/app/modules/cbam/__init__.py": {
+    "mtime": 1789706270.050473,
+    "seen": 1789968663.1139572,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "backend/app/modules/cbam/router.py": {
+    "mtime": 1789713306.8530061,
+    "seen": 1789968663.1139588,
+    "ast_hash": "3a8cd37811bf27e3d5f892d6918738d3",
+    "semantic_hash": ""
+  },
+  "backend/app/modules/credits/__init__.py": {
+    "mtime": 1789706270.0526814,
+    "seen": 1789968663.113961,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "backend/app/modules/credits/router.py": {
+    "mtime": 1789724843.5782816,
+    "seen": 1789968663.1139631,
+    "ast_hash": "acff58bd316c64fef761e12ebb1c843c",
+    "semantic_hash": ""
+  },
+  "backend/app/modules/ets_core/__init__.py": {
+    "mtime": 1789706270.0448349,
+    "seen": 1789968663.113965,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "backend/app/modules/ets_core/router.py": {
+    "mtime": 1789726499.5441816,
+    "seen": 1789968663.1139681,
+    "ast_hash": "9ca6838a74e86b805721d3dab92b3aac",
+    "semantic_hash": ""
+  },
+  "backend/app/modules/india_ccts/__init__.py": {
+    "mtime": 1789709231.2179148,
+    "seen": 1789968663.1139698,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "backend/app/modules/india_ccts/router.py": {
+    "mtime": 1789714395.2887845,
+    "seen": 1789968663.113972,
+    "ast_hash": "49fdfce917e8cffd2cade3e6fe4cff06",
+    "semantic_hash": ""
+  },
+  "backend/app/modules/shipping_mrv/__init__.py": {
+    "mtime": 1789706270.0472407,
+    "seen": 1789968663.113974,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "backend/app/modules/shipping_mrv/router.py": {
+    "mtime": 1789723297.0118155,
+    "seen": 1789968663.113976,
+    "ast_hash": "5bec8c79174586d9e9618aa6fc9b2a5b",
+    "semantic_hash": ""
+  },
+  "backend/app/modules/trading/__init__.py": {
+    "mtime": 1789706270.0546536,
+    "seen": 1789968663.1139781,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "backend/app/modules/trading/router.py": {
+    "mtime": 1789725694.282339,
+    "seen": 1789968663.1139798,
+    "ast_hash": "3885a7987e39ffb9fc4f4a9f404e430f",
+    "semantic_hash": ""
+  },
+  "backend/app/modules/verification/__init__.py": {
+    "mtime": 1789706270.0566344,
+    "seen": 1789968663.113983,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "backend/app/modules/verification/router.py": {
+    "mtime": 1789735069.8391678,
+    "seen": 1789968663.113986,
+    "ast_hash": "a8402f792ad4db3364c9c36fa7a3ccb7",
+    "semantic_hash": ""
+  },
+  "backend/app/schemas.py": {
+    "mtime": 1789735064.6029193,
+    "seen": 1789968663.1139882,
+    "ast_hash": "b64f57196acbd2ffd9c796fb39d0220c",
+    "semantic_hash": ""
+  },
+  "backend/app/seed/__init__.py": {
+    "mtime": 1789706270.0585449,
+    "seen": 1789968663.1139898,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "backend/app/seed/seed_data.py": {
+    "mtime": 1789797272.7574847,
+    "seen": 1789968663.113992,
+    "ast_hash": "d20a48679d651d85241eab64033fdbef",
+    "semantic_hash": ""
+  },
+  "frontend/.oxlintrc.json": {
+    "mtime": 1789706457.5680022,
+    "seen": 1789968663.113994,
+    "ast_hash": "5e6e3cea3e89137071c142dd7835b0ef",
+    "semantic_hash": ""
+  },
+  "frontend/package.json": {
+    "mtime": 1789706471.5362654,
+    "seen": 1789968663.113996,
+    "ast_hash": "0784dcc727a63918514dadec51c4c857",
+    "semantic_hash": ""
+  },
+  "frontend/src/App.jsx": {
+    "mtime": 1789709147.8659706,
+    "seen": 1789968663.1139991,
+    "ast_hash": "b92d177aa95492f31c0b99d20300515d",
+    "semantic_hash": ""
+  },
+  "frontend/src/api.js": {
+    "mtime": 1789709105.6540356,
+    "seen": 1789968663.1140008,
+    "ast_hash": "d9c3846e9047d0c40a81d67229101f71",
+    "semantic_hash": ""
+  },
+  "frontend/src/auth.jsx": {
+    "mtime": 1789709116.3647382,
+    "seen": 1789968663.114003,
+    "ast_hash": "a35beb6d4f56ef75f9753d3212189d46",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/Sparkline.jsx": {
+    "mtime": 1789706593.6046538,
+    "seen": 1789968663.114005,
+    "ast_hash": "61a3ae92266f6ed24de829d51804ac9e",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/ui.jsx": {
+    "mtime": 1789709455.5585687,
+    "seen": 1789968663.114007,
+    "ast_hash": "045f2feb17f61f612c55909966490e0c",
+    "semantic_hash": ""
+  },
+  "frontend/src/hooks.js": {
+    "mtime": 1789706615.801456,
+    "seen": 1789968663.1140091,
+    "ast_hash": "ab14ebf489cdd75ad93207fa692deaa5",
+    "semantic_hash": ""
+  },
+  "frontend/src/main.jsx": {
+    "mtime": 1789709135.9003813,
+    "seen": 1789968663.1140108,
+    "ast_hash": "886cfa5b4352b6a3b3339f072c05ac7e",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/Cbam.jsx": {
+    "mtime": 1789713362.163171,
+    "seen": 1789968663.114014,
+    "ast_hash": "02cb30ada9a7ff6a29c2a97b142e1234",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/Credits.jsx": {
+    "mtime": 1789724906.1180575,
+    "seen": 1789968663.114016,
+    "ast_hash": "f0d8c5681b46b43150635c43898f4308",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/EtsCore.jsx": {
+    "mtime": 1789726572.850163,
+    "seen": 1789968663.114017,
+    "ast_hash": "342e653fb81b949f0bc6381db561b4b8",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/IndiaCcts.jsx": {
+    "mtime": 1789715287.999971,
+    "seen": 1789968663.11402,
+    "ast_hash": "01c2b91060acbc76faad83900d34b6db",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/Login.jsx": {
+    "mtime": 1789709130.3132799,
+    "seen": 1789968663.1140218,
+    "ast_hash": "a192b783f88a8ec9e524e2baec4ae2c9",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/Overview.jsx": {
+    "mtime": 1789706530.0507216,
+    "seen": 1789968663.114024,
+    "ast_hash": "792eb2ff2d391789842d3724d228c77a",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/ShippingMrv.jsx": {
+    "mtime": 1789723403.1679857,
+    "seen": 1789968663.114026,
+    "ast_hash": "f4562af3549b1ab4e64e8c5d718f7fa0",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/Trading.jsx": {
+    "mtime": 1789725764.8459504,
+    "seen": 1789968663.1140292,
+    "ast_hash": "b72474741b4775f31e4aa4eb5947b0b6",
+    "semantic_hash": ""
+  },
+  "frontend/src/pages/Verification.jsx": {
+    "mtime": 1789735146.9993548,
+    "seen": 1789968663.114031,
+    "ast_hash": "70dda73385924052c50674caa6f3cf59",
+    "semantic_hash": ""
+  },
+  "frontend/vite.config.js": {
+    "mtime": 1789706476.5152495,
+    "seen": 1789968663.114033,
+    "ast_hash": "4f4e11d0ded210ea6db43bf7fd461894",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1789709590.1868222,
+    "seen": 1789968663.114035,
+    "ast_hash": "b79bc64b21229e6becd7b564286efcf2",
+    "semantic_hash": ""
+  },
+  "backend/requirements.txt": {
+    "mtime": 1789708865.3625815,
+    "seen": 1789968663.114037,
+    "ast_hash": "6daf6db292ca623dc4306aec81f7c1ab",
+    "semantic_hash": ""
+  },
+  "docs/INDIA_CCTS_SOURCES.md": {
+    "mtime": 1789797288.4967432,
+    "seen": 1789968663.114039,
+    "ast_hash": "5ce389019751cb2d7adf2ce981d0c058",
+    "semantic_hash": ""
+  },
+  "frontend/README.md": {
+    "mtime": 1789706457.5673125,
+    "seen": 1789968663.114041,
+    "ast_hash": "75eb386f17caf77fd6fe3ce1d90968ee",
+    "semantic_hash": ""
+  },
+  "frontend/index.html": {
+    "mtime": 1789735498.3198779,
+    "seen": 1789968663.114043,
+    "ast_hash": "1534dbe4e20fae0a4b79cb49476be257",
+    "semantic_hash": ""
+  },
+  "docs/references/ceew_unlocking_indias_voluntary_carbon_market_2025.pdf": {
+    "mtime": 1789711366.2218997,
+    "seen": 1789968663.114045,
+    "ast_hash": "ed66379ae5a986d6469586686638afe1",
+    "semantic_hash": ""
+  },
+  "frontend/public/favicon.svg": {
+    "mtime": 1789706457.5693624,
+    "seen": 1789968663.114047,
+    "ast_hash": "7e840862161341271697daa99a40d76b",
+    "semantic_hash": ""
+  },
+  "frontend/public/icons.svg": {
+    "mtime": 1789706457.5696256,
+    "seen": 1789968663.114049,
+    "ast_hash": "3b4fcfcf393eca4d264dca4a4663bc37",
+    "semantic_hash": ""
+  },
+  "frontend/src/assets/hero.png": {
+    "mtime": 1789706457.5706732,
+    "seen": 1789968663.114051,
+    "ast_hash": "aead493361b27e7510691c5d7072dfc1",
+    "semantic_hash": ""
+  },
+  "frontend/src/assets/vite.svg": {
+    "mtime": 1789706457.5712845,
+    "seen": 1789968663.114053,
+    "ast_hash": "9960a24288958394ac50e57ff638b036",
+    "semantic_hash": ""
+  }
+}
