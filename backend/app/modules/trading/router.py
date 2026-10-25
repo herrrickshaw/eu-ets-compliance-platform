@@ -100,10 +100,15 @@ def place_order(req: schemas.OrderCreate, db: Session = Depends(get_db), user: m
     db.flush()
 
     remaining = req.quantity
+    # Price-time priority: best price first (lowest ask for a buy, highest bid for a sell),
+    # then oldest first among equal prices.
+    best_price = (
+        models.Order.limit_price_eur.asc() if side == models.OrderSide.BUY else models.Order.limit_price_eur.desc()
+    )
     resting_orders = (
         db.query(models.Order)
         .filter_by(instrument_id=req.instrument_id, side=opposite, status=models.OrderStatus.OPEN)
-        .order_by(models.Order.created_at.asc())
+        .order_by(best_price, models.Order.created_at.asc(), models.Order.id.asc())
         .all()
     )
     for resting in resting_orders:
