@@ -115,3 +115,8 @@ def test_other_tenant_cannot_declare(client, tenant, decl):
     dc, _ = decl
     _, other = tenant("x")
     assert imp(client, other, dc).status_code == 403
+
+
+def test_rejects_non_positive_import_quantity(client, decl):
+    dc, h = decl
+    assert imp(client, h, dc, quantity_t=-100).status_code == 422
