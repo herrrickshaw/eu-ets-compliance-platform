@@ -44,7 +44,9 @@ def purchase_unit(
     unit = db.query(models.CreditUnit).get(unit_id)
     if unit is None:
         raise HTTPException(404, "Unit not found")
-    if unit.status not in (models.CreditUnitStatus.ISSUED, models.CreditUnitStatus.HELD):
+    # Only ISSUED units are on the market. A HELD unit already belongs to someone; letting any
+    # tenant "purchase" it would reassign ownership without the holder's consent.
+    if unit.status != models.CreditUnitStatus.ISSUED:
         raise HTTPException(400, f"Unit is {unit.status.value}, not available for purchase")
     unit.current_owner_org_id = req.buyer_org_id
     unit.status = models.CreditUnitStatus.HELD
