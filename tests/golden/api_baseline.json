@@ -1,0 +1,4862 @@
+{
+ "cbam.declarants": {
+  "body": [
+   {
+    "auth_status": "authorised",
+    "eori_number": "ES1234567890",
+    "id": 1,
+    "org_id": 6
+   }
+  ],
+  "status": 200
+ },
+ "cbam.declarations.after": {
+  "body": [
+   {
+    "certificates_surrendered_t": 0.0,
+    "declarant_id": 1,
+    "id": 1,
+    "quarter": 1,
+    "status": "reconciled",
+    "total_embedded_emissions_t": 0.0,
+    "year": 2025
+   },
+   {
+    "certificates_surrendered_t": 0.0,
+    "declarant_id": 1,
+    "id": 2,
+    "quarter": 2,
+    "status": "reconciled",
+    "total_embedded_emissions_t": 0.0,
+    "year": 2025
+   },
+   {
+    "certificates_surrendered_t": 0.0,
+    "declarant_id": 1,
+    "id": 3,
+    "quarter": 3,
+    "status": "reconciled",
+    "total_embedded_emissions_t": 0.0,
+    "year": 2025
+   },
+   {
+    "certificates_surrendered_t": 0.0,
+    "declarant_id": 1,
+    "id": 4,
+    "quarter": 4,
+    "status": "reconciled",
+    "total_embedded_emissions_t": 0.0,
+    "year": 2025
+   },
+   {
+    "certificates_surrendered_t": 2500.0,
+    "declarant_id": 1,
+    "id": 5,
+    "quarter": 1,
+    "status": "reconciled",
+    "total_embedded_emissions_t": 13822.82,
+    "year": 2026
+   },
+   {
+    "certificates_surrendered_t": 0.0,
+    "declarant_id": 1,
+    "id": 6,
+    "quarter": 2,
+    "status": "reconciled",
+    "total_embedded_emissions_t": 2721.124,
+    "year": 2026
+   },
+   {
+    "certificates_surrendered_t": 0.0,
+    "declarant_id": 1,
+    "id": 7,
+    "quarter": 3,
+    "status": "reconciled",
+    "total_embedded_emissions_t": 5848.26,
+    "year": 2026
+   },
+   {
+    "certificates_surrendered_t": 0.0,
+    "declarant_id": 1,
+    "id": 8,
+    "quarter": 4,
+    "status": "reconciled",
+    "total_embedded_emissions_t": 20.846,
+    "year": 2026
+   }
+  ],
+  "status": 200
+ },
+ "cbam.declarations.before": {
+  "body": [],
+  "status": 200
+ },
+ "cbam.default_values": {
+  "body": [
+   {
+    "cn_code": "7208",
+    "country": "default",
+    "direct_emissions_factor": 2.1,
+    "good_name": "Hot-rolled steel",
+    "indirect_emissions_factor": 0.35,
+    "markup_pct": 10.0,
+    "valid_from": "2026-01-01"
+   },
+   {
+    "cn_code": "7208",
+    "country": "CN",
+    "direct_emissions_factor": 2.6,
+    "good_name": "Hot-rolled steel",
+    "indirect_emissions_factor": 0.55,
+    "markup_pct": 10.0,
+    "valid_from": "2026-01-01"
+   },
+   {
+    "cn_code": "7208",
+    "country": "IN",
+    "direct_emissions_factor": 2.45,
+    "good_name": "Hot-rolled steel",
+    "indirect_emissions_factor": 0.48,
+    "markup_pct": 10.0,
+    "valid_from": "2026-01-01"
+   },
+   {
+    "cn_code": "2523",
+    "country": "default",
+    "direct_emissions_factor": 0.85,
+    "good_name": "Portland cement",
+    "indirect_emissions_factor": 0.1,
+    "markup_pct": 10.0,
+    "valid_from": "2026-01-01"
+   },
+   {
+    "cn_code": "7601",
+    "country": "default",
+    "direct_emissions_factor": 1.55,
+    "good_name": "Unwrought aluminium",
+    "indirect_emissions_factor": 8.6,
+    "markup_pct": 10.0,
+    "valid_from": "2026-01-01"
+   },
+   {
+    "cn_code": "3102",
+    "country": "default",
+    "direct_emissions_factor": 3.9,
+    "good_name": "Nitrogen fertilizers",
+    "indirect_emissions_factor": 0.2,
+    "markup_pct": 1.0,
+    "valid_from": "2026-01-01"
+   },
+   {
+    "cn_code": "2804",
+    "country": "default",
+    "direct_emissions_factor": 9.0,
+    "good_name": "Hydrogen",
+    "indirect_emissions_factor": 2.1,
+    "markup_pct": 10.0,
+    "valid_from": "2026-01-01"
+   }
+  ],
+  "status": 200
+ },
+ "cbam.demand.2025": {
+  "body": {
+   "actual_obligation_cost_eur": 0.0,
+   "actual_obligation_t": 0.0,
+   "cbam_factor_pct": 2.5,
+   "declarant_count": 1,
+   "deferred_liability_t": 0.0,
+   "full_liability_cost_eur": 0.0,
+   "methodology_note": "CBAM certificates are NOT volume-capped the way EU ETS allowances or voluntary carbon credits are \u2014 the EU sells as many as a declarant needs, priced weekly off the EUA auction average (Reg. (EU) 2023/956 Art. 21). So there is no scarcity-driven supply-vs-demand gap to model here. The real gap is temporal: total_embedded_emissions_t is your full eventual liability (what you'll owe once free allocation to the equivalent EU ETS sector hits zero, in 2034); actual_obligation_t is what you actually owe this year, scaled by that year's cbam_factor_pct (2.5% in 2026, ramping to 100% by 2034 per Reg. (EU) 2025/2083); deferred_liability_t is the difference \u2014 emissions you're not yet paying for, but will be as the phase-in advances. reference_price is this platform's latest seeded EUA price (illustrative, not a live feed) standing in for the weekly CBAM certificate price.",
+   "reference_price_date": "2026-08-31",
+   "reference_price_eur_per_t": 61.49,
+   "total_embedded_emissions_t": 0.0,
+   "year": 2025
+  },
+  "status": 200
+ },
+ "cbam.demand.2026": {
+  "body": {
+   "actual_obligation_cost_eur": 34454.46,
+   "actual_obligation_t": 560.326,
+   "cbam_factor_pct": 2.5,
+   "declarant_count": 1,
+   "deferred_liability_t": 21852.723,
+   "full_liability_cost_eur": 1378178.42,
+   "methodology_note": "CBAM certificates are NOT volume-capped the way EU ETS allowances or voluntary carbon credits are \u2014 the EU sells as many as a declarant needs, priced weekly off the EUA auction average (Reg. (EU) 2023/956 Art. 21). So there is no scarcity-driven supply-vs-demand gap to model here. The real gap is temporal: total_embedded_emissions_t is your full eventual liability (what you'll owe once free allocation to the equivalent EU ETS sector hits zero, in 2034); actual_obligation_t is what you actually owe this year, scaled by that year's cbam_factor_pct (2.5% in 2026, ramping to 100% by 2034 per Reg. (EU) 2025/2083); deferred_liability_t is the difference \u2014 emissions you're not yet paying for, but will be as the phase-in advances. reference_price is this platform's latest seeded EUA price (illustrative, not a live feed) standing in for the weekly CBAM certificate price.",
+   "reference_price_date": "2026-08-31",
+   "reference_price_eur_per_t": 61.49,
+   "total_embedded_emissions_t": 22413.05,
+   "year": 2026
+  },
+  "status": 200
+ },
+ "cbam.demand.2030": {
+  "body": {
+   "actual_obligation_cost_eur": 0.0,
+   "actual_obligation_t": 0.0,
+   "cbam_factor_pct": 48.5,
+   "declarant_count": 1,
+   "deferred_liability_t": 0.0,
+   "full_liability_cost_eur": 0.0,
+   "methodology_note": "CBAM certificates are NOT volume-capped the way EU ETS allowances or voluntary carbon credits are \u2014 the EU sells as many as a declarant needs, priced weekly off the EUA auction average (Reg. (EU) 2023/956 Art. 21). So there is no scarcity-driven supply-vs-demand gap to model here. The real gap is temporal: total_embedded_emissions_t is your full eventual liability (what you'll owe once free allocation to the equivalent EU ETS sector hits zero, in 2034); actual_obligation_t is what you actually owe this year, scaled by that year's cbam_factor_pct (2.5% in 2026, ramping to 100% by 2034 per Reg. (EU) 2025/2083); deferred_liability_t is the difference \u2014 emissions you're not yet paying for, but will be as the phase-in advances. reference_price is this platform's latest seeded EUA price (illustrative, not a live feed) standing in for the weekly CBAM certificate price.",
+   "reference_price_date": "2026-08-31",
+   "reference_price_eur_per_t": 61.49,
+   "total_embedded_emissions_t": 0.0,
+   "year": 2030
+  },
+  "status": 200
+ },
+ "cbam.demand.2034": {
+  "body": {
+   "actual_obligation_cost_eur": 0.0,
+   "actual_obligation_t": 0.0,
+   "cbam_factor_pct": 100.0,
+   "declarant_count": 1,
+   "deferred_liability_t": 0.0,
+   "full_liability_cost_eur": 0.0,
+   "methodology_note": "CBAM certificates are NOT volume-capped the way EU ETS allowances or voluntary carbon credits are \u2014 the EU sells as many as a declarant needs, priced weekly off the EUA auction average (Reg. (EU) 2023/956 Art. 21). So there is no scarcity-driven supply-vs-demand gap to model here. The real gap is temporal: total_embedded_emissions_t is your full eventual liability (what you'll owe once free allocation to the equivalent EU ETS sector hits zero, in 2034); actual_obligation_t is what you actually owe this year, scaled by that year's cbam_factor_pct (2.5% in 2026, ramping to 100% by 2034 per Reg. (EU) 2025/2083); deferred_liability_t is the difference \u2014 emissions you're not yet paying for, but will be as the phase-in advances. reference_price is this platform's latest seeded EUA price (illustrative, not a live feed) standing in for the weekly CBAM certificate price.",
+   "reference_price_date": "2026-08-31",
+   "reference_price_eur_per_t": 61.49,
+   "total_embedded_emissions_t": 0.0,
+   "year": 2034
+  },
+  "status": 200
+ },
+ "cbam.demand.2040": {
+  "body": {
+   "actual_obligation_cost_eur": 0.0,
+   "actual_obligation_t": 0.0,
+   "cbam_factor_pct": 100.0,
+   "declarant_count": 1,
+   "deferred_liability_t": 0.0,
+   "full_liability_cost_eur": 0.0,
+   "methodology_note": "CBAM certificates are NOT volume-capped the way EU ETS allowances or voluntary carbon credits are \u2014 the EU sells as many as a declarant needs, priced weekly off the EUA auction average (Reg. (EU) 2023/956 Art. 21). So there is no scarcity-driven supply-vs-demand gap to model here. The real gap is temporal: total_embedded_emissions_t is your full eventual liability (what you'll owe once free allocation to the equivalent EU ETS sector hits zero, in 2034); actual_obligation_t is what you actually owe this year, scaled by that year's cbam_factor_pct (2.5% in 2026, ramping to 100% by 2034 per Reg. (EU) 2025/2083); deferred_liability_t is the difference \u2014 emissions you're not yet paying for, but will be as the phase-in advances. reference_price is this platform's latest seeded EUA price (illustrative, not a live feed) standing in for the weekly CBAM certificate price.",
+   "reference_price_date": "2026-08-31",
+   "reference_price_eur_per_t": 61.49,
+   "total_embedded_emissions_t": 0.0,
+   "year": 2040
+  },
+  "status": 200
+ },
+ "cbam.demand.other_tenant": {
+  "body": {
+   "actual_obligation_cost_eur": 20382.4,
+   "actual_obligation_t": 331.475,
+   "cbam_factor_pct": 2.5,
+   "declarant_count": 1,
+   "deferred_liability_t": 12927.525,
+   "full_liability_cost_eur": 815295.91,
+   "methodology_note": "CBAM certificates are NOT volume-capped the way EU ETS allowances or voluntary carbon credits are \u2014 the EU sells as many as a declarant needs, priced weekly off the EUA auction average (Reg. (EU) 2023/956 Art. 21). So there is no scarcity-driven supply-vs-demand gap to model here. The real gap is temporal: total_embedded_emissions_t is your full eventual liability (what you'll owe once free allocation to the equivalent EU ETS sector hits zero, in 2034); actual_obligation_t is what you actually owe this year, scaled by that year's cbam_factor_pct (2.5% in 2026, ramping to 100% by 2034 per Reg. (EU) 2025/2083); deferred_liability_t is the difference \u2014 emissions you're not yet paying for, but will be as the phase-in advances. reference_price is this platform's latest seeded EUA price (illustrative, not a live feed) standing in for the weekly CBAM certificate price.",
+   "reference_price_date": "2026-08-31",
+   "reference_price_eur_per_t": 61.49,
+   "total_embedded_emissions_t": 13259.0,
+   "year": 2026
+  },
+  "status": 200
+ },
+ "cbam.import.actual": {
+  "body": {
+   "cn_code": "2523",
+   "country_of_origin": "ZZ",
+   "declarant_id": 1,
+   "direct_emissions_t": 12.3456,
+   "emission_source": "actual_verified",
+   "good_name": "Portland cement",
+   "id": 25,
+   "import_date": "2026-11-20",
+   "indirect_emissions_t": 1.5,
+   "quantity_t": 40.0
+  },
+  "status": 200
+ },
+ "cbam.import.actual_direct_only": {
+  "body": {
+   "cn_code": "2523",
+   "country_of_origin": "ZZ",
+   "declarant_id": 1,
+   "direct_emissions_t": 7.0,
+   "emission_source": "actual_verified",
+   "good_name": "Portland cement",
+   "id": 26,
+   "import_date": "2026-12-31",
+   "indirect_emissions_t": 0.0,
+   "quantity_t": 40.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.1": {
+  "body": {
+   "cn_code": "2523",
+   "country_of_origin": "CN",
+   "declarant_id": 1,
+   "direct_emissions_t": 94.435,
+   "emission_source": "default_value",
+   "good_name": "Portland cement",
+   "id": 5,
+   "import_date": "2026-02-15",
+   "indirect_emissions_t": 11.11,
+   "quantity_t": 101.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.10": {
+  "body": {
+   "cn_code": "3102",
+   "country_of_origin": "IN",
+   "declarant_id": 1,
+   "direct_emissions_t": 433.29,
+   "emission_source": "default_value",
+   "good_name": "Nitrogen fertilizers",
+   "id": 14,
+   "import_date": "2026-02-15",
+   "indirect_emissions_t": 22.22,
+   "quantity_t": 110.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.11": {
+  "body": {
+   "cn_code": "3102",
+   "country_of_origin": "default",
+   "declarant_id": 1,
+   "direct_emissions_t": 437.229,
+   "emission_source": "default_value",
+   "good_name": "Nitrogen fertilizers",
+   "id": 15,
+   "import_date": "2026-03-15",
+   "indirect_emissions_t": 22.422,
+   "quantity_t": 111.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.12": {
+  "body": {
+   "cn_code": "3102",
+   "country_of_origin": "ZZ",
+   "declarant_id": 1,
+   "direct_emissions_t": 441.168,
+   "emission_source": "default_value",
+   "good_name": "Nitrogen fertilizers",
+   "id": 16,
+   "import_date": "2026-04-15",
+   "indirect_emissions_t": 22.624,
+   "quantity_t": 112.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.13": {
+  "body": {
+   "cn_code": "7208",
+   "country_of_origin": "CN",
+   "declarant_id": 1,
+   "direct_emissions_t": 323.18,
+   "emission_source": "default_value",
+   "good_name": "Hot-rolled steel",
+   "id": 17,
+   "import_date": "2026-05-15",
+   "indirect_emissions_t": 68.365,
+   "quantity_t": 113.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.14": {
+  "body": {
+   "cn_code": "7208",
+   "country_of_origin": "IN",
+   "declarant_id": 1,
+   "direct_emissions_t": 307.23,
+   "emission_source": "default_value",
+   "good_name": "Hot-rolled steel",
+   "id": 18,
+   "import_date": "2026-06-15",
+   "indirect_emissions_t": 60.192,
+   "quantity_t": 114.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.15": {
+  "body": {
+   "cn_code": "7208",
+   "country_of_origin": "default",
+   "declarant_id": 1,
+   "direct_emissions_t": 265.65,
+   "emission_source": "default_value",
+   "good_name": "Hot-rolled steel",
+   "id": 19,
+   "import_date": "2026-07-15",
+   "indirect_emissions_t": 44.275,
+   "quantity_t": 115.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.16": {
+  "body": {
+   "cn_code": "7208",
+   "country_of_origin": "ZZ",
+   "declarant_id": 1,
+   "direct_emissions_t": 267.96,
+   "emission_source": "default_value",
+   "good_name": "Hot-rolled steel",
+   "id": 20,
+   "import_date": "2026-08-15",
+   "indirect_emissions_t": 44.66,
+   "quantity_t": 116.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.17": {
+  "body": {
+   "cn_code": "7601",
+   "country_of_origin": "CN",
+   "declarant_id": 1,
+   "direct_emissions_t": 199.485,
+   "emission_source": "default_value",
+   "good_name": "Unwrought aluminium",
+   "id": 21,
+   "import_date": "2026-09-15",
+   "indirect_emissions_t": 1106.82,
+   "quantity_t": 117.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.18": {
+  "body": {
+   "cn_code": "7601",
+   "country_of_origin": "IN",
+   "declarant_id": 1,
+   "direct_emissions_t": 201.19,
+   "emission_source": "default_value",
+   "good_name": "Unwrought aluminium",
+   "id": 22,
+   "import_date": "2026-01-15",
+   "indirect_emissions_t": 1116.28,
+   "quantity_t": 118.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.19": {
+  "body": {
+   "cn_code": "7601",
+   "country_of_origin": "default",
+   "declarant_id": 1,
+   "direct_emissions_t": 202.895,
+   "emission_source": "default_value",
+   "good_name": "Unwrought aluminium",
+   "id": 23,
+   "import_date": "2026-02-15",
+   "indirect_emissions_t": 1125.74,
+   "quantity_t": 119.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.2": {
+  "body": {
+   "cn_code": "2523",
+   "country_of_origin": "IN",
+   "declarant_id": 1,
+   "direct_emissions_t": 95.37,
+   "emission_source": "default_value",
+   "good_name": "Portland cement",
+   "id": 6,
+   "import_date": "2026-03-15",
+   "indirect_emissions_t": 11.22,
+   "quantity_t": 102.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.20": {
+  "body": {
+   "cn_code": "7601",
+   "country_of_origin": "ZZ",
+   "declarant_id": 1,
+   "direct_emissions_t": 204.6,
+   "emission_source": "default_value",
+   "good_name": "Unwrought aluminium",
+   "id": 24,
+   "import_date": "2026-03-15",
+   "indirect_emissions_t": 1135.2,
+   "quantity_t": 120.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.3": {
+  "body": {
+   "cn_code": "2523",
+   "country_of_origin": "default",
+   "declarant_id": 1,
+   "direct_emissions_t": 96.305,
+   "emission_source": "default_value",
+   "good_name": "Portland cement",
+   "id": 7,
+   "import_date": "2026-04-15",
+   "indirect_emissions_t": 11.33,
+   "quantity_t": 103.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.4": {
+  "body": {
+   "cn_code": "2523",
+   "country_of_origin": "ZZ",
+   "declarant_id": 1,
+   "direct_emissions_t": 97.24,
+   "emission_source": "default_value",
+   "good_name": "Portland cement",
+   "id": 8,
+   "import_date": "2026-05-15",
+   "indirect_emissions_t": 11.44,
+   "quantity_t": 104.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.5": {
+  "body": {
+   "cn_code": "2804",
+   "country_of_origin": "CN",
+   "declarant_id": 1,
+   "direct_emissions_t": 1039.5,
+   "emission_source": "default_value",
+   "good_name": "Hydrogen",
+   "id": 9,
+   "import_date": "2026-06-15",
+   "indirect_emissions_t": 242.55,
+   "quantity_t": 105.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.6": {
+  "body": {
+   "cn_code": "2804",
+   "country_of_origin": "IN",
+   "declarant_id": 1,
+   "direct_emissions_t": 1049.4,
+   "emission_source": "default_value",
+   "good_name": "Hydrogen",
+   "id": 10,
+   "import_date": "2026-07-15",
+   "indirect_emissions_t": 244.86,
+   "quantity_t": 106.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.7": {
+  "body": {
+   "cn_code": "2804",
+   "country_of_origin": "default",
+   "declarant_id": 1,
+   "direct_emissions_t": 1059.3,
+   "emission_source": "default_value",
+   "good_name": "Hydrogen",
+   "id": 11,
+   "import_date": "2026-08-15",
+   "indirect_emissions_t": 247.17,
+   "quantity_t": 107.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.8": {
+  "body": {
+   "cn_code": "2804",
+   "country_of_origin": "ZZ",
+   "declarant_id": 1,
+   "direct_emissions_t": 1069.2,
+   "emission_source": "default_value",
+   "good_name": "Hydrogen",
+   "id": 12,
+   "import_date": "2026-09-15",
+   "indirect_emissions_t": 249.48,
+   "quantity_t": 108.0
+  },
+  "status": 200
+ },
+ "cbam.import.default.9": {
+  "body": {
+   "cn_code": "3102",
+   "country_of_origin": "CN",
+   "declarant_id": 1,
+   "direct_emissions_t": 429.351,
+   "emission_source": "default_value",
+   "good_name": "Nitrogen fertilizers",
+   "id": 13,
+   "import_date": "2026-01-15",
+   "indirect_emissions_t": 22.018,
+   "quantity_t": 109.0
+  },
+  "status": 200
+ },
+ "cbam.import.foreign_declarant": {
+  "body": {
+   "detail": "Declarant not found"
+  },
+  "status": 404
+ },
+ "cbam.import.unknown_cn": {
+  "body": {
+   "detail": "No CBAM default value found for CN code 0000"
+  },
+  "status": 404
+ },
+ "cbam.imports.after": {
+  "body": [
+   {
+    "cn_code": "7208",
+    "country_of_origin": "CN",
+    "declarant_id": 1,
+    "direct_emissions_t": 2772.0,
+    "emission_source": "default_value",
+    "good_name": "Hot-rolled steel",
+    "id": 1,
+    "import_date": "2026-02-10",
+    "indirect_emissions_t": 462.0,
+    "quantity_t": 1200.0
+   },
+   {
+    "cn_code": "7601",
+    "country_of_origin": "default",
+    "declarant_id": 1,
+    "direct_emissions_t": 767.25,
+    "emission_source": "default_value",
+    "good_name": "Unwrought aluminium",
+    "id": 2,
+    "import_date": "2026-02-20",
+    "indirect_emissions_t": 4257.0,
+    "quantity_t": 450.0
+   },
+   {
+    "cn_code": "2523",
+    "country_of_origin": "CN",
+    "declarant_id": 1,
+    "direct_emissions_t": 94.435,
+    "emission_source": "default_value",
+    "good_name": "Portland cement",
+    "id": 5,
+    "import_date": "2026-02-15",
+    "indirect_emissions_t": 11.11,
+    "quantity_t": 101.0
+   },
+   {
+    "cn_code": "2523",
+    "country_of_origin": "IN",
+    "declarant_id": 1,
+    "direct_emissions_t": 95.37,
+    "emission_source": "default_value",
+    "good_name": "Portland cement",
+    "id": 6,
+    "import_date": "2026-03-15",
+    "indirect_emissions_t": 11.22,
+    "quantity_t": 102.0
+   },
+   {
+    "cn_code": "2523",
+    "country_of_origin": "default",
+    "declarant_id": 1,
+    "direct_emissions_t": 96.305,
+    "emission_source": "default_value",
+    "good_name": "Portland cement",
+    "id": 7,
+    "import_date": "2026-04-15",
+    "indirect_emissions_t": 11.33,
+    "quantity_t": 103.0
+   },
+   {
+    "cn_code": "2523",
+    "country_of_origin": "ZZ",
+    "declarant_id": 1,
+    "direct_emissions_t": 97.24,
+    "emission_source": "default_value",
+    "good_name": "Portland cement",
+    "id": 8,
+    "import_date": "2026-05-15",
+    "indirect_emissions_t": 11.44,
+    "quantity_t": 104.0
+   },
+   {
+    "cn_code": "2804",
+    "country_of_origin": "CN",
+    "declarant_id": 1,
+    "direct_emissions_t": 1039.5,
+    "emission_source": "default_value",
+    "good_name": "Hydrogen",
+    "id": 9,
+    "import_date": "2026-06-15",
+    "indirect_emissions_t": 242.55,
+    "quantity_t": 105.0
+   },
+   {
+    "cn_code": "2804",
+    "country_of_origin": "IN",
+    "declarant_id": 1,
+    "direct_emissions_t": 1049.4,
+    "emission_source": "default_value",
+    "good_name": "Hydrogen",
+    "id": 10,
+    "import_date": "2026-07-15",
+    "indirect_emissions_t": 244.86,
+    "quantity_t": 106.0
+   },
+   {
+    "cn_code": "2804",
+    "country_of_origin": "default",
+    "declarant_id": 1,
+    "direct_emissions_t": 1059.3,
+    "emission_source": "default_value",
+    "good_name": "Hydrogen",
+    "id": 11,
+    "import_date": "2026-08-15",
+    "indirect_emissions_t": 247.17,
+    "quantity_t": 107.0
+   },
+   {
+    "cn_code": "2804",
+    "country_of_origin": "ZZ",
+    "declarant_id": 1,
+    "direct_emissions_t": 1069.2,
+    "emission_source": "default_value",
+    "good_name": "Hydrogen",
+    "id": 12,
+    "import_date": "2026-09-15",
+    "indirect_emissions_t": 249.48,
+    "quantity_t": 108.0
+   },
+   {
+    "cn_code": "3102",
+    "country_of_origin": "CN",
+    "declarant_id": 1,
+    "direct_emissions_t": 429.351,
+    "emission_source": "default_value",
+    "good_name": "Nitrogen fertilizers",
+    "id": 13,
+    "import_date": "2026-01-15",
+    "indirect_emissions_t": 22.018,
+    "quantity_t": 109.0
+   },
+   {
+    "cn_code": "3102",
+    "country_of_origin": "IN",
+    "declarant_id": 1,
+    "direct_emissions_t": 433.29,
+    "emission_source": "default_value",
+    "good_name": "Nitrogen fertilizers",
+    "id": 14,
+    "import_date": "2026-02-15",
+    "indirect_emissions_t": 22.22,
+    "quantity_t": 110.0
+   },
+   {
+    "cn_code": "3102",
+    "country_of_origin": "default",
+    "declarant_id": 1,
+    "direct_emissions_t": 437.229,
+    "emission_source": "default_value",
+    "good_name": "Nitrogen fertilizers",
+    "id": 15,
+    "import_date": "2026-03-15",
+    "indirect_emissions_t": 22.422,
+    "quantity_t": 111.0
+   },
+   {
+    "cn_code": "3102",
+    "country_of_origin": "ZZ",
+    "declarant_id": 1,
+    "direct_emissions_t": 441.168,
+    "emission_source": "default_value",
+    "good_name": "Nitrogen fertilizers",
+    "id": 16,
+    "import_date": "2026-04-15",
+    "indirect_emissions_t": 22.624,
+    "quantity_t": 112.0
+   },
+   {
+    "cn_code": "7208",
+    "country_of_origin": "CN",
+    "declarant_id": 1,
+    "direct_emissions_t": 323.18,
+    "emission_source": "default_value",
+    "good_name": "Hot-rolled steel",
+    "id": 17,
+    "import_date": "2026-05-15",
+    "indirect_emissions_t": 68.365,
+    "quantity_t": 113.0
+   },
+   {
+    "cn_code": "7208",
+    "country_of_origin": "IN",
+    "declarant_id": 1,
+    "direct_emissions_t": 307.23,
+    "emission_source": "default_value",
+    "good_name": "Hot-rolled steel",
+    "id": 18,
+    "import_date": "2026-06-15",
+    "indirect_emissions_t": 60.192,
+    "quantity_t": 114.0
+   },
+   {
+    "cn_code": "7208",
+    "country_of_origin": "default",
+    "declarant_id": 1,
+    "direct_emissions_t": 265.65,
+    "emission_source": "default_value",
+    "good_name": "Hot-rolled steel",
+    "id": 19,
+    "import_date": "2026-07-15",
+    "indirect_emissions_t": 44.275,
+    "quantity_t": 115.0
+   },
+   {
+    "cn_code": "7208",
+    "country_of_origin": "ZZ",
+    "declarant_id": 1,
+    "direct_emissions_t": 267.96,
+    "emission_source": "default_value",
+    "good_name": "Hot-rolled steel",
+    "id": 20,
+    "import_date": "2026-08-15",
+    "indirect_emissions_t": 44.66,
+    "quantity_t": 116.0
+   },
+   {
+    "cn_code": "7601",
+    "country_of_origin": "CN",
+    "declarant_id": 1,
+    "direct_emissions_t": 199.485,
+    "emission_source": "default_value",
+    "good_name": "Unwrought aluminium",
+    "id": 21,
+    "import_date": "2026-09-15",
+    "indirect_emissions_t": 1106.82,
+    "quantity_t": 117.0
+   },
+   {
+    "cn_code": "7601",
+    "country_of_origin": "IN",
+    "declarant_id": 1,
+    "direct_emissions_t": 201.19,
+    "emission_source": "default_value",
+    "good_name": "Unwrought aluminium",
+    "id": 22,
+    "import_date": "2026-01-15",
+    "indirect_emissions_t": 1116.28,
+    "quantity_t": 118.0
+   },
+   {
+    "cn_code": "7601",
+    "country_of_origin": "default",
+    "declarant_id": 1,
+    "direct_emissions_t": 202.895,
+    "emission_source": "default_value",
+    "good_name": "Unwrought aluminium",
+    "id": 23,
+    "import_date": "2026-02-15",
+    "indirect_emissions_t": 1125.74,
+    "quantity_t": 119.0
+   },
+   {
+    "cn_code": "7601",
+    "country_of_origin": "ZZ",
+    "declarant_id": 1,
+    "direct_emissions_t": 204.6,
+    "emission_source": "default_value",
+    "good_name": "Unwrought aluminium",
+    "id": 24,
+    "import_date": "2026-03-15",
+    "indirect_emissions_t": 1135.2,
+    "quantity_t": 120.0
+   },
+   {
+    "cn_code": "2523",
+    "country_of_origin": "ZZ",
+    "declarant_id": 1,
+    "direct_emissions_t": 12.3456,
+    "emission_source": "actual_verified",
+    "good_name": "Portland cement",
+    "id": 25,
+    "import_date": "2026-11-20",
+    "indirect_emissions_t": 1.5,
+    "quantity_t": 40.0
+   },
+   {
+    "cn_code": "2523",
+    "country_of_origin": "ZZ",
+    "declarant_id": 1,
+    "direct_emissions_t": 7.0,
+    "emission_source": "actual_verified",
+    "good_name": "Portland cement",
+    "id": 26,
+    "import_date": "2026-12-31",
+    "indirect_emissions_t": 0.0,
+    "quantity_t": 40.0
+   }
+  ],
+  "status": 200
+ },
+ "cbam.imports.before": {
+  "body": [
+   {
+    "cn_code": "7208",
+    "country_of_origin": "CN",
+    "declarant_id": 1,
+    "direct_emissions_t": 2772.0,
+    "emission_source": "default_value",
+    "good_name": "Hot-rolled steel",
+    "id": 1,
+    "import_date": "2026-02-10",
+    "indirect_emissions_t": 462.0,
+    "quantity_t": 1200.0
+   },
+   {
+    "cn_code": "7601",
+    "country_of_origin": "default",
+    "declarant_id": 1,
+    "direct_emissions_t": 767.25,
+    "emission_source": "default_value",
+    "good_name": "Unwrought aluminium",
+    "id": 2,
+    "import_date": "2026-02-20",
+    "indirect_emissions_t": 4257.0,
+    "quantity_t": 450.0
+   }
+  ],
+  "status": 200
+ },
+ "cbam.imports.filtered": {
+  "body": [
+   {
+    "cn_code": "7208",
+    "country_of_origin": "CN",
+    "declarant_id": 1,
+    "direct_emissions_t": 2772.0,
+    "emission_source": "default_value",
+    "good_name": "Hot-rolled steel",
+    "id": 1,
+    "import_date": "2026-02-10",
+    "indirect_emissions_t": 462.0,
+    "quantity_t": 1200.0
+   },
+   {
+    "cn_code": "7601",
+    "country_of_origin": "default",
+    "declarant_id": 1,
+    "direct_emissions_t": 767.25,
+    "emission_source": "default_value",
+    "good_name": "Unwrought aluminium",
+    "id": 2,
+    "import_date": "2026-02-20",
+    "indirect_emissions_t": 4257.0,
+    "quantity_t": 450.0
+   },
+   {
+    "cn_code": "2523",
+    "country_of_origin": "CN",
+    "declarant_id": 1,
+    "direct_emissions_t": 94.435,
+    "emission_source": "default_value",
+    "good_name": "Portland cement",
+    "id": 5,
+    "import_date": "2026-02-15",
+    "indirect_emissions_t": 11.11,
+    "quantity_t": 101.0
+   },
+   {
+    "cn_code": "2523",
+    "country_of_origin": "IN",
+    "declarant_id": 1,
+    "direct_emissions_t": 95.37,
+    "emission_source": "default_value",
+    "good_name": "Portland cement",
+    "id": 6,
+    "import_date": "2026-03-15",
+    "indirect_emissions_t": 11.22,
+    "quantity_t": 102.0
+   },
+   {
+    "cn_code": "2523",
+    "country_of_origin": "default",
+    "declarant_id": 1,
+    "direct_emissions_t": 96.305,
+    "emission_source": "default_value",
+    "good_name": "Portland cement",
+    "id": 7,
+    "import_date": "2026-04-15",
+    "indirect_emissions_t": 11.33,
+    "quantity_t": 103.0
+   },
+   {
+    "cn_code": "2523",
+    "country_of_origin": "ZZ",
+    "declarant_id": 1,
+    "direct_emissions_t": 97.24,
+    "emission_source": "default_value",
+    "good_name": "Portland cement",
+    "id": 8,
+    "import_date": "2026-05-15",
+    "indirect_emissions_t": 11.44,
+    "quantity_t": 104.0
+   },
+   {
+    "cn_code": "2804",
+    "country_of_origin": "CN",
+    "declarant_id": 1,
+    "direct_emissions_t": 1039.5,
+    "emission_source": "default_value",
+    "good_name": "Hydrogen",
+    "id": 9,
+    "import_date": "2026-06-15",
+    "indirect_emissions_t": 242.55,
+    "quantity_t": 105.0
+   },
+   {
+    "cn_code": "2804",
+    "country_of_origin": "IN",
+    "declarant_id": 1,
+    "direct_emissions_t": 1049.4,
+    "emission_source": "default_value",
+    "good_name": "Hydrogen",
+    "id": 10,
+    "import_date": "2026-07-15",
+    "indirect_emissions_t": 244.86,
+    "quantity_t": 106.0
+   },
+   {
+    "cn_code": "2804",
+    "country_of_origin": "default",
+    "declarant_id": 1,
+    "direct_emissions_t": 1059.3,
+    "emission_source": "default_value",
+    "good_name": "Hydrogen",
+    "id": 11,
+    "import_date": "2026-08-15",
+    "indirect_emissions_t": 247.17,
+    "quantity_t": 107.0
+   },
+   {
+    "cn_code": "2804",
+    "country_of_origin": "ZZ",
+    "declarant_id": 1,
+    "direct_emissions_t": 1069.2,
+    "emission_source": "default_value",
+    "good_name": "Hydrogen",
+    "id": 12,
+    "import_date": "2026-09-15",
+    "indirect_emissions_t": 249.48,
+    "quantity_t": 108.0
+   },
+   {
+    "cn_code": "3102",
+    "country_of_origin": "CN",
+    "declarant_id": 1,
+    "direct_emissions_t": 429.351,
+    "emission_source": "default_value",
+    "good_name": "Nitrogen fertilizers",
+    "id": 13,
+    "import_date": "2026-01-15",
+    "indirect_emissions_t": 22.018,
+    "quantity_t": 109.0
+   },
+   {
+    "cn_code": "3102",
+    "country_of_origin": "IN",
+    "declarant_id": 1,
+    "direct_emissions_t": 433.29,
+    "emission_source": "default_value",
+    "good_name": "Nitrogen fertilizers",
+    "id": 14,
+    "import_date": "2026-02-15",
+    "indirect_emissions_t": 22.22,
+    "quantity_t": 110.0
+   },
+   {
+    "cn_code": "3102",
+    "country_of_origin": "default",
+    "declarant_id": 1,
+    "direct_emissions_t": 437.229,
+    "emission_source": "default_value",
+    "good_name": "Nitrogen fertilizers",
+    "id": 15,
+    "import_date": "2026-03-15",
+    "indirect_emissions_t": 22.422,
+    "quantity_t": 111.0
+   },
+   {
+    "cn_code": "3102",
+    "country_of_origin": "ZZ",
+    "declarant_id": 1,
+    "direct_emissions_t": 441.168,
+    "emission_source": "default_value",
+    "good_name": "Nitrogen fertilizers",
+    "id": 16,
+    "import_date": "2026-04-15",
+    "indirect_emissions_t": 22.624,
+    "quantity_t": 112.0
+   },
+   {
+    "cn_code": "7208",
+    "country_of_origin": "CN",
+    "declarant_id": 1,
+    "direct_emissions_t": 323.18,
+    "emission_source": "default_value",
+    "good_name": "Hot-rolled steel",
+    "id": 17,
+    "import_date": "2026-05-15",
+    "indirect_emissions_t": 68.365,
+    "quantity_t": 113.0
+   },
+   {
+    "cn_code": "7208",
+    "country_of_origin": "IN",
+    "declarant_id": 1,
+    "direct_emissions_t": 307.23,
+    "emission_source": "default_value",
+    "good_name": "Hot-rolled steel",
+    "id": 18,
+    "import_date": "2026-06-15",
+    "indirect_emissions_t": 60.192,
+    "quantity_t": 114.0
+   },
+   {
+    "cn_code": "7208",
+    "country_of_origin": "default",
+    "declarant_id": 1,
+    "direct_emissions_t": 265.65,
+    "emission_source": "default_value",
+    "good_name": "Hot-rolled steel",
+    "id": 19,
+    "import_date": "2026-07-15",
+    "indirect_emissions_t": 44.275,
+    "quantity_t": 115.0
+   },
+   {
+    "cn_code": "7208",
+    "country_of_origin": "ZZ",
+    "declarant_id": 1,
+    "direct_emissions_t": 267.96,
+    "emission_source": "default_value",
+    "good_name": "Hot-rolled steel",
+    "id": 20,
+    "import_date": "2026-08-15",
+    "indirect_emissions_t": 44.66,
+    "quantity_t": 116.0
+   },
+   {
+    "cn_code": "7601",
+    "country_of_origin": "CN",
+    "declarant_id": 1,
+    "direct_emissions_t": 199.485,
+    "emission_source": "default_value",
+    "good_name": "Unwrought aluminium",
+    "id": 21,
+    "import_date": "2026-09-15",
+    "indirect_emissions_t": 1106.82,
+    "quantity_t": 117.0
+   },
+   {
+    "cn_code": "7601",
+    "country_of_origin": "IN",
+    "declarant_id": 1,
+    "direct_emissions_t": 201.19,
+    "emission_source": "default_value",
+    "good_name": "Unwrought aluminium",
+    "id": 22,
+    "import_date": "2026-01-15",
+    "indirect_emissions_t": 1116.28,
+    "quantity_t": 118.0
+   },
+   {
+    "cn_code": "7601",
+    "country_of_origin": "default",
+    "declarant_id": 1,
+    "direct_emissions_t": 202.895,
+    "emission_source": "default_value",
+    "good_name": "Unwrought aluminium",
+    "id": 23,
+    "import_date": "2026-02-15",
+    "indirect_emissions_t": 1125.74,
+    "quantity_t": 119.0
+   },
+   {
+    "cn_code": "7601",
+    "country_of_origin": "ZZ",
+    "declarant_id": 1,
+    "direct_emissions_t": 204.6,
+    "emission_source": "default_value",
+    "good_name": "Unwrought aluminium",
+    "id": 24,
+    "import_date": "2026-03-15",
+    "indirect_emissions_t": 1135.2,
+    "quantity_t": 120.0
+   },
+   {
+    "cn_code": "2523",
+    "country_of_origin": "ZZ",
+    "declarant_id": 1,
+    "direct_emissions_t": 12.3456,
+    "emission_source": "actual_verified",
+    "good_name": "Portland cement",
+    "id": 25,
+    "import_date": "2026-11-20",
+    "indirect_emissions_t": 1.5,
+    "quantity_t": 40.0
+   },
+   {
+    "cn_code": "2523",
+    "country_of_origin": "ZZ",
+    "declarant_id": 1,
+    "direct_emissions_t": 7.0,
+    "emission_source": "actual_verified",
+    "good_name": "Portland cement",
+    "id": 26,
+    "import_date": "2026-12-31",
+    "indirect_emissions_t": 0.0,
+    "quantity_t": 40.0
+   }
+  ],
+  "status": 200
+ },
+ "cbam.imports.other_tenant": {
+  "body": [
+   {
+    "cn_code": "3102",
+    "country_of_origin": "default",
+    "declarant_id": 2,
+    "direct_emissions_t": 11817.0,
+    "emission_source": "default_value",
+    "good_name": "Nitrogen fertilizers",
+    "id": 3,
+    "import_date": "2026-02-05",
+    "indirect_emissions_t": 606.0,
+    "quantity_t": 3000.0
+   },
+   {
+    "cn_code": "2523",
+    "country_of_origin": "default",
+    "declarant_id": 2,
+    "direct_emissions_t": 748.0,
+    "emission_source": "default_value",
+    "good_name": "Portland cement",
+    "id": 4,
+    "import_date": "2026-03-01",
+    "indirect_emissions_t": 88.0,
+    "quantity_t": 800.0
+   }
+  ],
+  "status": 200
+ },
+ "cbam.phase_in": {
+  "body": [
+   {
+    "cbam_factor_pct": 2.5,
+    "free_allocation_pct": 97.5,
+    "id": 1,
+    "note": "First compliance year; certificate purchase itself deferred to Feb 2027 by the Omnibus amendment.",
+    "year": 2026
+   },
+   {
+    "cbam_factor_pct": 5.0,
+    "free_allocation_pct": 95.0,
+    "id": 2,
+    "note": null,
+    "year": 2027
+   },
+   {
+    "cbam_factor_pct": 10.0,
+    "free_allocation_pct": 90.0,
+    "id": 3,
+    "note": null,
+    "year": 2028
+   },
+   {
+    "cbam_factor_pct": 22.5,
+    "free_allocation_pct": 77.5,
+    "id": 4,
+    "note": null,
+    "year": 2029
+   },
+   {
+    "cbam_factor_pct": 48.5,
+    "free_allocation_pct": 51.5,
+    "id": 5,
+    "note": "Largest single-year jump in the schedule: +26 points from 2029.",
+    "year": 2030
+   },
+   {
+    "cbam_factor_pct": 61.0,
+    "free_allocation_pct": 39.0,
+    "id": 6,
+    "note": null,
+    "year": 2031
+   },
+   {
+    "cbam_factor_pct": 73.5,
+    "free_allocation_pct": 26.5,
+    "id": 7,
+    "note": null,
+    "year": 2032
+   },
+   {
+    "cbam_factor_pct": 86.0,
+    "free_allocation_pct": 14.0,
+    "id": 8,
+    "note": null,
+    "year": 2033
+   },
+   {
+    "cbam_factor_pct": 100.0,
+    "free_allocation_pct": 0.0,
+    "id": 9,
+    "note": "Free allocation to the equivalent EU ETS sector reaches zero \u2014 full embedded-emissions liability.",
+    "year": 2034
+   }
+  ],
+  "status": 200
+ },
+ "cbam.projection.2025": {
+  "body": {
+   "base_year": 2025,
+   "note": "Illustrative projection only: holds 2025's actual embedded-emissions volume constant across every scheduled year \u2014 real import volumes and the EUA-linked certificate price will both move. Shows the shape of the phase-in ramp, not a forecast.",
+   "reference_price_eur_per_t": 61.49,
+   "total_embedded_emissions_t": 0.0,
+   "years": [
+    {
+     "cbam_factor_pct": 2.5,
+     "obligation_cost_eur": 0.0,
+     "obligation_t": 0.0,
+     "year": 2026
+    },
+    {
+     "cbam_factor_pct": 5.0,
+     "obligation_cost_eur": 0.0,
+     "obligation_t": 0.0,
+     "year": 2027
+    },
+    {
+     "cbam_factor_pct": 10.0,
+     "obligation_cost_eur": 0.0,
+     "obligation_t": 0.0,
+     "year": 2028
+    },
+    {
+     "cbam_factor_pct": 22.5,
+     "obligation_cost_eur": 0.0,
+     "obligation_t": 0.0,
+     "year": 2029
+    },
+    {
+     "cbam_factor_pct": 48.5,
+     "obligation_cost_eur": 0.0,
+     "obligation_t": 0.0,
+     "year": 2030
+    },
+    {
+     "cbam_factor_pct": 61.0,
+     "obligation_cost_eur": 0.0,
+     "obligation_t": 0.0,
+     "year": 2031
+    },
+    {
+     "cbam_factor_pct": 73.5,
+     "obligation_cost_eur": 0.0,
+     "obligation_t": 0.0,
+     "year": 2032
+    },
+    {
+     "cbam_factor_pct": 86.0,
+     "obligation_cost_eur": 0.0,
+     "obligation_t": 0.0,
+     "year": 2033
+    },
+    {
+     "cbam_factor_pct": 100.0,
+     "obligation_cost_eur": 0.0,
+     "obligation_t": 0.0,
+     "year": 2034
+    }
+   ]
+  },
+  "status": 200
+ },
+ "cbam.projection.2026": {
+  "body": {
+   "base_year": 2026,
+   "note": "Illustrative projection only: holds 2026's actual embedded-emissions volume constant across every scheduled year \u2014 real import volumes and the EUA-linked certificate price will both move. Shows the shape of the phase-in ramp, not a forecast.",
+   "reference_price_eur_per_t": 61.49,
+   "total_embedded_emissions_t": 22413.05,
+   "years": [
+    {
+     "cbam_factor_pct": 2.5,
+     "obligation_cost_eur": 34454.46,
+     "obligation_t": 560.326,
+     "year": 2026
+    },
+    {
+     "cbam_factor_pct": 5.0,
+     "obligation_cost_eur": 68908.92,
+     "obligation_t": 1120.652,
+     "year": 2027
+    },
+    {
+     "cbam_factor_pct": 10.0,
+     "obligation_cost_eur": 137817.84,
+     "obligation_t": 2241.305,
+     "year": 2028
+    },
+    {
+     "cbam_factor_pct": 22.5,
+     "obligation_cost_eur": 310090.14,
+     "obligation_t": 5042.936,
+     "year": 2029
+    },
+    {
+     "cbam_factor_pct": 48.5,
+     "obligation_cost_eur": 668416.53,
+     "obligation_t": 10870.329,
+     "year": 2030
+    },
+    {
+     "cbam_factor_pct": 61.0,
+     "obligation_cost_eur": 840688.84,
+     "obligation_t": 13671.96,
+     "year": 2031
+    },
+    {
+     "cbam_factor_pct": 73.5,
+     "obligation_cost_eur": 1012961.14,
+     "obligation_t": 16473.591,
+     "year": 2032
+    },
+    {
+     "cbam_factor_pct": 86.0,
+     "obligation_cost_eur": 1185233.44,
+     "obligation_t": 19275.223,
+     "year": 2033
+    },
+    {
+     "cbam_factor_pct": 100.0,
+     "obligation_cost_eur": 1378178.42,
+     "obligation_t": 22413.05,
+     "year": 2034
+    }
+   ]
+  },
+  "status": 200
+ },
+ "cbam.reconcile.2025.q1": {
+  "body": {
+   "certificates_surrendered_t": 0.0,
+   "declarant_id": 1,
+   "id": 1,
+   "quarter": 1,
+   "status": "reconciled",
+   "total_embedded_emissions_t": 0.0,
+   "year": 2025
+  },
+  "status": 200
+ },
+ "cbam.reconcile.2025.q2": {
+  "body": {
+   "certificates_surrendered_t": 0.0,
+   "declarant_id": 1,
+   "id": 2,
+   "quarter": 2,
+   "status": "reconciled",
+   "total_embedded_emissions_t": 0.0,
+   "year": 2025
+  },
+  "status": 200
+ },
+ "cbam.reconcile.2025.q3": {
+  "body": {
+   "certificates_surrendered_t": 0.0,
+   "declarant_id": 1,
+   "id": 3,
+   "quarter": 3,
+   "status": "reconciled",
+   "total_embedded_emissions_t": 0.0,
+   "year": 2025
+  },
+  "status": 200
+ },
+ "cbam.reconcile.2025.q4": {
+  "body": {
+   "certificates_surrendered_t": 0.0,
+   "declarant_id": 1,
+   "id": 4,
+   "quarter": 4,
+   "status": "reconciled",
+   "total_embedded_emissions_t": 0.0,
+   "year": 2025
+  },
+  "status": 200
+ },
+ "cbam.reconcile.2026.q1": {
+  "body": {
+   "certificates_surrendered_t": 2500.0,
+   "declarant_id": 1,
+   "id": 5,
+   "quarter": 1,
+   "status": "reconciled",
+   "total_embedded_emissions_t": 13822.82,
+   "year": 2026
+  },
+  "status": 200
+ },
+ "cbam.reconcile.2026.q2": {
+  "body": {
+   "certificates_surrendered_t": 0.0,
+   "declarant_id": 1,
+   "id": 6,
+   "quarter": 2,
+   "status": "reconciled",
+   "total_embedded_emissions_t": 2721.124,
+   "year": 2026
+  },
+  "status": 200
+ },
+ "cbam.reconcile.2026.q3": {
+  "body": {
+   "certificates_surrendered_t": 0.0,
+   "declarant_id": 1,
+   "id": 7,
+   "quarter": 3,
+   "status": "reconciled",
+   "total_embedded_emissions_t": 5848.26,
+   "year": 2026
+  },
+  "status": 200
+ },
+ "cbam.reconcile.2026.q4": {
+  "body": {
+   "certificates_surrendered_t": 0.0,
+   "declarant_id": 1,
+   "id": 8,
+   "quarter": 4,
+   "status": "reconciled",
+   "total_embedded_emissions_t": 20.846,
+   "year": 2026
+  },
+  "status": 200
+ },
+ "cbam.reconcile.foreign": {
+  "body": {
+   "detail": "This declarant does not belong to your tenant"
+  },
+  "status": 403
+ },
+ "india.article6": {
+  "body": [
+   {
+    "also_ccts_offset_eligible": false,
+    "category": "alternate_materials",
+    "id": 12,
+    "internationally_tradeable": true,
+    "name": "Green ammonia",
+    "notes": null
+   },
+   {
+    "also_ccts_offset_eligible": false,
+    "category": "mitigation",
+    "id": 1,
+    "internationally_tradeable": true,
+    "name": "Renewable energy with storage (stored component only)",
+    "notes": null
+   },
+   {
+    "also_ccts_offset_eligible": false,
+    "category": "mitigation",
+    "id": 2,
+    "internationally_tradeable": true,
+    "name": "Solar thermal power",
+    "notes": null
+   },
+   {
+    "also_ccts_offset_eligible": false,
+    "category": "mitigation",
+    "id": 3,
+    "internationally_tradeable": true,
+    "name": "Offshore wind",
+    "notes": null
+   },
+   {
+    "also_ccts_offset_eligible": false,
+    "category": "mitigation",
+    "id": 4,
+    "internationally_tradeable": true,
+    "name": "Green hydrogen",
+    "notes": null
+   },
+   {
+    "also_ccts_offset_eligible": false,
+    "category": "mitigation",
+    "id": 5,
+    "internationally_tradeable": true,
+    "name": "Compressed biogas",
+    "notes": null
+   },
+   {
+    "also_ccts_offset_eligible": false,
+    "category": "mitigation",
+    "id": 6,
+    "internationally_tradeable": true,
+    "name": "Emerging mobility / fuel cells",
+    "notes": null
+   },
+   {
+    "also_ccts_offset_eligible": true,
+    "category": "mitigation",
+    "id": 7,
+    "internationally_tradeable": true,
+    "name": "High-efficiency / high-end energy-efficiency technology",
+    "notes": null
+   },
+   {
+    "also_ccts_offset_eligible": false,
+    "category": "mitigation",
+    "id": 8,
+    "internationally_tradeable": true,
+    "name": "Sustainable aviation fuel (SAF)",
+    "notes": null
+   },
+   {
+    "also_ccts_offset_eligible": false,
+    "category": "mitigation",
+    "id": 9,
+    "internationally_tradeable": true,
+    "name": "Best Available Technologies (BAT) for hard-to-abate process improvement",
+    "notes": null
+   },
+   {
+    "also_ccts_offset_eligible": false,
+    "category": "mitigation",
+    "id": 10,
+    "internationally_tradeable": true,
+    "name": "Tidal / ocean thermal / salt-gradient / wave / current energy",
+    "notes": null
+   },
+   {
+    "also_ccts_offset_eligible": false,
+    "category": "mitigation",
+    "id": 11,
+    "internationally_tradeable": true,
+    "name": "HVDC transmission paired with renewable energy projects",
+    "notes": null
+   },
+   {
+    "also_ccts_offset_eligible": true,
+    "category": "mitigation",
+    "id": 14,
+    "internationally_tradeable": false,
+    "name": "Ethanol / 1G crop-based biofuel (India's EBP programme)",
+    "notes": "Domestic-only: not on MoEFCC's Article 6.2 list (confirmed absent, and absent from the mirrored India-Japan JCM list too) \u2014 the EBP/E20 mandate fails the additionality test, and maize-feedstock diversion (6%->50% of feedstock in 3 years) raises a real food-security/ILUC concern. Sector-level domestic CCTS Offset eligibility (energy/agriculture) is plausible in principle, but BEE's one bioenergy methodology (BM 001) requires dedicated plantations, incompatible with India's existing sugarcane/maize/rice feedstock \u2014 not a clean methodology fit for 1G ethanol as it stands. Brazil's CBIOs, US RINs/45Z/LCFS, and the EU's RED III mechanism are domestic/regional compliance instruments, not internationally-transferable ITMOs, with no bilateral Article 6.2 channel to India \u2014 excluded as a source of inbound international supply for the same reason. 2G/cellulosic ethanol is a plausible future addition if BEE issues a dedicated methodology; no evidence this is imminent."
+   },
+   {
+    "also_ccts_offset_eligible": true,
+    "category": "removal",
+    "id": 13,
+    "internationally_tradeable": true,
+    "name": "Carbon Capture, Utilization and Storage (CCUS)",
+    "notes": null
+   }
+  ],
+  "status": 200
+ },
+ "india.benchmarks": {
+  "body": [
+   {
+    "capacity_factor_pct": 16.2,
+    "grid_emission_factor_tco2_per_mwh": 0.736,
+    "id": 6,
+    "methodology": "CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor",
+    "mwh_per_mw_per_year": 1415.0,
+    "notes": "MNRE's 'bio-power' category conflates biomass, bagasse cogeneration, and waste-to-energy \u2014 a true biomass-only figure would differ. Some biomass sub-types may also need a small project-emissions (PEy) deduction for fossil co-firing/transport, not applied here.",
+    "region": "India (national fleet average, FY2024-25)",
+    "source_confidence": "primary",
+    "source_name": "MNRE Renewable Energy Statistics 2024-25",
+    "source_url": "https://cdnbbsr.s3waas.gov.in/s3716e1b8c6cd17b771da77391355749f3/uploads/2025/11/202511061627678782.pdf",
+    "tco2e_per_mw_per_year": 1041.0,
+    "technology": "Biomass / bagasse / waste-to-energy power"
+   },
+   {
+    "capacity_factor_pct": 44.0,
+    "grid_emission_factor_tco2_per_mwh": null,
+    "id": 7,
+    "methodology": "CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor",
+    "mwh_per_mw_per_year": 3854.0,
+    "notes": "Deliberately left without a tCO2e/MW figure: the grid emission factor to multiply by depends entirely on which country's grid the project sits under \u2014 there's no single 'global offshore' EF. Use the mwh_per_mw_per_year figure with whatever host-country grid factor applies.",
+    "region": "International (no operational India project to derive a local figure)",
+    "source_confidence": "secondary",
+    "source_name": "Real operating farms: Norther (Belgium) 43.1%, Alpha Ventus (Germany) 42-42.7%, European offshore fleet avg ~45.8%",
+    "source_url": "https://en.wikipedia.org/wiki/Norther_Offshore_Wind_Farm",
+    "tco2e_per_mw_per_year": null,
+    "technology": "Offshore wind"
+   },
+   {
+    "capacity_factor_pct": 19.8,
+    "grid_emission_factor_tco2_per_mwh": 0.736,
+    "id": 4,
+    "methodology": "CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor",
+    "mwh_per_mw_per_year": 1735.0,
+    "notes": "Derived the same way as the solar fleet average. Site-level range is wide (~12-30%+) \u2014 older CDM-era Tamil Nadu/Gujarat sites averaged only ~11.8-18.5%, modern tall-tower turbines in good wind-class sites do meaningfully better.",
+    "region": "India (national fleet average, FY2024-25)",
+    "source_confidence": "primary",
+    "source_name": "MNRE Renewable Energy Statistics 2024-25 (capacity+generation, CUF derived) + CEA CO2 Baseline Database v21.0",
+    "source_url": "https://cdnbbsr.s3waas.gov.in/s3716e1b8c6cd17b771da77391355749f3/uploads/2025/11/202511061627678782.pdf",
+    "tco2e_per_mw_per_year": 1277.0,
+    "technology": "Onshore wind"
+   },
+   {
+    "capacity_factor_pct": 26.2,
+    "grid_emission_factor_tco2_per_mwh": 0.736,
+    "id": 5,
+    "methodology": "CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor",
+    "mwh_per_mw_per_year": 2290.0,
+    "notes": "Derived the same way as solar/wind fleet averages.",
+    "region": "India (national fleet average, FY2024-25)",
+    "source_confidence": "primary",
+    "source_name": "MNRE Renewable Energy Statistics 2024-25",
+    "source_url": "https://cdnbbsr.s3waas.gov.in/s3716e1b8c6cd17b771da77391355749f3/uploads/2025/11/202511061627678782.pdf",
+    "tco2e_per_mw_per_year": 1685.0,
+    "technology": "Small hydro"
+   },
+   {
+    "capacity_factor_pct": 17.5,
+    "grid_emission_factor_tco2_per_mwh": 0.736,
+    "id": 1,
+    "methodology": "CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor",
+    "mwh_per_mw_per_year": 1530.0,
+    "notes": "CUF is DERIVED by dividing MNRE's official FY2024-25 generation by average installed capacity \u2014 not an officially-published CUF table (none was found). Blends old+new plants and all site qualities; individual projects range ~14-26%+.",
+    "region": "India (national fleet average, FY2024-25)",
+    "source_confidence": "primary",
+    "source_name": "MNRE Renewable Energy Statistics 2024-25 (capacity+generation, CUF derived) + CEA CO2 Baseline Database v21.0 (grid factor)",
+    "source_url": "https://cdnbbsr.s3waas.gov.in/s3716e1b8c6cd17b771da77391355749f3/uploads/2025/11/202511061627678782.pdf",
+    "tco2e_per_mw_per_year": 1126.0,
+    "technology": "Solar PV"
+   },
+   {
+    "capacity_factor_pct": 19.0,
+    "grid_emission_factor_tco2_per_mwh": 0.736,
+    "id": 2,
+    "methodology": "CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor",
+    "mwh_per_mw_per_year": 1664.0,
+    "notes": "The 19% figure is widely cited as the regulatory benchmark used in Indian solar tariff determinations; CERC's Renewable Energy Tariff Regulations 2024 is the likely primary source but was not fetched directly in this research pass.",
+    "region": "India (MNRE/CERC regulatory tariff-setting benchmark)",
+    "source_confidence": "secondary",
+    "source_name": "MNRE/CERC regulatory CUF benchmark used in tariff determination",
+    "source_url": null,
+    "tco2e_per_mw_per_year": 1225.0,
+    "technology": "Solar PV"
+   },
+   {
+    "capacity_factor_pct": 23.8,
+    "grid_emission_factor_tco2_per_mwh": 0.736,
+    "id": 3,
+    "methodology": "CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor",
+    "mwh_per_mw_per_year": 2083.0,
+    "notes": "A high-performing tracker-equipped real project, shown to illustrate the real range above the national fleet average \u2014 not a typical/default figure.",
+    "region": "India \u2014 Kamuthi Solar Park, Tamil Nadu (real operating project)",
+    "source_confidence": "secondary",
+    "source_name": "Kamuthi Solar Power Project (648 MWp, ~1.35 TWh/yr observed)",
+    "source_url": "https://en.wikipedia.org/wiki/Kamuthi_Solar_Power_Project",
+    "tco2e_per_mw_per_year": 1533.0,
+    "technology": "Solar PV"
+   }
+  ],
+  "status": 200
+ },
+ "india.capacity.1": {
+  "body": {
+   "benchmark": {
+    "capacity_factor_pct": 17.5,
+    "grid_emission_factor_tco2_per_mwh": 0.736,
+    "id": 1,
+    "methodology": "CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor",
+    "mwh_per_mw_per_year": 1530.0,
+    "notes": "CUF is DERIVED by dividing MNRE's official FY2024-25 generation by average installed capacity \u2014 not an officially-published CUF table (none was found). Blends old+new plants and all site qualities; individual projects range ~14-26%+.",
+    "region": "India (national fleet average, FY2024-25)",
+    "source_confidence": "primary",
+    "source_name": "MNRE Renewable Energy Statistics 2024-25 (capacity+generation, CUF derived) + CEA CO2 Baseline Database v21.0 (grid factor)",
+    "source_url": "https://cdnbbsr.s3waas.gov.in/s3716e1b8c6cd17b771da77391355749f3/uploads/2025/11/202511061627678782.pdf",
+    "tco2e_per_mw_per_year": 1126.0,
+    "technology": "Solar PV"
+   },
+   "capacity_mw": 250.5,
+   "estimated_annual_mwh": 383265.0,
+   "estimated_annual_tco2e": 282063.0,
+   "note": "250.5 MW x 1530.0 MWh/MW/yr x 0.736 tCO2/MWh (CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor). This is an estimate from a benchmark capacity factor, not metered generation \u2014 real crediting under ACM0002/VMR0017 always uses actual metered output."
+  },
+  "status": 200
+ },
+ "india.capacity.2": {
+  "body": {
+   "benchmark": {
+    "capacity_factor_pct": 19.0,
+    "grid_emission_factor_tco2_per_mwh": 0.736,
+    "id": 2,
+    "methodology": "CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor",
+    "mwh_per_mw_per_year": 1664.0,
+    "notes": "The 19% figure is widely cited as the regulatory benchmark used in Indian solar tariff determinations; CERC's Renewable Energy Tariff Regulations 2024 is the likely primary source but was not fetched directly in this research pass.",
+    "region": "India (MNRE/CERC regulatory tariff-setting benchmark)",
+    "source_confidence": "secondary",
+    "source_name": "MNRE/CERC regulatory CUF benchmark used in tariff determination",
+    "source_url": null,
+    "tco2e_per_mw_per_year": 1225.0,
+    "technology": "Solar PV"
+   },
+   "capacity_mw": 250.5,
+   "estimated_annual_mwh": 416832.0,
+   "estimated_annual_tco2e": 306862.5,
+   "note": "250.5 MW x 1664.0 MWh/MW/yr x 0.736 tCO2/MWh (CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor). This is an estimate from a benchmark capacity factor, not metered generation \u2014 real crediting under ACM0002/VMR0017 always uses actual metered output."
+  },
+  "status": 200
+ },
+ "india.capacity.3": {
+  "body": {
+   "benchmark": {
+    "capacity_factor_pct": 23.8,
+    "grid_emission_factor_tco2_per_mwh": 0.736,
+    "id": 3,
+    "methodology": "CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor",
+    "mwh_per_mw_per_year": 2083.0,
+    "notes": "A high-performing tracker-equipped real project, shown to illustrate the real range above the national fleet average \u2014 not a typical/default figure.",
+    "region": "India \u2014 Kamuthi Solar Park, Tamil Nadu (real operating project)",
+    "source_confidence": "secondary",
+    "source_name": "Kamuthi Solar Power Project (648 MWp, ~1.35 TWh/yr observed)",
+    "source_url": "https://en.wikipedia.org/wiki/Kamuthi_Solar_Power_Project",
+    "tco2e_per_mw_per_year": 1533.0,
+    "technology": "Solar PV"
+   },
+   "capacity_mw": 250.5,
+   "estimated_annual_mwh": 521791.5,
+   "estimated_annual_tco2e": 384016.5,
+   "note": "250.5 MW x 2083.0 MWh/MW/yr x 0.736 tCO2/MWh (CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor). This is an estimate from a benchmark capacity factor, not metered generation \u2014 real crediting under ACM0002/VMR0017 always uses actual metered output."
+  },
+  "status": 200
+ },
+ "india.capacity.4": {
+  "body": {
+   "benchmark": {
+    "capacity_factor_pct": 19.8,
+    "grid_emission_factor_tco2_per_mwh": 0.736,
+    "id": 4,
+    "methodology": "CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor",
+    "mwh_per_mw_per_year": 1735.0,
+    "notes": "Derived the same way as the solar fleet average. Site-level range is wide (~12-30%+) \u2014 older CDM-era Tamil Nadu/Gujarat sites averaged only ~11.8-18.5%, modern tall-tower turbines in good wind-class sites do meaningfully better.",
+    "region": "India (national fleet average, FY2024-25)",
+    "source_confidence": "primary",
+    "source_name": "MNRE Renewable Energy Statistics 2024-25 (capacity+generation, CUF derived) + CEA CO2 Baseline Database v21.0",
+    "source_url": "https://cdnbbsr.s3waas.gov.in/s3716e1b8c6cd17b771da77391355749f3/uploads/2025/11/202511061627678782.pdf",
+    "tco2e_per_mw_per_year": 1277.0,
+    "technology": "Onshore wind"
+   },
+   "capacity_mw": 250.5,
+   "estimated_annual_mwh": 434617.5,
+   "estimated_annual_tco2e": 319888.5,
+   "note": "250.5 MW x 1735.0 MWh/MW/yr x 0.736 tCO2/MWh (CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor). This is an estimate from a benchmark capacity factor, not metered generation \u2014 real crediting under ACM0002/VMR0017 always uses actual metered output."
+  },
+  "status": 200
+ },
+ "india.capacity.5": {
+  "body": {
+   "benchmark": {
+    "capacity_factor_pct": 26.2,
+    "grid_emission_factor_tco2_per_mwh": 0.736,
+    "id": 5,
+    "methodology": "CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor",
+    "mwh_per_mw_per_year": 2290.0,
+    "notes": "Derived the same way as solar/wind fleet averages.",
+    "region": "India (national fleet average, FY2024-25)",
+    "source_confidence": "primary",
+    "source_name": "MNRE Renewable Energy Statistics 2024-25",
+    "source_url": "https://cdnbbsr.s3waas.gov.in/s3716e1b8c6cd17b771da77391355749f3/uploads/2025/11/202511061627678782.pdf",
+    "tco2e_per_mw_per_year": 1685.0,
+    "technology": "Small hydro"
+   },
+   "capacity_mw": 250.5,
+   "estimated_annual_mwh": 573645.0,
+   "estimated_annual_tco2e": 422092.5,
+   "note": "250.5 MW x 2290.0 MWh/MW/yr x 0.736 tCO2/MWh (CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor). This is an estimate from a benchmark capacity factor, not metered generation \u2014 real crediting under ACM0002/VMR0017 always uses actual metered output."
+  },
+  "status": 200
+ },
+ "india.capacity.6": {
+  "body": {
+   "benchmark": {
+    "capacity_factor_pct": 16.2,
+    "grid_emission_factor_tco2_per_mwh": 0.736,
+    "id": 6,
+    "methodology": "CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor",
+    "mwh_per_mw_per_year": 1415.0,
+    "notes": "MNRE's 'bio-power' category conflates biomass, bagasse cogeneration, and waste-to-energy \u2014 a true biomass-only figure would differ. Some biomass sub-types may also need a small project-emissions (PEy) deduction for fossil co-firing/transport, not applied here.",
+    "region": "India (national fleet average, FY2024-25)",
+    "source_confidence": "primary",
+    "source_name": "MNRE Renewable Energy Statistics 2024-25",
+    "source_url": "https://cdnbbsr.s3waas.gov.in/s3716e1b8c6cd17b771da77391355749f3/uploads/2025/11/202511061627678782.pdf",
+    "tco2e_per_mw_per_year": 1041.0,
+    "technology": "Biomass / bagasse / waste-to-energy power"
+   },
+   "capacity_mw": 250.5,
+   "estimated_annual_mwh": 354457.5,
+   "estimated_annual_tco2e": 260770.5,
+   "note": "250.5 MW x 1415.0 MWh/MW/yr x 0.736 tCO2/MWh (CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor). This is an estimate from a benchmark capacity factor, not metered generation \u2014 real crediting under ACM0002/VMR0017 always uses actual metered output."
+  },
+  "status": 200
+ },
+ "india.capacity.7": {
+  "body": {
+   "benchmark": {
+    "capacity_factor_pct": 44.0,
+    "grid_emission_factor_tco2_per_mwh": null,
+    "id": 7,
+    "methodology": "CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor",
+    "mwh_per_mw_per_year": 3854.0,
+    "notes": "Deliberately left without a tCO2e/MW figure: the grid emission factor to multiply by depends entirely on which country's grid the project sits under \u2014 there's no single 'global offshore' EF. Use the mwh_per_mw_per_year figure with whatever host-country grid factor applies.",
+    "region": "International (no operational India project to derive a local figure)",
+    "source_confidence": "secondary",
+    "source_name": "Real operating farms: Norther (Belgium) 43.1%, Alpha Ventus (Germany) 42-42.7%, European offshore fleet avg ~45.8%",
+    "source_url": "https://en.wikipedia.org/wiki/Norther_Offshore_Wind_Farm",
+    "tco2e_per_mw_per_year": null,
+    "technology": "Offshore wind"
+   },
+   "capacity_mw": 250.5,
+   "estimated_annual_mwh": 965427.0,
+   "estimated_annual_tco2e": null,
+   "note": "250.5 MW x 3854.0 MWh/MW/yr x ? tCO2/MWh (CDM ACM0002 / Verra VMR0017 (adopted as-is by Gold Standard): metered generation x grid emission factor). This is an estimate from a benchmark capacity factor, not metered generation \u2014 real crediting under ACM0002/VMR0017 always uses actual metered output."
+  },
+  "status": 200
+ },
+ "india.capacity.missing": {
+  "body": {
+   "detail": "Benchmark not found"
+  },
+  "status": 404
+ },
+ "india.cbam_exposure": {
+  "body": [
+   {
+    "export_value_usd": 902587282.0,
+    "export_volume_tonnes": null,
+    "hs_chapter": "76 (all 14 CBAM headings)",
+    "id": 14,
+    "notes": "Real total: EUR 1,666.1M (2023) -> EUR 835.7M (2024, -49.8%) -> EUR 903.9M (2025, +8.2%) -- USD approximate at ~1.08/1.05 EUR:USD. This REPLACES the earlier GTRI-arithmetic-derived estimate of ~$3.0B/$2.77B, which was overstated by roughly 3x -- likely because GTRI's 'combined steel+aluminium' aggregate used a different scope/basis than customs HS classification. The 2023->2024 near-halving predates CBAM's Jan 2026 definitive-phase start (unlike steel's FY24->FY25 drop, which GTRI attributed to CBAM front-running) -- this earlier aluminium decline likely reflects other market factors, not CBAM anticipation.",
+    "period": "2024 (EU imports from India, TOTAL)",
+    "product_category": "Aluminium",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly, summed across 7601+7603-7614+7616",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7601.1.VALUE_IN_EUROS",
+    "yoy_change_pct": -49.8
+   },
+   {
+    "export_value_usd": 21652470.0,
+    "export_volume_tonnes": null,
+    "hs_chapter": "7604",
+    "id": 19,
+    "notes": "Declining: EUR 38.9M (2023) -> EUR 20.0M (2024) -> EUR 13.9M (2025).",
+    "period": "2024 (EU imports from India, bars/rods/profiles)",
+    "product_category": "Aluminium",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7604.1.VALUE_IN_EUROS",
+    "yoy_change_pct": -48.5
+   },
+   {
+    "export_value_usd": 77472442.0,
+    "export_volume_tonnes": 5475.305,
+    "hs_chapter": "7616",
+    "id": 16,
+    "notes": "Second-largest line, stable: EUR 73.1M (2023) -> EUR 71.7M (2024) -> EUR 76.4M (2025).",
+    "period": "2024 (EU imports from India, other aluminium articles)",
+    "product_category": "Aluminium",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7616.1.VALUE_IN_EUROS",
+    "yoy_change_pct": -2.1
+   },
+   {
+    "export_value_usd": 13867399.0,
+    "export_volume_tonnes": null,
+    "hs_chapter": "7606",
+    "id": 20,
+    "notes": "Sharp decline: EUR 37.7M (2023) -> EUR 12.8M (2024) -> EUR 8.0M (2025).",
+    "period": "2024 (EU imports from India, plates/sheets/strip)",
+    "product_category": "Aluminium",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7606.1.VALUE_IN_EUROS",
+    "yoy_change_pct": -65.9
+   },
+   {
+    "export_value_usd": 22117220.0,
+    "export_volume_tonnes": null,
+    "hs_chapter": "7614",
+    "id": 21,
+    "notes": "Stable: EUR 21.6M (2023) -> EUR 20.5M (2024) -> EUR 23.3M (2025).",
+    "period": "2024 (EU imports from India, stranded wire/cables)",
+    "product_category": "Aluminium",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7614.1.VALUE_IN_EUROS",
+    "yoy_change_pct": -5.4
+   },
+   {
+    "export_value_usd": 17930055.0,
+    "export_volume_tonnes": null,
+    "hs_chapter": "7608/7609/7610/7611/7612/7613",
+    "id": 23,
+    "notes": "Grouped for brevity -- all individually small: 7608 tubes/pipes EUR 1.2M, 7609 fittings EUR 4.3M, 7610 structures EUR 8.8M, 7611 reservoirs EUR 151 (negligible), 7612 casks/drums EUR 2.0M, 7613 compressed-gas containers EUR 0.27M (all 2024 figures).",
+    "period": "2024 (EU imports from India, tubes/fittings/structures/reservoirs/casks/gas containers, grouped)",
+    "product_category": "Aluminium",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly, 6 small headings summed",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7609.1.VALUE_IN_EUROS",
+    "yoy_change_pct": null
+   },
+   {
+    "export_value_usd": 675445879.0,
+    "export_volume_tonnes": 256497.277,
+    "hs_chapter": "7601",
+    "id": 15,
+    "notes": "By far the dominant aluminium line (~75-84% of the sector total every year). Steep decline: EUR 1,399.9M/589,906t (2023) -> EUR 625.4M/256,497t (2024) -> EUR 623.0M/247,621t (2025) -- volume more than halved from 2023 to 2024 and has stayed flat since.",
+    "period": "2024 (EU imports from India, unwrought aluminium)",
+    "product_category": "Aluminium",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7601.1.VALUE_IN_EUROS",
+    "yoy_change_pct": -55.4
+   },
+   {
+    "export_value_usd": 75323150.0,
+    "export_volume_tonnes": 17540.212,
+    "hs_chapter": "7607",
+    "id": 17,
+    "notes": "A genuine growth story running counter to the sector's overall decline: EUR 19.4M/4,074t (2023) -> EUR 33.8M/8,659t (2024) -> EUR 69.7M/17,540t (2025) -- value +74% and volume +103% year-on-year into 2025, more than 3x since 2023. Worth watching: could reflect Indian exporters shifting toward higher-value-added downstream products.",
+    "period": "2025 (EU imports from India, aluminium foil -- growth line)",
+    "product_category": "Aluminium",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7607.1.VALUE_IN_EUROS",
+    "yoy_change_pct": 106.3
+   },
+   {
+    "export_value_usd": 66621053.0,
+    "export_volume_tonnes": 23371.709,
+    "hs_chapter": "7605",
+    "id": 18,
+    "notes": "Another growth line: EUR 32.3M/12,636t (2023) -> EUR 31.8M/12,167t (2024, flat) -> EUR 61.7M/23,372t (2025, nearly doubled).",
+    "period": "2025 (EU imports from India, aluminium wire -- growth line)",
+    "product_category": "Aluminium",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7605.1.VALUE_IN_EUROS",
+    "yoy_change_pct": 94.2
+   },
+   {
+    "export_value_usd": 9866526.0,
+    "export_volume_tonnes": null,
+    "hs_chapter": "7603",
+    "id": 22,
+    "notes": "Small but growing ~4x: EUR 2.3M (2023) -> EUR 3.0M (2024) -> EUR 9.1M (2025).",
+    "period": "2025 (EU imports from India, powders/flakes)",
+    "product_category": "Aluminium",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7603.1.VALUE_IN_EUROS",
+    "yoy_change_pct": 201.9
+   },
+   {
+    "export_value_usd": 94158.0,
+    "export_volume_tonnes": 309.775,
+    "hs_chapter": "2523 30 00",
+    "id": 25,
+    "notes": "The single largest cement-sector CN8 line for 2024, but it's a one-off spike, not a trend: EUR 22 (2023) -> EUR 87,183 (2024) -> EUR 236 (2025). Still ~$94K at its peak -- immaterial next to steel/aluminium's billions.",
+    "period": "2024 (EU imports from India, aluminous cement)",
+    "product_category": "Cement",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly (product=25233000)",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.25233000.1.VALUE_IN_EUROS",
+    "yoy_change_pct": null
+   },
+   {
+    "export_value_usd": 7793.0,
+    "export_volume_tonnes": null,
+    "hs_chapter": "2523 10/21/29/90 00",
+    "id": 26,
+    "notes": "Grouped remainder of the CN 2523 cement lines (excluding aluminous cement above and kaolinic clay below). All four lines are rounding-error scale (EUR 732-4,138 each in 2024): clinkers (25231000, India's large volumes go to Bangladesh/Sri Lanka/Africa, not the EU), white cement (25232100), other Portland (25232900), other hydraulic (25239000). CONFIRMED: cement CBAM exposure is genuinely negligible for India at the real CN-code level, not just at the global-total level.",
+    "period": "2024 (EU imports from India, clinkers + Portland + other hydraulic, grouped)",
+    "product_category": "Cement",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly, summed across 25231000+25232100+25232900+25239000",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.25231000.1.VALUE_IN_EUROS",
+    "yoy_change_pct": null
+   },
+   {
+    "export_value_usd": 7111476.0,
+    "export_volume_tonnes": 84754.888,
+    "hs_chapter": "2507 00 80",
+    "id": 27,
+    "notes": "CORRECTS the earlier HS6-level estimate: true CN8 figure is EUR 6,584,700 (~$7.11M at ~1.08 USD/EUR, approximate) / 84,754.9 t for 2024, and EUR 6,078,690 (~$6.38M) / 83,965.3 t for 2025 -- roughly HALF the earlier $13.8M HS6 figure, which also swept in non-CBAM-covered raw kaolin (CN 2507 00 20 = EUR 6,979,061 in 2024, almost exactly the other half). This is the single most material CBAM-relevant cement-sector line for India, even though still tiny next to steel/aluminium.",
+    "period": "2024 (EU imports from India, kaolinic clays -- CN8, precise)",
+    "product_category": "Cement",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly (product=25070080, reporter=EU27_2020, partner=IN)",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.25070080.1.VALUE_IN_EUROS",
+    "yoy_change_pct": null
+   },
+   {
+    "export_value_usd": 45500000.0,
+    "export_volume_tonnes": null,
+    "hs_chapter": "2523",
+    "id": 24,
+    "notes": "India's TOTAL global cement export value for context -- EU is not in the top-5 destinations (Sri Lanka 66%, Maldives 19.3%, Nepal 4%, Bhutan 3.7%, UAE 1%). Not upgradeable to Eurostat/primary like the rows below: this one is deliberately a different, wider scope (global exports, all destinations), not an EU-import mirror, so there is nothing to re-query for this specific figure.",
+    "period": "CY2023 (India global total, all destinations)",
+    "product_category": "Cement",
+    "source_confidence": "secondary",
+    "source_name": "trendeconomy.com, India HS 2523 export data 2012-2023",
+    "source_url": "https://trendeconomy.com/data/h2/India/2523",
+    "yoy_change_pct": -13.4
+   },
+   {
+    "export_value_usd": 0.0,
+    "export_volume_tonnes": 0.0,
+    "hs_chapter": "2716",
+    "id": 36,
+    "notes": "Directly confirms the CSE (2024 study, via Down To Earth, 2 Jan 2026) claim of zero India-to-EU electricity trade, consistent with there being no direct India-EU grid interconnection: zero recorded EU imports of electricity from India in every year queried (2023, 2024, 2025). A genuinely zero-trade product code returns an empty but valid dataset in this API, distinguishable from an invalid code (which instead returns an explicit SDMX fault) -- so this is a confirmed absence of trade, not a query error.",
+    "period": "2023-2025 (EU imports from India, calendar years)",
+    "product_category": "Electricity",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.2716.1.VALUE_IN_EUROS",
+    "yoy_change_pct": null
+   },
+   {
+    "export_value_usd": 6857.0,
+    "export_volume_tonnes": 0.007,
+    "hs_chapter": "2814 20 00",
+    "id": 32,
+    "notes": "Supersedes an earlier WITS-sourced secondary figure ($6,870/0.007t for the same period) that corroborates almost exactly (EUR 6,349 [~$6,857] vs WITS's $6,870 -- same underlying customs record). Negligible -- consistent with India being a large net ammonia IMPORTER (2.2 MnT in 2022). Nitric acid (CN 2808) and UAN/N-mixtures (CN 3102 80) show India absent entirely from the EU's partner list for these lines -- zero, not a data gap.",
+    "period": "2024 (EU imports from India, ammonia, aqueous solution)",
+    "product_category": "Fertilizers",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly (product=28142000; anhydrous 28141000 shows no trade at all)",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.28142000.1.VALUE_IN_EUROS",
+    "yoy_change_pct": null
+   },
+   {
+    "export_value_usd": 142535.0,
+    "export_volume_tonnes": 160.593,
+    "hs_chapter": "3102 21/29",
+    "id": 29,
+    "notes": "31022900 (bulk of this line) rose from EUR 131,698 (2024) to EUR 539,954 (2025) -- worth re-checking if this trend continues, though still a small absolute figure.",
+    "period": "2024 (EU imports from India, ammonium sulphate)",
+    "product_category": "Fertilizers",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly (31022100 crystals + 31022900 other)",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.31022900.1.VALUE_IN_EUROS",
+    "yoy_change_pct": null
+   },
+   {
+    "export_value_usd": 930331.0,
+    "export_volume_tonnes": null,
+    "hs_chapter": "3105 (excl. 3105 60 00)",
+    "id": 34,
+    "notes": "Supersedes an earlier WITS-sourced secondary figure ($985,370 for the same period) that corroborates reasonably closely (EUR 861,417 [~$930,331] vs WITS's $985,370, ~5.6% apart -- likely a data-vintage/revision difference between Eurostat and the Comtrade mirror WITS uses). CN 3105 60 00 (P+K only, no nitrogen) is explicitly excluded from CBAM's fertiliser scope; this figure is the CN4 total (EUR 904,949 in 2024) minus that excluded line (EUR 43,532 in 2024). Also growing fast across the full window: EUR 444,457 total (2023, excluded line had zero trade that year) -> EUR 861,417 remainder (2024) -> EUR 1,139,189 remainder (2025, total EUR 1,170,858 minus EUR 31,669 excluded).",
+    "period": "2024 (EU imports from India, multi-nutrient N+P/N+K/N+P+K fertilisers)",
+    "product_category": "Fertilizers",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly (CN4 3105 total minus CN8 31056000, which CBAM excludes)",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.3105.1.VALUE_IN_EUROS",
+    "yoy_change_pct": 93.8
+   },
+   {
+    "export_value_usd": 1391.0,
+    "export_volume_tonnes": 0.609,
+    "hs_chapter": "3102 60/80/90",
+    "id": 31,
+    "notes": "Rounding-error scale across all remaining CN8 lines under 3102 combined. CN 3102 30 (ammonium nitrate) and 3102 40 (ammonium nitrate/calcium carbonate mixtures) show NO trade recorded from India at all across 2023-2025 -- zero, not a data gap.",
+    "period": "2024 (EU imports from India, other nitrogenous fertiliser lines)",
+    "product_category": "Fertilizers",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly (31026000+31028000+31029000)",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.31029000.1.VALUE_IN_EUROS",
+    "yoy_change_pct": null
+   },
+   {
+    "export_value_usd": 1656046.0,
+    "export_volume_tonnes": 565.461,
+    "hs_chapter": "2834 21 00",
+    "id": 33,
+    "notes": "Supersedes an earlier WITS-sourced secondary figure ($1,659,700 for the same period) that corroborates almost exactly (EUR 1,533,376 [~$1,656,046] vs WITS's $1,659,700). THE ONE REAL FERTILISER EXPORT LINE, and growing fast, which the single-year WITS figure didn't show: EUR 553,907 (2023) -> EUR 1,533,376 (2024, +176.8%) -> EUR 2,086,582 (2025, +36.1%), more than tripling over two years. India ranked 7th among all EU suppliers of potassium nitrate as of the 2024 figure (~0.49% of the EU's $337.9M total imports of this line -- worth re-checking given the growth trend). Easy to miss: this CN code sits in HS Chapter 28 (inorganic chemicals), not Chapter 31 (fertilisers), but is explicitly in CBAM Annex I's fertiliser-sector scope.",
+    "period": "2024 (EU imports from India, potassium nitrate)",
+    "product_category": "Fertilizers",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly (product=28342100)",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.28342100.1.VALUE_IN_EUROS",
+    "yoy_change_pct": 176.8
+   },
+   {
+    "export_value_usd": 114548.0,
+    "export_volume_tonnes": 125.254,
+    "hs_chapter": "3102 50",
+    "id": 30,
+    "notes": "Declining: EUR 133,070 (2023) -> EUR 106,063 (2024) -> EUR 32,867 (2025).",
+    "period": "2024 (EU imports from India, sodium nitrate)",
+    "product_category": "Fertilizers",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly (product=31025000)",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.31025000.1.VALUE_IN_EUROS",
+    "yoy_change_pct": null
+   },
+   {
+    "export_value_usd": 637300.0,
+    "export_volume_tonnes": 1164.527,
+    "hs_chapter": "3102 10 (10+90)",
+    "id": 28,
+    "notes": "The single largest fertiliser-sector CN8 line, as expected. EUR-denominated: 31021010 (higher-N split) EUR 616,420 (2023) -> EUR 479,892 (2024) -> no trade recorded (2025); 31021090 (other) EUR 57,177 (2023) -> EUR 110,016 (2024) -> EUR 334,420 (2025), rising sharply. Still tiny relative to India's status as a large net urea IMPORTER overall -- this is a narrow specialty/blended export line, not bulk urea trade.",
+    "period": "2024 (EU imports from India, urea)",
+    "product_category": "Fertilizers",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly (31021010 higher-N + 31021090 other)",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.31021090.1.VALUE_IN_EUROS",
+    "yoy_change_pct": null
+   },
+   {
+    "export_value_usd": 0.0,
+    "export_volume_tonnes": 0.0,
+    "hs_chapter": "2804 10 00",
+    "id": 35,
+    "notes": "Directly confirms, at the exact CBAM-relevant CN8 code, the CSE (2024 study, via Down To Earth, 2 Jan 2026) claim that 'India does not currently export hydrogen ... to the EU.' Not literally zero every year: 2023 recorded EUR 334 (a single de minimis shipment), 2024 and 2025 both EUR 0 -- functionally no export industry, not a hard zero forever. Note the broader CN4 heading 2804 ('Hydrogen, rare gases and other non-metals') is NOT all-zero -- it shows real trade (EUR 154,046 in 2024) -- but that trade is in OTHER gases within the same heading (nitrogen 2804 30, oxygen 2804 40, silicon 2804 61/69, arsenic 2804 80; these CN8-identifiable lines sum to only EUR 43,396 of the EUR 154,046 CN4 total, with the remainder most likely confidentiality-suppressed at CN8 by Eurostat), not hydrogen itself, and none of it falls within CBAM's Annex I hydrogen scope (CN 2804 10 00 only). Worth periodic re-check given India's National Green Hydrogen Mission could change this within CBAM's own 2026-2034 phase-in horizon.",
+    "period": "2023-2025 (EU imports from India, calendar years, CBAM-covered CN8 only)",
+    "product_category": "Hydrogen",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly at CN8 (2804 10 00)",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.28041000.1.VALUE_IN_EUROS",
+    "yoy_change_pct": null
+   },
+   {
+    "export_value_usd": 4979605790.0,
+    "export_volume_tonnes": null,
+    "hs_chapter": "72/73 (all CBAM headings)",
+    "id": 7,
+    "notes": "Calendar-year total: EUR 4,755.9M (2023) -> EUR 4,610.7M (2024, -3.0%) -> EUR 3,649.7M (2025, -20.8%) -- USD approximate at ~1.08/1.05 EUR:USD. The 2025 drop is directionally consistent with GTRI's reported FY24->FY25 -35.1% (steel exports falling ahead of CBAM's definitive regime) even though the two figures use different year/reporting bases and shouldn't be expected to match exactly.",
+    "period": "2024 (EU imports from India, TOTAL, calendar year)",
+    "product_category": "Iron & Steel",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly, summed across 35 headings (72 excl. 7204 scrap; 73.01-73.08)",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7208.1.VALUE_IN_EUROS",
+    "yoy_change_pct": -3.0
+   },
+   {
+    "export_value_usd": 330534906.0,
+    "export_volume_tonnes": null,
+    "hs_chapter": "7209",
+    "id": 12,
+    "notes": "Stable/growing: EUR 285.3M (2023) -> EUR 306.1M (2024) -> EUR 304.3M (2025).",
+    "period": "2024 (EU imports from India, cold-rolled flat)",
+    "product_category": "Iron & Steel",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7209.1.VALUE_IN_EUROS",
+    "yoy_change_pct": 7.3
+   },
+   {
+    "export_value_usd": 371107858.0,
+    "export_volume_tonnes": null,
+    "hs_chapter": "7202 (covered ferro-alloys only)",
+    "id": 11,
+    "notes": "Only ferro-manganese, ferro-silicon, ferro-silico-manganese, and ferro-chromium sub-headings of 7202 are CBAM-covered (ferro-molybdenum/tungsten/titanium/vanadium/niobium/phosphorus/magnesium/nickel and 'other' are excluded, like scrap) -- this is the covered-only figure, 97.5% of the full 7202 HS4 total. Ferro-silico-manganese (CN 720230) alone is EUR 152.3M, the single largest ferro-alloy sub-line. Covered-subset total: EUR 387.5M (2023) -> EUR 343.6M (2024) -> EUR 354.8M (2025).",
+    "period": "2024 (EU imports from India, ferro-Mn/Si/SiMn/Cr)",
+    "product_category": "Iron & Steel",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly, summed across 720211+720219+720221+720229+720230+720241+720249",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.720230.1.VALUE_IN_EUROS",
+    "yoy_change_pct": -11.3
+   },
+   {
+    "export_value_usd": 948265364.0,
+    "export_volume_tonnes": 1007722.431,
+    "hs_chapter": "7210",
+    "id": 9,
+    "notes": "Second-largest line. Value: EUR 808.3M (2023) -> EUR 878.0M (2024) -> EUR 689.2M (2025, -21.5%).",
+    "period": "2024 (EU imports from India, flat, clad/plated/coated)",
+    "product_category": "Iron & Steel",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7210.1.VALUE_IN_EUROS",
+    "yoy_change_pct": 8.6
+   },
+   {
+    "export_value_usd": 1727254175.0,
+    "export_volume_tonnes": null,
+    "hs_chapter": "all other steel headings (30+ CN4 lines)",
+    "id": 13,
+    "notes": "Grouped for brevity (~34.7% of the sector total, spread across 30+ individually smaller headings). Largest individual components: semi-finished products (7207, EUR 123.2M), other alloy steel flat-rolled (7219 stainless, EUR 197.9M), seamless tubes/pipes (7304, EUR 205.9M), other tubes/pipes (7306, EUR 127.6M), tube/pipe fittings (7307, EUR 184.8M), structures (7308, EUR 133.4M), primary forms/ingots (7206, EUR 207.0M), stainless wire (7223, EUR 142.5M).",
+    "period": "2024 (EU imports from India, grouped remainder)",
+    "product_category": "Iron & Steel",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly, remainder after the 5 rows above",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7304.1.VALUE_IN_EUROS",
+    "yoy_change_pct": null
+   },
+   {
+    "export_value_usd": 1123763662.0,
+    "export_volume_tonnes": 1584475.511,
+    "hs_chapter": "7208",
+    "id": 8,
+    "notes": "The single largest steel line (~23% of the sector total in 2024). Value: EUR 1,009.8M (2023) -> EUR 1,040.5M (2024) -> EUR 458.3M (2025, -56.0%) -- a sharp 2025 drop alongside a near-halving of volume (1,584,476t 2024 -> 789,495t 2025).",
+    "period": "2024 (EU imports from India, hot-rolled flat, not clad/plated/coated)",
+    "product_category": "Iron & Steel",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7208.1.VALUE_IN_EUROS",
+    "yoy_change_pct": 3.0
+   },
+   {
+    "export_value_usd": 478680026.0,
+    "export_volume_tonnes": null,
+    "hs_chapter": "7222",
+    "id": 10,
+    "notes": "Value: EUR 533.4M (2023) -> EUR 443.2M (2024) -> EUR 481.8M (2025) -- the one major line that ROSE in 2025 while the sector overall declined.",
+    "period": "2024 (EU imports from India, other alloy steel bars/rods/angles)",
+    "product_category": "Iron & Steel",
+    "source_confidence": "primary",
+    "source_name": "Eurostat Comext SDMX API, DS-045409, queried directly",
+    "source_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/sdmx/2.1/data/DS-045409/A.EU27_2020.IN.7222.1.VALUE_IN_EUROS",
+    "yoy_change_pct": -16.9
+   },
+   {
+    "export_value_usd": 1450000000.0,
+    "export_volume_tonnes": 1950000.0,
+    "hs_chapter": "72/73",
+    "id": 1,
+    "notes": "UK was part of the EU figure through 2020-21 per the official answer's own footnote -- this and the next row are not directly comparable to 2021-22 onward.",
+    "period": "FY2019-20",
+    "product_category": "Iron & Steel",
+    "source_confidence": "primary",
+    "source_name": "Lok Sabha Unstarred Question 3980, Ministry of Steel (JPC data)",
+    "source_url": "https://steel.gov.in/sites/default/files/2025-04/lu%203980.pdf",
+    "yoy_change_pct": null
+   },
+   {
+    "export_value_usd": 1910000000.0,
+    "export_volume_tonnes": 2510000.0,
+    "hs_chapter": "72/73",
+    "id": 2,
+    "notes": "Includes UK (see FY2019-20 note).",
+    "period": "FY2020-21",
+    "product_category": "Iron & Steel",
+    "source_confidence": "primary",
+    "source_name": "Lok Sabha Unstarred Question 3980, Ministry of Steel (JPC data)",
+    "source_url": "https://steel.gov.in/sites/default/files/2025-04/lu%203980.pdf",
+    "yoy_change_pct": null
+   },
+   {
+    "export_value_usd": 4280000000.0,
+    "export_volume_tonnes": 3580000.0,
+    "hs_chapter": "72/73",
+    "id": 3,
+    "notes": "EU-27 only, UK excluded from this year onward.",
+    "period": "FY2021-22",
+    "product_category": "Iron & Steel",
+    "source_confidence": "primary",
+    "source_name": "Lok Sabha Unstarred Question 3980, Ministry of Steel (JPC data)",
+    "source_url": "https://steel.gov.in/sites/default/files/2025-04/lu%203980.pdf",
+    "yoy_change_pct": null
+   },
+   {
+    "export_value_usd": 2790000000.0,
+    "export_volume_tonnes": 2490000.0,
+    "hs_chapter": "72/73",
+    "id": 4,
+    "notes": "Corroborated by a separate PIB release (Ministry of Steel, 'Impact of CBAM on Indian Steel Industry', 17 Dec 2024, Release ID 2085233) citing the same JPC-sourced figures.",
+    "period": "FY2022-23",
+    "product_category": "Iron & Steel",
+    "source_confidence": "primary",
+    "source_name": "Lok Sabha Unstarred Question 3980, Ministry of Steel (JPC data)",
+    "source_url": "https://steel.gov.in/sites/default/files/2025-04/lu%203980.pdf",
+    "yoy_change_pct": null
+   },
+   {
+    "export_value_usd": 3550000000.0,
+    "export_volume_tonnes": 4030000.0,
+    "hs_chapter": "72/73",
+    "id": 5,
+    "notes": null,
+    "period": "FY2023-24",
+    "product_category": "Iron & Steel",
+    "source_confidence": "primary",
+    "source_name": "Lok Sabha Unstarred Question 3980, Ministry of Steel (JPC data)",
+    "source_url": "https://steel.gov.in/sites/default/files/2025-04/lu%203980.pdf",
+    "yoy_change_pct": null
+   },
+   {
+    "export_value_usd": 3050000000.0,
+    "export_volume_tonnes": null,
+    "hs_chapter": "72/73",
+    "id": 6,
+    "notes": "Steep drop attributed to CBAM front-running by importers/exporters ahead of the definitive regime; volume figure not given in this source.",
+    "period": "FY2024-25",
+    "product_category": "Iron & Steel",
+    "source_confidence": "secondary",
+    "source_name": "GTRI (Global Trade Research Initiative), via AlCircle, 23 Sep 2025",
+    "source_url": "https://www.alcircle.com/news/indian-steel-and-aluminium-exports-to-eu-plunge-24-4-per-cent-ahead-of-cbam-rollout-gtri-reports-115600",
+    "yoy_change_pct": -35.1
+   }
+  ],
+  "status": 200
+ },
+ "india.demand.default": {
+  "body": {
+   "methodology_note": "Illustrative demand model, not an official BEE/MoEFCC figure: no public source publishes obligated-sector emissions or CCC demand in tCO2e. baseline_emissions = volume_mt x intensity (a rough national output at a per-sector baseline emission intensity); illustrative_abatement_pool = baseline_emissions x target_reduction_pct_avg, i.e. the scale of reduction obligated entities must find (organically or via CCC purchase) if they do not otherwise improve. Sector notification status/entity counts/target % are sourced (see source_note per sector); volume_mt and intensity_tco2_per_t are editable illustrative assumptions \u2014 override them via the overrides list to model your own scenario.",
+   "sectors": [
+    {
+     "baseline_emissions_mt_co2e": 41.61,
+     "illustrative_abatement_pool_mt_co2e": 2.04,
+     "intensity_tco2_per_t": 10.15,
+     "sector_id": 1,
+     "sector_key": "aluminium",
+     "sector_name": "Aluminium",
+     "status": "final",
+     "target_reduction_pct_avg": 4.9,
+     "volume_mt": 4.1
+    },
+    {
+     "baseline_emissions_mt_co2e": 351.5,
+     "illustrative_abatement_pool_mt_co2e": 21.62,
+     "intensity_tco2_per_t": 0.95,
+     "sector_id": 2,
+     "sector_key": "cement",
+     "sector_name": "Cement",
+     "status": "final",
+     "target_reduction_pct_avg": 6.15,
+     "volume_mt": 370.0
+    },
+    {
+     "baseline_emissions_mt_co2e": 8.1,
+     "illustrative_abatement_pool_mt_co2e": 0.53,
+     "intensity_tco2_per_t": 1.8,
+     "sector_id": 3,
+     "sector_key": "chlor_alkali",
+     "sector_name": "Chlor-Alkali",
+     "status": "final",
+     "target_reduction_pct_avg": 6.5,
+     "volume_mt": 4.5
+    },
+    {
+     "baseline_emissions_mt_co2e": 123.0,
+     "illustrative_abatement_pool_mt_co2e": 0.0,
+     "intensity_tco2_per_t": 4.1,
+     "sector_id": 9,
+     "sector_key": "fertilizer",
+     "sector_name": "Fertilizer",
+     "status": "contested",
+     "target_reduction_pct_avg": 0.0,
+     "volume_mt": 30.0
+    },
+    {
+     "baseline_emissions_mt_co2e": 424.85,
+     "illustrative_abatement_pool_mt_co2e": 14.87,
+     "intensity_tco2_per_t": 2.93,
+     "sector_id": 8,
+     "sector_key": "iron_steel",
+     "sector_name": "Iron & Steel",
+     "status": "draft",
+     "target_reduction_pct_avg": 3.5,
+     "volume_mt": 145.0
+    },
+    {
+     "baseline_emissions_mt_co2e": 30.0,
+     "illustrative_abatement_pool_mt_co2e": 1.08,
+     "intensity_tco2_per_t": 1.0,
+     "sector_id": 6,
+     "sector_key": "petrochemicals",
+     "sector_name": "Petrochemicals",
+     "status": "final",
+     "target_reduction_pct_avg": 3.6,
+     "volume_mt": 30.0
+    },
+    {
+     "baseline_emissions_mt_co2e": 76.2,
+     "illustrative_abatement_pool_mt_co2e": 2.36,
+     "intensity_tco2_per_t": 0.3,
+     "sector_id": 5,
+     "sector_key": "petroleum_refining",
+     "sector_name": "Petroleum Refining",
+     "status": "final",
+     "target_reduction_pct_avg": 3.1,
+     "volume_mt": 254.0
+    },
+    {
+     "baseline_emissions_mt_co2e": 24.0,
+     "illustrative_abatement_pool_mt_co2e": 1.56,
+     "intensity_tco2_per_t": 1.2,
+     "sector_id": 4,
+     "sector_key": "pulp_paper",
+     "sector_name": "Pulp & Paper",
+     "status": "final",
+     "target_reduction_pct_avg": 6.5,
+     "volume_mt": 20.0
+    },
+    {
+     "baseline_emissions_mt_co2e": 17.5,
+     "illustrative_abatement_pool_mt_co2e": 1.16,
+     "intensity_tco2_per_t": 2.5,
+     "sector_id": 7,
+     "sector_key": "textiles",
+     "sector_name": "Textiles",
+     "status": "final",
+     "target_reduction_pct_avg": 6.6,
+     "volume_mt": 7.0
+    }
+   ],
+   "total_illustrative_demand_mt_co2e": 45.21
+  },
+  "status": 200
+ },
+ "india.demand.overrides": {
+  "body": {
+   "methodology_note": "Illustrative demand model, not an official BEE/MoEFCC figure: no public source publishes obligated-sector emissions or CCC demand in tCO2e. baseline_emissions = volume_mt x intensity (a rough national output at a per-sector baseline emission intensity); illustrative_abatement_pool = baseline_emissions x target_reduction_pct_avg, i.e. the scale of reduction obligated entities must find (organically or via CCC purchase) if they do not otherwise improve. Sector notification status/entity counts/target % are sourced (see source_note per sector); volume_mt and intensity_tco2_per_t are editable illustrative assumptions \u2014 override them via the overrides list to model your own scenario.",
+   "sectors": [
+    {
+     "baseline_emissions_mt_co2e": 1252.51,
+     "illustrative_abatement_pool_mt_co2e": 61.37,
+     "intensity_tco2_per_t": 10.15,
+     "sector_id": 1,
+     "sector_key": "aluminium",
+     "sector_name": "Aluminium",
+     "status": "final",
+     "target_reduction_pct_avg": 4.9,
+     "volume_mt": 123.4
+    },
+    {
+     "baseline_emissions_mt_co2e": 925.0,
+     "illustrative_abatement_pool_mt_co2e": 56.89,
+     "intensity_tco2_per_t": 2.5,
+     "sector_id": 2,
+     "sector_key": "cement",
+     "sector_name": "Cement",
+     "status": "final",
+     "target_reduction_pct_avg": 6.15,
+     "volume_mt": 370.0
+    },
+    {
+     "baseline_emissions_mt_co2e": 0.0,
+     "illustrative_abatement_pool_mt_co2e": 0.0,
+     "intensity_tco2_per_t": 0.0,
+     "sector_id": 3,
+     "sector_key": "chlor_alkali",
+     "sector_name": "Chlor-Alkali",
+     "status": "final",
+     "target_reduction_pct_avg": 6.5,
+     "volume_mt": 10.0
+    },
+    {
+     "baseline_emissions_mt_co2e": 123.0,
+     "illustrative_abatement_pool_mt_co2e": 0.0,
+     "intensity_tco2_per_t": 4.1,
+     "sector_id": 9,
+     "sector_key": "fertilizer",
+     "sector_name": "Fertilizer",
+     "status": "contested",
+     "target_reduction_pct_avg": 0.0,
+     "volume_mt": 30.0
+    },
+    {
+     "baseline_emissions_mt_co2e": 424.85,
+     "illustrative_abatement_pool_mt_co2e": 14.87,
+     "intensity_tco2_per_t": 2.93,
+     "sector_id": 8,
+     "sector_key": "iron_steel",
+     "sector_name": "Iron & Steel",
+     "status": "draft",
+     "target_reduction_pct_avg": 3.5,
+     "volume_mt": 145.0
+    },
+    {
+     "baseline_emissions_mt_co2e": 30.0,
+     "illustrative_abatement_pool_mt_co2e": 1.08,
+     "intensity_tco2_per_t": 1.0,
+     "sector_id": 6,
+     "sector_key": "petrochemicals",
+     "sector_name": "Petrochemicals",
+     "status": "final",
+     "target_reduction_pct_avg": 3.6,
+     "volume_mt": 30.0
+    },
+    {
+     "baseline_emissions_mt_co2e": 76.2,
+     "illustrative_abatement_pool_mt_co2e": 2.36,
+     "intensity_tco2_per_t": 0.3,
+     "sector_id": 5,
+     "sector_key": "petroleum_refining",
+     "sector_name": "Petroleum Refining",
+     "status": "final",
+     "target_reduction_pct_avg": 3.1,
+     "volume_mt": 254.0
+    },
+    {
+     "baseline_emissions_mt_co2e": 24.0,
+     "illustrative_abatement_pool_mt_co2e": 1.56,
+     "intensity_tco2_per_t": 1.2,
+     "sector_id": 4,
+     "sector_key": "pulp_paper",
+     "sector_name": "Pulp & Paper",
+     "status": "final",
+     "target_reduction_pct_avg": 6.5,
+     "volume_mt": 20.0
+    },
+    {
+     "baseline_emissions_mt_co2e": 17.5,
+     "illustrative_abatement_pool_mt_co2e": 1.16,
+     "intensity_tco2_per_t": 2.5,
+     "sector_id": 7,
+     "sector_key": "textiles",
+     "sector_name": "Textiles",
+     "status": "final",
+     "target_reduction_pct_avg": 6.6,
+     "volume_mt": 7.0
+    }
+   ],
+   "total_illustrative_demand_mt_co2e": 139.29
+  },
+  "status": 200
+ },
+ "india.gap.default": {
+  "body": {
+   "demand_methodology_note": "Illustrative demand model, not an official BEE/MoEFCC figure: no public source publishes obligated-sector emissions or CCC demand in tCO2e. baseline_emissions = volume_mt x intensity (a rough national output at a per-sector baseline emission intensity); illustrative_abatement_pool = baseline_emissions x target_reduction_pct_avg, i.e. the scale of reduction obligated entities must find (organically or via CCC purchase) if they do not otherwise improve. Sector notification status/entity counts/target % are sourced (see source_note per sector); volume_mt and intensity_tco2_per_t are editable illustrative assumptions \u2014 override them via the overrides list to model your own scenario.",
+   "near_term_gap_mt_co2e": 10.2,
+   "supply_methodology_note": "No official Article 6.2 pipeline volume (tCO2e) is published for India, so supply is proxied bottom-up from MNRE/MoPNG/PIB/CEA/BEE/NITI Aayog/Ministry of Steel capacity and target records per eligible activity. Each row is tagged aspirational_target (a 2030/2050-type policy goal, not yet built), awarded_operational (capacity actually awarded/funded/under construction/running), or current_actual (a measured to-date figure). near_term_supply sums only awarded_operational + current_actual rows \u2014 the honest 'what could plausibly deliver credits within the CCTS FY2025-27 compliance window' figure. aspirational_supply sums only aspirational_target rows separately \u2014 a long-range (2030, in one case 2050) upper bound, NOT available supply today; do not add it to near-term supply. Rows with no defensible physical-to-tCO2e conversion, or where the time horizon is too far out to be comparable at all (e.g. a 2050 CCUS target), are excluded entirely rather than zero-filled \u2014 see supply_rows_excluded_no_conversion and each row's conversion_note.",
+   "supply_rows_excluded_no_conversion": [
+    "MNRE FDRE bidding trajectory (annual issuance target) (PIB \u2014 Ministry of Power, Electricity Generation from Non-Conventional Sources)",
+    "Installed CSP (concentrated solar thermal) capacity (MNRE Physical Achievements page (no current figure listed) / secondary reviews for the historical number)",
+    "CBG plants commissioned (SATAT+MDA+BAM+DPI+CFA, cumulative) (PIB \u2014 Cabinet approves GOBARdhan (National Unified Scheme for Compressed Biogas))",
+    "GOBARdhan revised target (PIB \u2014 Cabinet approves GOBARdhan)",
+    "Indore Gobar-Dhan CBG plant (EverEnviro/IEISL) \u2014 named-project example (Multiple trade press (iamrenew, Natural Gas World, Down To Earth); EverEnviro's own site for the VCS project claim)",
+    "Sanctioned hydrogen mobility pilots (PIB \u2014 MNRE hydrogen mobility pilot sanction)",
+    "PAT scheme cumulative energy savings (BEE \u2014 Perform, Achieve and Trade (PAT) programme page)",
+    "PAT Cycle I+II CO2 avoided (dated, incomplete) (PIB \u2014 Status of Implementation of NMEEE)",
+    "PIB's own stated SAF decarbonization potential (PIB \u2014 SAF a practical and immediate solution to decarbonize aviation)",
+    "Green Steel certified production (FY2025-26) (Ministry of Steel \u2014 Green Steel Initiative)",
+    "NITI Aayog CCUS capture potential (2050) (NITI Aayog \u2014 CCUS Policy Framework and Deployment Mechanism in India)"
+   ],
+   "total_aspirational_supply_mt_co2e": 129.18,
+   "total_demand_mt_co2e": 45.21,
+   "total_near_term_supply_mt_co2e": 35.01
+  },
+  "status": 200
+ },
+ "india.gap.overrides": {
+  "body": {
+   "demand_methodology_note": "Illustrative demand model, not an official BEE/MoEFCC figure: no public source publishes obligated-sector emissions or CCC demand in tCO2e. baseline_emissions = volume_mt x intensity (a rough national output at a per-sector baseline emission intensity); illustrative_abatement_pool = baseline_emissions x target_reduction_pct_avg, i.e. the scale of reduction obligated entities must find (organically or via CCC purchase) if they do not otherwise improve. Sector notification status/entity counts/target % are sourced (see source_note per sector); volume_mt and intensity_tco2_per_t are editable illustrative assumptions \u2014 override them via the overrides list to model your own scenario.",
+   "near_term_gap_mt_co2e": 104.28,
+   "supply_methodology_note": "No official Article 6.2 pipeline volume (tCO2e) is published for India, so supply is proxied bottom-up from MNRE/MoPNG/PIB/CEA/BEE/NITI Aayog/Ministry of Steel capacity and target records per eligible activity. Each row is tagged aspirational_target (a 2030/2050-type policy goal, not yet built), awarded_operational (capacity actually awarded/funded/under construction/running), or current_actual (a measured to-date figure). near_term_supply sums only awarded_operational + current_actual rows \u2014 the honest 'what could plausibly deliver credits within the CCTS FY2025-27 compliance window' figure. aspirational_supply sums only aspirational_target rows separately \u2014 a long-range (2030, in one case 2050) upper bound, NOT available supply today; do not add it to near-term supply. Rows with no defensible physical-to-tCO2e conversion, or where the time horizon is too far out to be comparable at all (e.g. a 2050 CCUS target), are excluded entirely rather than zero-filled \u2014 see supply_rows_excluded_no_conversion and each row's conversion_note.",
+   "supply_rows_excluded_no_conversion": [
+    "MNRE FDRE bidding trajectory (annual issuance target) (PIB \u2014 Ministry of Power, Electricity Generation from Non-Conventional Sources)",
+    "Installed CSP (concentrated solar thermal) capacity (MNRE Physical Achievements page (no current figure listed) / secondary reviews for the historical number)",
+    "CBG plants commissioned (SATAT+MDA+BAM+DPI+CFA, cumulative) (PIB \u2014 Cabinet approves GOBARdhan (National Unified Scheme for Compressed Biogas))",
+    "GOBARdhan revised target (PIB \u2014 Cabinet approves GOBARdhan)",
+    "Indore Gobar-Dhan CBG plant (EverEnviro/IEISL) \u2014 named-project example (Multiple trade press (iamrenew, Natural Gas World, Down To Earth); EverEnviro's own site for the VCS project claim)",
+    "Sanctioned hydrogen mobility pilots (PIB \u2014 MNRE hydrogen mobility pilot sanction)",
+    "PAT scheme cumulative energy savings (BEE \u2014 Perform, Achieve and Trade (PAT) programme page)",
+    "PAT Cycle I+II CO2 avoided (dated, incomplete) (PIB \u2014 Status of Implementation of NMEEE)",
+    "PIB's own stated SAF decarbonization potential (PIB \u2014 SAF a practical and immediate solution to decarbonize aviation)",
+    "Green Steel certified production (FY2025-26) (Ministry of Steel \u2014 Green Steel Initiative)",
+    "NITI Aayog CCUS capture potential (2050) (NITI Aayog \u2014 CCUS Policy Framework and Deployment Mechanism in India)"
+   ],
+   "total_aspirational_supply_mt_co2e": 129.18,
+   "total_demand_mt_co2e": 139.29,
+   "total_near_term_supply_mt_co2e": 35.01
+  },
+  "status": 200
+ },
+ "india.prices": {
+  "body": [
+   {
+    "currency": "CNY",
+    "id": 2,
+    "instrument": "CEA (national ETS)",
+    "market": "China",
+    "price_date": "2026-08-31",
+    "price_eur": 10.5,
+    "price_native": 83.86,
+    "price_native_high": null,
+    "price_usd": 11.0,
+    "source_confidence": "secondary",
+    "trend_note": "Jan-Aug 2026 average, peaking near CNY 100 late Aug; +14.4% YoY vs 2025 full-year avg of CNY 73.3/t. Rising as metals/cement sectors are folded into the national ETS."
+   },
+   {
+    "currency": "EUR",
+    "id": 6,
+    "instrument": "EUA (context)",
+    "market": "EU",
+    "price_date": "2026-09-07",
+    "price_eur": 83.8,
+    "price_native": 83.8,
+    "price_native_high": null,
+    "price_usd": null,
+    "source_confidence": "secondary",
+    "trend_note": "Range ~EUR 75.5-83.8/t through Sept 2026 (EUR 83.80 = highest since Jul 2026). Some 2026 full-year forecasts cite ~EUR 104/t average \u2014 an unverified analyst forecast, not spot."
+   },
+   {
+    "currency": "JPY",
+    "id": 3,
+    "instrument": "J-Credit (energy efficiency)",
+    "market": "Japan",
+    "price_date": "2026-04-07",
+    "price_eur": 30.0,
+    "price_native": 4800.0,
+    "price_native_high": null,
+    "price_usd": 32.0,
+    "source_confidence": "secondary",
+    "trend_note": "Platts assessment. Voluntary scheme; usable for up to 10% of GX-ETS compliance."
+   },
+   {
+    "currency": "JPY",
+    "id": 4,
+    "instrument": "J-Credit (forestry)",
+    "market": "Japan",
+    "price_date": "2026-04-07",
+    "price_eur": 33.0,
+    "price_native": 5300.0,
+    "price_native_high": null,
+    "price_usd": 35.0,
+    "source_confidence": "secondary",
+    "trend_note": "Platts assessment; one exchange listing showed forestry J-Credit at JPY 4,400 in Jul 2026 \u2014 prices vary meaningfully by listing venue."
+   },
+   {
+    "currency": "JPY",
+    "id": 5,
+    "instrument": "GX-ETS allowance (mandatory, FY2026 corridor)",
+    "market": "Japan",
+    "price_date": "2026-04-01",
+    "price_eur": null,
+    "price_native": 1700.0,
+    "price_native_high": 4300.0,
+    "price_usd": null,
+    "source_confidence": "secondary",
+    "trend_note": "NOT an observed trade price \u2014 a government-set floor/ceiling corridor; trading was described as absent a week into the mandatory phase. Policymakers reportedly considering a JPY 4,000-6,000/t band by 2027. J-Credit is the more usable real/observed Japan proxy for now."
+   },
+   {
+    "currency": "KRW",
+    "id": 1,
+    "instrument": "KAU (K-ETS)",
+    "market": "Korea",
+    "price_date": "2026-03-01",
+    "price_eur": 8.8,
+    "price_native": 13750.0,
+    "price_native_high": null,
+    "price_usd": 9.53,
+    "source_confidence": "secondary",
+    "trend_note": "Up ~33% YTD 2026; 2025 secondary-market avg was KRW 9,393 (~$6.60). Recovering after years of oversupply; 2026-2030 phase cuts the cap ~12% (2.54 bn tCO2e)."
+   }
+  ],
+  "status": 200
+ },
+ "india.sectors": {
+  "body": [
+   {
+    "baseline_year": "FY2023-24",
+    "compliance_years": "FY2025-26, FY2026-27",
+    "default_intensity_tco2_per_t": 10.15,
+    "default_volume_mt": 4.1,
+    "id": 1,
+    "key": "aluminium",
+    "name": "Aluminium",
+    "notification_date": "2025-10-08",
+    "notification_ref": "G.S.R. 739(E)",
+    "obligated_entities_est": null,
+    "source_confidence": "secondary",
+    "source_note": "Part of a combined 282-entity announcement across 4 sectors (not broken out per sector in sources found). Intensity reused from this platform's CBAM aluminium default value.",
+    "status": "final",
+    "target_reduction_pct_avg": 4.9,
+    "target_reduction_pct_high": 7.06,
+    "target_reduction_pct_low": 2.8
+   },
+   {
+    "baseline_year": "FY2023-24",
+    "compliance_years": "FY2025-26, FY2026-27",
+    "default_intensity_tco2_per_t": 0.95,
+    "default_volume_mt": 370.0,
+    "id": 2,
+    "key": "cement",
+    "name": "Cement",
+    "notification_date": "2025-10-08",
+    "notification_ref": "G.S.R. 739(E)",
+    "obligated_entities_est": null,
+    "source_confidence": "secondary",
+    "source_note": "Integrated plants ~2.7% / Grinding units ~6.6% per source; avg is the low-high midpoint. Part of the same combined 282-entity announcement. Intensity reused from this platform's CBAM cement default value.",
+    "status": "final",
+    "target_reduction_pct_avg": 6.15,
+    "target_reduction_pct_high": 7.6,
+    "target_reduction_pct_low": 4.7
+   },
+   {
+    "baseline_year": "FY2023-24",
+    "compliance_years": "FY2025-26, FY2026-27",
+    "default_intensity_tco2_per_t": 1.8,
+    "default_volume_mt": 4.5,
+    "id": 3,
+    "key": "chlor_alkali",
+    "name": "Chlor-Alkali",
+    "notification_date": "2025-10-08",
+    "notification_ref": "G.S.R. 739(E)",
+    "obligated_entities_est": null,
+    "source_confidence": "secondary",
+    "source_note": "Part of the same combined 282-entity announcement. Volume/intensity are illustrative (no CBAM reference value available for this sector).",
+    "status": "final",
+    "target_reduction_pct_avg": 6.5,
+    "target_reduction_pct_high": 11.0,
+    "target_reduction_pct_low": 3.3
+   },
+   {
+    "baseline_year": "FY2023-24",
+    "compliance_years": "FY2025-26, FY2026-27",
+    "default_intensity_tco2_per_t": 4.1,
+    "default_volume_mt": 30.0,
+    "id": 9,
+    "key": "fertilizer",
+    "name": "Fertilizer",
+    "notification_date": null,
+    "notification_ref": null,
+    "obligated_entities_est": 20,
+    "source_confidence": "modeled",
+    "source_note": "Status is genuinely contested across sources: one claims final gazette notification 8 Oct 2025 alongside 4 other sectors, but ICAP's detailed CCTS page lists only 7 finalized sectors and does NOT include fertilizer. No confirmed target % found \u2014 do not treat as final. ~20 plants anticipated (NFL, RCF, IFFCO, FACT, GSFC, KRIBHCO, Chambal). Intensity reused from this platform's CBAM fertilizer default value (reasonably close to one source's modeled 2.2-3.1 tCO2e/t baseline estimate).",
+    "status": "contested",
+    "target_reduction_pct_avg": null,
+    "target_reduction_pct_high": null,
+    "target_reduction_pct_low": null
+   },
+   {
+    "baseline_year": "FY2023-24",
+    "compliance_years": "FY2025-26, FY2026-27",
+    "default_intensity_tco2_per_t": 2.93,
+    "default_volume_mt": 145.0,
+    "id": 8,
+    "key": "iron_steel",
+    "name": "Iron & Steel",
+    "notification_date": "2026-06-26",
+    "notification_ref": "Revised draft (not yet final)",
+    "obligated_entities_est": 255,
+    "source_confidence": "secondary",
+    "source_note": "255 units across 10 states; draft made public 2 Jul 2026 with a 60-day objection window (~through end-Aug 2026) \u2014 NOT yet legally binding as of this seed. Criticized by Climate Risk Horizons as too weak. Intensity reused from this platform's CBAM steel (India) default value.",
+    "status": "draft",
+    "target_reduction_pct_avg": 3.5,
+    "target_reduction_pct_high": 5.0,
+    "target_reduction_pct_low": 2.0
+   },
+   {
+    "baseline_year": "FY2023-24",
+    "compliance_years": "FY2025-26, FY2026-27",
+    "default_intensity_tco2_per_t": 1.0,
+    "default_volume_mt": 30.0,
+    "id": 6,
+    "key": "petrochemicals",
+    "name": "Petrochemicals",
+    "notification_date": "2026-01-16",
+    "notification_ref": "MoEFCC notification",
+    "obligated_entities_est": null,
+    "source_confidence": "secondary",
+    "source_note": "Part of the same combined ~208-entity addition as petroleum refining/textiles. Volume/intensity are illustrative.",
+    "status": "final",
+    "target_reduction_pct_avg": 3.6,
+    "target_reduction_pct_high": null,
+    "target_reduction_pct_low": null
+   },
+   {
+    "baseline_year": "FY2023-24",
+    "compliance_years": "FY2025-26, FY2026-27",
+    "default_intensity_tco2_per_t": 0.3,
+    "default_volume_mt": 254.0,
+    "id": 5,
+    "key": "petroleum_refining",
+    "name": "Petroleum Refining",
+    "notification_date": "2026-01-16",
+    "notification_ref": "MoEFCC notification",
+    "obligated_entities_est": null,
+    "source_confidence": "secondary",
+    "source_note": "Part of a combined ~208-entity addition (petroleum refining + petrochemicals + textiles, not broken out individually) bringing the cumulative total to ~490 across 7 sectors. Volume/intensity are illustrative.",
+    "status": "final",
+    "target_reduction_pct_avg": 3.1,
+    "target_reduction_pct_high": null,
+    "target_reduction_pct_low": null
+   },
+   {
+    "baseline_year": "FY2023-24",
+    "compliance_years": "FY2025-26, FY2026-27",
+    "default_intensity_tco2_per_t": 1.2,
+    "default_volume_mt": 20.0,
+    "id": 4,
+    "key": "pulp_paper",
+    "name": "Pulp & Paper",
+    "notification_date": "2025-10-08",
+    "notification_ref": "G.S.R. 739(E)",
+    "obligated_entities_est": null,
+    "source_confidence": "secondary",
+    "source_note": "Part of the same combined 282-entity announcement; low end of target range not found. Volume/intensity are illustrative.",
+    "status": "final",
+    "target_reduction_pct_avg": 6.5,
+    "target_reduction_pct_high": 15.0,
+    "target_reduction_pct_low": null
+   },
+   {
+    "baseline_year": "FY2023-24",
+    "compliance_years": "FY2025-26, FY2026-27",
+    "default_intensity_tco2_per_t": 2.5,
+    "default_volume_mt": 7.0,
+    "id": 7,
+    "key": "textiles",
+    "name": "Textiles",
+    "notification_date": "2026-01-16",
+    "notification_ref": "MoEFCC notification",
+    "obligated_entities_est": null,
+    "source_confidence": "secondary",
+    "source_note": "Part of the same combined ~208-entity addition as petroleum refining/petrochemicals. Volume/intensity are illustrative.",
+    "status": "final",
+    "target_reduction_pct_avg": 6.6,
+    "target_reduction_pct_high": null,
+    "target_reduction_pct_low": null
+   }
+  ],
+  "status": 200
+ },
+ "india.supply": {
+  "body": [
+   {
+    "activity_id": 1,
+    "as_of_date": "2026-04-02",
+    "conversion_note": "Annual issuance PACE, not a cumulative installed/awarded capacity figure \u2014 no aggregate GW-awarded total found on any primary source, so not converted to tCO2e.",
+    "figure_type": "aspirational_target",
+    "id": 1,
+    "metric_label": "MNRE FDRE bidding trajectory (annual issuance target)",
+    "potential_avoided_mt_co2e": null,
+    "source_confidence": "primary",
+    "source_name": "PIB \u2014 Ministry of Power, Electricity Generation from Non-Conventional Sources",
+    "source_url": "https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2248342",
+    "unit": "GW/year (FY2023-24 to FY2027-28)",
+    "value": 50.0
+   },
+   {
+    "activity_id": 1,
+    "as_of_date": "2026-08-07",
+    "conversion_note": "1,000 MW contracted RTC supply x 90% minimum annual demand-fulfilment ratio (the tender's own stated floor, so this is a lower bound on delivered energy) x 8,760 h = 7,884 GWh/yr x CEA Combined Margin 0.736 tCO2/MWh = 5.80 Mt CO2e/yr. Replaces an earlier row that applied an unsourced 35% capacity factor to 2.5 GW (1.5 GW FDRE + 1 GW RTC): the tender's contracted MW is firm supply with a stated 90% annual DFR, not installed solar/wind nameplate, so a plain-RE capacity factor was the wrong basis; and the 1.5 GW FDRE half could not be confirmed against any source read this session, so it is dropped rather than kept. Winners: Kengeri Prime 180 MW, Resolven Four 150, Hexa Climate 150, Hero Solar 120, EMIF II 100, Purvah 70, Juniper Green 230 (INR 5.25-5.26/kWh, 25-yr PPAs). Awarded, not yet operating.",
+    "figure_type": "awarded_operational",
+    "id": 2,
+    "metric_label": "SECI FDRE-RTC Tranche-V awarded (1 GW round-the-clock; one tender, not a national tally)",
+    "potential_avoided_mt_co2e": 5.8,
+    "source_confidence": "secondary",
+    "source_name": "pv-magazine India (secondary \u2014 SECI's own results page could not be reached)",
+    "source_url": "https://www.pv-magazine-india.com/2026/08/07/secis-1-gw-fdre-rtc-power-tender-discovers-inr-5-25-kwh-tariff/",
+    "unit": "GW (contracted round-the-clock supply, Aug 2026 award)",
+    "value": 1.0
+   },
+   {
+    "activity_id": 2,
+    "as_of_date": "2015-03-31",
+    "conversion_note": "MNRE's current CST page tracks only industrial-heat market potential (6.45 GWth), not power generation, and CSP is absent from MNRE's official installed-capacity table \u2014 confirming this is genuinely negligible today, not a data gap.",
+    "figure_type": "current_actual",
+    "id": 3,
+    "metric_label": "Installed CSP (concentrated solar thermal) capacity",
+    "potential_avoided_mt_co2e": null,
+    "source_confidence": "secondary",
+    "source_name": "MNRE Physical Achievements page (no current figure listed) / secondary reviews for the historical number",
+    "source_url": "https://mnre.gov.in/en/physical-progress/",
+    "unit": "MW (JNNSM Phase-I, 2014-15; effectively stalled since)",
+    "value": 228.5
+   },
+   {
+    "activity_id": 3,
+    "as_of_date": "2024-06-19",
+    "conversion_note": "1,000 MW x 42% offshore capacity factor (real observed international offshore project range 42-46% \u2014 Norther Belgium 43.1%, Alpha Ventus Germany 42-42.7%, European fleet avg ~45.8%; India has no operational offshore wind to derive its own CF, so the international low end is used) x 8,760 h x CEA Combined Margin 0.736 tCO2/MWh = 2.71 Mt CO2e/yr. IMPORTANT: SECI's first 500 MW Gujarat tender (issued Sep 2024) drew ZERO bids by its extended Jul 2025 deadline \u2014 this capacity is funded/approved but nothing is under construction yet.",
+    "figure_type": "awarded_operational",
+    "id": 4,
+    "metric_label": "Cabinet-approved VGF offshore wind capacity",
+    "potential_avoided_mt_co2e": 2.71,
+    "source_confidence": "primary",
+    "source_name": "PIB \u2014 Cabinet approves VGF scheme for Offshore Wind Energy Projects",
+    "source_url": "https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=2026700",
+    "unit": "MW (500 MW Gujarat + 500 MW Tamil Nadu)",
+    "value": 1000.0
+   },
+   {
+    "activity_id": 3,
+    "as_of_date": "2018-09-01",
+    "conversion_note": "30,000 MW x 42% CF (same real international-project-derived assumption as above) x 8,760 h x CEA Combined Margin 0.736 tCO2/MWh = 81.2 Mt CO2e/yr IF fully built by 2030. Given the first tender drew zero bids, treat this as a distant upper bound, not a plausible near-term figure.",
+    "figure_type": "aspirational_target",
+    "id": 5,
+    "metric_label": "National offshore wind policy target",
+    "potential_avoided_mt_co2e": 81.2,
+    "source_confidence": "secondary",
+    "source_name": "MNRE offshore wind policy (widely reported; exact primary PIB URL not located)",
+    "source_url": "https://mnre.gov.in/en/off-shore-wind/",
+    "unit": "GW by 2030",
+    "value": 30.0
+   },
+   {
+    "activity_id": 4,
+    "as_of_date": "2025-05-01",
+    "conversion_note": "862,000 tH2/yr x 9.5 tCO2/tH2 grey-hydrogen (SMR) displacement factor (standard industry range 9-10 tCO2/tH2, midpoint used \u2014 not India-specific-sourced) = 8.19 Mt CO2e/yr. Most of this awarded capacity is still under construction, not yet producing.",
+    "figure_type": "awarded_operational",
+    "id": 6,
+    "metric_label": "Green hydrogen production capacity awarded (SIGHT scheme)",
+    "potential_avoided_mt_co2e": 8.19,
+    "source_confidence": "primary",
+    "source_name": "PIB \u2014 Unlocking India's Green Hydrogen Production Potential",
+    "source_url": "https://static.pib.gov.in/WriteReadData/specificdocs/documents/2025/nov/doc20251112690301.pdf",
+    "unit": "tonnes H2/year (19 companies, as of May 2025)",
+    "value": 862000.0
+   },
+   {
+    "activity_id": 4,
+    "as_of_date": "2025-05-01",
+    "conversion_note": "5 MMT/yr x 9.5 tCO2/tH2 = 47.5 Mt CO2e/yr IF fully built by 2030. Awarded capacity so far (862,000 t/yr, see above) is only ~17% of this target.",
+    "figure_type": "aspirational_target",
+    "id": 7,
+    "metric_label": "National Green Hydrogen Mission 2030 target",
+    "potential_avoided_mt_co2e": 47.5,
+    "source_confidence": "primary",
+    "source_name": "PIB \u2014 Unlocking India's Green Hydrogen Production Potential",
+    "source_url": "https://static.pib.gov.in/WriteReadData/specificdocs/documents/2025/nov/doc20251112690301.pdf",
+    "unit": "tonnes H2/year by 2030",
+    "value": 5000000.0
+   },
+   {
+    "activity_id": 5,
+    "as_of_date": "2026-08-06",
+    "conversion_note": "Plant count only \u2014 no verified average per-plant output figure found to convert to tCO2e.",
+    "figure_type": "current_actual",
+    "id": 8,
+    "metric_label": "CBG plants commissioned (SATAT+MDA+BAM+DPI+CFA, cumulative)",
+    "potential_avoided_mt_co2e": null,
+    "source_confidence": "primary",
+    "source_name": "PIB \u2014 Cabinet approves GOBARdhan (National Unified Scheme for Compressed Biogas)",
+    "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2295480",
+    "unit": "plants",
+    "value": 200.0
+   },
+   {
+    "activity_id": 5,
+    "as_of_date": "2026-01-01",
+    "conversion_note": "920 t/day x 365 = 335,800 t/yr x 2.68 tCO2/t fossil-fuel-(CNG/diesel)-displacement factor (standard biomethane accounting convention, not India-specific-sourced) = 0.90 Mt CO2e/yr. Both the output figure and the conversion factor are unverified.",
+    "figure_type": "current_actual",
+    "id": 9,
+    "metric_label": "Cumulative CBG output (secondary, unverified against a primary document)",
+    "potential_avoided_mt_co2e": 0.9,
+    "source_confidence": "secondary",
+    "source_name": "Minister statement reported by Tribune/Energetica/Sunday Guardian",
+    "source_url": null,
+    "unit": "tonnes/day (~336,000 t/yr)",
+    "value": 920.0
+   },
+   {
+    "activity_id": 5,
+    "as_of_date": "2026-08-06",
+    "conversion_note": "Cabinet states a 'nearly ten-fold' increase from current levels but does not restate an absolute MMT target (the old 15 MMT SATAT target appears superseded) \u2014 not quantifiable without an official baseline.",
+    "figure_type": "aspirational_target",
+    "id": 10,
+    "metric_label": "GOBARdhan revised target",
+    "potential_avoided_mt_co2e": null,
+    "source_confidence": "primary",
+    "source_name": "PIB \u2014 Cabinet approves GOBARdhan",
+    "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2295480",
+    "unit": "~10x current production (no absolute baseline published)",
+    "value": null
+   },
+   {
+    "activity_id": 5,
+    "as_of_date": "2022-02-19",
+    "conversion_note": "IMPORTANT CORRECTION to a common framing: this is NOT 'Indore Municipal Corporation (IMC) procuring carbon credits from EverEnviro.' Verified structure: IMC supplies segregated wet waste under a 20-year PPP and receives an annual royalty (~Rs 2.5 crore) from EverEnviro's subsidiary IEISL, plus buys back CBG for city buses at a discount \u2014 IMC is the waste supplier/fuel buyer, not a credit buyer. EverEnviro/IEISL (set up by Eversource Capital in 2019 \u2014 a bootstrapped company, NOT an IOC joint venture for this plant; a separate IOC-EverEnviro JV formed Oct 2024 covers only future plants) claims (own website + LinkedIn) the plant is registered under Verra VCS as 'Project 4650', ~130,000 tCO2e/yr PROJECTED. CHECKED DIRECTLY on registry.verra.org (Sept 2026): Project ID 4650 returns an explicit 'unable to load project details' error, while a control ID (191, a real Chinese hydropower project) renders correctly on the same URL pattern \u2014 the registry itself works, so this is strong evidence 4650 is NOT a valid/existing public VCS project ID, contradicting EverEnviro's own citation. Treat the VCS registration claim as unconfirmed-to-false, not merely unverified, until EverEnviro publishes a correct/working project ID. Separately, IMC DOES generate its own carbon-credit revenue (Rs 50 lakh in 2020 rising to ~Rs 8-9 crore cumulative) \u2014 but via its smart-city arm ISCDL and EKI Energy Services, from THREE DIFFERENT, smaller municipal projects (a separate bio-methanation plant, a compost plant, a 1.5 MW solar plant) registered under VCS around Jan 2020 \u2014 two years before this EverEnviro plant existed. Both threads are voluntary-market VCS projects that predate India's CCTS Offset Mechanism (which only started Jan 2025 and excludes pre-2025 projects) \u2014 cite as a pre-CCTS voluntary-market precedent, not a current domestic Offset Mechanism case. Not converted to a potential_avoided_mt_co2e figure here since the 130,000 tCO2e/yr number is company-projected, not independently confirmed.",
+    "figure_type": "current_actual",
+    "id": 11,
+    "metric_label": "Indore Gobar-Dhan CBG plant (EverEnviro/IEISL) \u2014 named-project example",
+    "potential_avoided_mt_co2e": null,
+    "source_confidence": "secondary",
+    "source_name": "Multiple trade press (iamrenew, Natural Gas World, Down To Earth); EverEnviro's own site for the VCS project claim",
+    "source_url": "https://www.everenviro.com/renewable.html",
+    "unit": "tonnes/day wet MSW processed -> ~15-18 t/day CBG (~17,000 kg/day peak, 100% capacity utilisation reported 2024)",
+    "value": 550.0
+   },
+   {
+    "activity_id": 6,
+    "as_of_date": "2025-03-03",
+    "conversion_note": "Pilot-scale (37 vehicles, \u20b9208 crore); not meaningfully quantifiable against sector-scale demand. Commissioning expected ~18-24 months from the Mar 2025 announcement.",
+    "figure_type": "awarded_operational",
+    "id": 12,
+    "metric_label": "Sanctioned hydrogen mobility pilots",
+    "potential_avoided_mt_co2e": null,
+    "source_confidence": "primary",
+    "source_name": "PIB \u2014 MNRE hydrogen mobility pilot sanction",
+    "source_url": "https://www.pib.gov.in/Pressreleaseshare.aspx?PRID=2107795",
+    "unit": "vehicles (15 FCEV + 22 H2-ICE) + 9 refuelling stations",
+    "value": 37.0
+   },
+   {
+    "activity_id": 7,
+    "as_of_date": "2025-01-01",
+    "conversion_note": "No matching current CO2-avoided figure is published alongside this energy-savings number; a toe-to-tCO2e conversion would require assuming a specific fuel mix and was not attempted to avoid fabricating false precision.",
+    "figure_type": "current_actual",
+    "id": 13,
+    "metric_label": "PAT scheme cumulative energy savings",
+    "potential_avoided_mt_co2e": null,
+    "source_confidence": "primary",
+    "source_name": "BEE \u2014 Perform, Achieve and Trade (PAT) programme page",
+    "source_url": "https://beeindia.gov.in/en/programmes/perform-achieve-and-trade-pat",
+    "unit": "Million toe cumulative (BEE dashboard, labeled 2025)",
+    "value": 25.78
+   },
+   {
+    "activity_id": 7,
+    "as_of_date": "2022-03-29",
+    "conversion_note": "This is a CUMULATIVE figure since 2012 (a stock), not an annual rate \u2014 using it in an annual-basis gap analysis would misrepresent it. Cycles III-VII actuals (2019 onward) are missing from every source found. Excluded from the quantifiable total for this reason, not because the number itself is unsourced.",
+    "figure_type": "current_actual",
+    "id": 14,
+    "metric_label": "PAT Cycle I+II CO2 avoided (dated, incomplete)",
+    "potential_avoided_mt_co2e": null,
+    "source_confidence": "primary",
+    "source_name": "PIB \u2014 Status of Implementation of NMEEE",
+    "source_url": "https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=1811051",
+    "unit": "Mt CO2 cumulative avoided, Cycles I-II only (2012-2019)",
+    "value": 97.01
+   },
+   {
+    "activity_id": 8,
+    "as_of_date": "2028-01-01",
+    "conversion_note": "0.19 MMT/yr x 3.16 tCO2/t (standard jet-fuel combustion factor) x 80% lifecycle-reduction assumption (typical ICAO/IATA SAF figure) = 0.48 Mt CO2e/yr. Both conversion factors are standard aviation-industry conventions, not verified in this India-specific research pass. Mandate applies to international operations only.",
+    "figure_type": "aspirational_target",
+    "id": 15,
+    "metric_label": "SAF blending mandate volume (2028, 2% blend, international ops)",
+    "potential_avoided_mt_co2e": 0.48,
+    "source_confidence": "primary",
+    "source_name": "PIB (mandate) + PPAC Flash Report (ATF consumption baseline for conversion)",
+    "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2163273",
+    "unit": "MMT SAF/year (midpoint estimate)",
+    "value": 0.19
+   },
+   {
+    "activity_id": 8,
+    "as_of_date": "2025-09-03",
+    "conversion_note": "A direct claim from the PIB release itself (not independently derived); adoption-rate/time-horizon assumptions behind the 20-25 Mt figure are unstated. Excluded from the quantifiable total to avoid double-counting with the mandate-derived row above \u2014 shown for context only.",
+    "figure_type": "aspirational_target",
+    "id": 16,
+    "metric_label": "PIB's own stated SAF decarbonization potential",
+    "potential_avoided_mt_co2e": null,
+    "source_confidence": "primary",
+    "source_name": "PIB \u2014 SAF a practical and immediate solution to decarbonize aviation",
+    "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2163273",
+    "unit": "Mt CO2/year (PIB's own claim, midpoint of 20-25)",
+    "value": 22.5
+   },
+   {
+    "activity_id": 9,
+    "as_of_date": "2026-03-31",
+    "conversion_note": "A production-volume and intensity-THRESHOLD figure, not an avoided-emissions figure \u2014 converting it would require a counterfactual (non-green-steel) baseline intensity that isn't published. No aggregate national BAT-adoption abatement target exists for any hard-to-abate sector.",
+    "figure_type": "current_actual",
+    "id": 17,
+    "metric_label": "Green Steel certified production (FY2025-26)",
+    "potential_avoided_mt_co2e": null,
+    "source_confidence": "primary",
+    "source_name": "Ministry of Steel \u2014 Green Steel Initiative",
+    "source_url": "https://steel.gov.in/green-steel-initiative",
+    "unit": "MMT green steel (<2.2 tCO2e/tfs threshold), 90 units certified",
+    "value": 12.4
+   },
+   {
+    "activity_id": 10,
+    "as_of_date": "2026-01-01",
+    "conversion_note": "Genuinely negligible \u2014 confirmed zero operational capacity, not a data gap. An MNRE Action Plan reportedly targets 100 MW demonstration by 2027 but could not be verified against a primary document this session.",
+    "figure_type": "current_actual",
+    "id": 18,
+    "metric_label": "Operational tidal/ocean energy capacity",
+    "potential_avoided_mt_co2e": 0.0,
+    "source_confidence": "secondary",
+    "source_name": "Secondary reporting (Down To Earth/Mongabay/Business Standard); no primary MNRE figure located",
+    "source_url": null,
+    "unit": "MW (both pilot attempts \u2014 3.75 MW Sundarbans, 50 MW Gulf of Kutch \u2014 dropped)",
+    "value": 0.0
+   },
+   {
+    "activity_id": 11,
+    "as_of_date": "2023-10-18",
+    "conversion_note": "13,000 MW x 19% blended solar+wind capacity factor (real India national fleet-average CUFs: solar ~17.5-19% MNRE-derived/regulatory benchmark, wind ~19.8-20% \u2014 averaged; Ladakh's own high-altitude solar resource could run higher but no site-specific figure was found) x 8,760 h x CEA Combined Margin 0.736 tCO2/MWh = 15.92 Mt CO2e/yr. Cabinet-approved and funded (\u20b920,773.70 crore, 40% CFA) \u2014 infrastructure under implementation, targeted completion FY2029-30, not yet operational.",
+    "figure_type": "awarded_operational",
+    "id": 19,
+    "metric_label": "Ladakh Green Energy Corridor-II (RE capacity enabled)",
+    "potential_avoided_mt_co2e": 15.92,
+    "source_confidence": "primary",
+    "source_name": "PIB \u2014 CCEA approves Green Energy Corridor Phase-II (Ladakh)",
+    "source_url": "https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=1968732",
+    "unit": "GW RE + 12 GWh BESS, 480 km HVDC line, targeted FY2029-30",
+    "value": 13.0
+   },
+   {
+    "activity_id": 12,
+    "as_of_date": "2025-08-06",
+    "conversion_note": "724,000 t/yr x 2.0 tCO2/t grey-ammonia (SMR-based) displacement factor (typical range 1.8-2.4 tCO2/t, midpoint used \u2014 not India-specific-sourced) = 1.45 Mt CO2e/yr. Only the first 75,000 t/yr tranche (to Paradeep Phosphates, Aug 2025) has actually cleared; the remaining ~649,000 t/yr is still to be auctioned.",
+    "figure_type": "awarded_operational",
+    "id": 20,
+    "metric_label": "SECI green ammonia procurement tendered (SIGHT Mode-2A)",
+    "potential_avoided_mt_co2e": 1.45,
+    "source_confidence": "primary",
+    "source_name": "PIB \u2014 SECI conducts first-ever auction for Green Ammonia procurement",
+    "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2153006",
+    "unit": "tonnes/year (cumulative across 13 planned auctions)",
+    "value": 724000.0
+   },
+   {
+    "activity_id": 13,
+    "as_of_date": "2022-11-29",
+    "conversion_note": "Already in the correct unit (Mt CO2/year captured) \u2014 no physical conversion needed. But this is a 2050-horizon target, 20+ years beyond the CCTS demand model's FY2025-27 window; including it in a near-term (or even a 2030-aspirational) gap analysis would be wildly misleading, so it is deliberately excluded from BOTH totals despite having a numeric value. No 2030-horizon CCUS figure exists from any source found.",
+    "figure_type": "aspirational_target",
+    "id": 21,
+    "metric_label": "NITI Aayog CCUS capture potential (2050)",
+    "potential_avoided_mt_co2e": null,
+    "source_confidence": "primary",
+    "source_name": "NITI Aayog \u2014 CCUS Policy Framework and Deployment Mechanism in India",
+    "source_url": "https://www.niti.gov.in/sites/default/files/2022-11/CCUS-Report.pdf",
+    "unit": "Mt CO2/year by 2050",
+    "value": 750.0
+   },
+   {
+    "activity_id": 13,
+    "as_of_date": "2025-06-01",
+    "conversion_note": "100 t/day x 365 = 36,500 t/yr = 0.0365 Mt CO2e/yr. A single small pilot, not sector-scale \u2014 but the only near-term CCUS figure found anywhere, primary or secondary.",
+    "figure_type": "current_actual",
+    "id": 22,
+    "metric_label": "ONGC Gandhar CCS pilot (unverified against a primary MoPNG source)",
+    "potential_avoided_mt_co2e": 0.0365,
+    "source_confidence": "secondary",
+    "source_name": "Trade press (Carbon Herald, iamrenew.com) citing ONGC statements",
+    "source_url": null,
+    "unit": "tonnes CO2/day captured (~36,500 t/yr)",
+    "value": 100.0
+   }
+  ],
+  "status": 200
+ },
+ "orgs": {
+  "body": [
+   {
+    "country": "SE",
+    "id": 1,
+    "lei_or_eori": null,
+    "name": "Nordic Steelworks AB",
+    "org_type": "ets_operator"
+   },
+   {
+    "country": "AT",
+    "id": 2,
+    "lei_or_eori": null,
+    "name": "Danube Cement GmbH",
+    "org_type": "ets_operator"
+   },
+   {
+    "country": "DE",
+    "id": 3,
+    "lei_or_eori": null,
+    "name": "Rhine Power Generation SE",
+    "org_type": "ets_operator"
+   },
+   {
+    "country": "DE",
+    "id": 4,
+    "lei_or_eori": null,
+    "name": "Hanseatic Container Lines",
+    "org_type": "shipping_company"
+   },
+   {
+    "country": "GR",
+    "id": 5,
+    "lei_or_eori": null,
+    "name": "Aegean Tanker Group",
+    "org_type": "shipping_company"
+   },
+   {
+    "country": "ES",
+    "id": 6,
+    "lei_or_eori": "ES1234567890",
+    "name": "Iberia Metals Import SL",
+    "org_type": "cbam_declarant"
+   },
+   {
+    "country": "LT",
+    "id": 7,
+    "lei_or_eori": "LT9876543210",
+    "name": "Baltic Fertilizer Traders",
+    "org_type": "cbam_declarant"
+   },
+   {
+    "country": "BR",
+    "id": 8,
+    "lei_or_eori": null,
+    "name": "EquatorForest Carbon Ltd",
+    "org_type": "credit_developer"
+   },
+   {
+    "country": "KE",
+    "id": 9,
+    "lei_or_eori": null,
+    "name": "Sahel Cookstoves Initiative",
+    "org_type": "credit_developer"
+   },
+   {
+    "country": "GB",
+    "id": 10,
+    "lei_or_eori": null,
+    "name": "Meridian Carbon Trading LLP",
+    "org_type": "trader"
+   },
+   {
+    "country": "NO",
+    "id": 11,
+    "lei_or_eori": null,
+    "name": "Nordpool Emissions Desk",
+    "org_type": "trader"
+   },
+   {
+    "country": "NL",
+    "id": 12,
+    "lei_or_eori": null,
+    "name": "TransEuro Verification Bureau",
+    "org_type": "verifier"
+   },
+   {
+    "country": "FR",
+    "id": 13,
+    "lei_or_eori": null,
+    "name": "Atlantic Classification & Assurance",
+    "org_type": "verifier"
+   }
+  ],
+  "status": 200
+ },
+ "ship.compliance_cost": {
+  "body": [
+   {
+    "category": "aggregate_cost",
+    "id": 1,
+    "metric_label": "Total EU ETS allowance cost, EU maritime sector",
+    "notes": "The headline figure: ~34 million EUAs surrendered at an average price of EUR 64/tCO2 (2024) implies ~EUR 2,200 million to acquire allowances industry-wide. This is the ONLY year with a Commission-published aggregate cost so far -- 2025 (70% phase-in) and 2026+ (100%) figures are not yet published as of this seed data's research date.",
+    "period": "2024 (40% phase-in, at 2023 activity levels)",
+    "source_confidence": "primary",
+    "source_name": "European Commission, COM(2025) 110 final, Section 6.1",
+    "source_url": "https://climate.ec.europa.eu/document/download/1bb8387b-bdc4-4489-9d76-7ff30239704d_en?filename=First+report+on+the+implementation+of+the+ETS+extension+to+maritime+transport.pdf",
+    "unit": "EUR million",
+    "value": 2200.0
+   },
+   {
+    "category": "aggregate_cost",
+    "id": 2,
+    "metric_label": "EU ETS allowances (EUAs) surrendered, EU maritime sector",
+    "notes": "At 40% phase-in of verified emissions.",
+    "period": "2024",
+    "source_confidence": "primary",
+    "source_name": "European Commission, COM(2025) 110 final, Section 6.1",
+    "source_url": "https://climate.ec.europa.eu/document/download/1bb8387b-bdc4-4489-9d76-7ff30239704d_en?filename=First+report+on+the+implementation+of+the+ETS+extension+to+maritime+transport.pdf",
+    "unit": "million EUAs",
+    "value": 34.0
+   },
+   {
+    "category": "aggregate_cost",
+    "id": 3,
+    "metric_label": "Average EUA price used in this cost estimate",
+    "notes": "The Commission's own assumed average price for the year, not a spot quote.",
+    "period": "2024",
+    "source_confidence": "primary",
+    "source_name": "European Commission, COM(2025) 110 final, Section 6.1",
+    "source_url": "https://climate.ec.europa.eu/document/download/1bb8387b-bdc4-4489-9d76-7ff30239704d_en?filename=First+report+on+the+implementation+of+the+ETS+extension+to+maritime+transport.pdf",
+    "unit": "EUR/tCO2",
+    "value": 64.0
+   },
+   {
+    "category": "aggregate_cost",
+    "id": 4,
+    "metric_label": "Increase in total shipping costs attributable to ETS",
+    "notes": "Against total shipping costs (fuel, staff, port fees, capital costs, etc.), assuming no energy-efficiency or emissions-reduction measures are taken -- i.e. an upper-bound estimate of the unmitigated cost impact. Varies greatly by vessel category depending on intra- vs extra-EU emissions share.",
+    "period": "2024 (40% phase-in)",
+    "source_confidence": "primary",
+    "source_name": "European Commission, COM(2025) 110 final, Section 6",
+    "source_url": "https://climate.ec.europa.eu/document/download/1bb8387b-bdc4-4489-9d76-7ff30239704d_en?filename=First+report+on+the+implementation+of+the+ETS+extension+to+maritime+transport.pdf",
+    "unit": "%",
+    "value": 3.7
+   },
+   {
+    "category": "context",
+    "id": 5,
+    "metric_label": "Total verified CO2 emissions, EU ETS maritime scope",
+    "notes": "Reported by >13,000 vessels and >3,000 shipping companies in the scheme's first year. Cross-checks reasonably with the aggregate_cost rows above: 34 million EUAs surrendered / 40% phase-in implies ~85 Mt of full-scope emissions, in the right range given the different activity-year assumptions each figure uses.",
+    "period": "2024 (first reporting year)",
+    "source_confidence": "secondary",
+    "source_name": "European Commission (secondary reporting, THETIS-MRV-derived figure)",
+    "source_url": "https://climate.ec.europa.eu/eu-action/transport/reducing-emissions-shipping-sector_en",
+    "unit": "Mt CO2",
+    "value": 89.8
+   },
+   {
+    "category": "pass_through",
+    "id": 6,
+    "metric_label": "Container freight ETS surcharge pass-through (deep-sea) -- low end",
+    "notes": "Range 1-5%; announced liner ETS surcharges fall in this band.",
+    "period": "2024",
+    "source_confidence": "primary",
+    "source_name": "European Commission, COM(2025) 110 final, Section 6.1",
+    "source_url": "https://climate.ec.europa.eu/document/download/1bb8387b-bdc4-4489-9d76-7ff30239704d_en?filename=First+report+on+the+implementation+of+the+ETS+extension+to+maritime+transport.pdf",
+    "unit": "% of freight rate",
+    "value": 1.0
+   },
+   {
+    "category": "pass_through",
+    "id": 7,
+    "metric_label": "Container freight ETS surcharge pass-through (deep-sea) -- high end",
+    "notes": "For context, container freight rates overall grew ~120 percentage points from Oct 2023 to Jun 2024, mostly due to the Red Sea crisis -- the ETS surcharge is a small fraction of total freight-rate movement in this period.",
+    "period": "2024",
+    "source_confidence": "primary",
+    "source_name": "European Commission, COM(2025) 110 final, Section 6.1",
+    "source_url": "https://climate.ec.europa.eu/document/download/1bb8387b-bdc4-4489-9d76-7ff30239704d_en?filename=First+report+on+the+implementation+of+the+ETS+extension+to+maritime+transport.pdf",
+    "unit": "% of freight rate",
+    "value": 5.0
+   },
+   {
+    "category": "pass_through",
+    "id": 8,
+    "metric_label": "Ferry/RoPax ticket price ETS impact -- low end",
+    "notes": "Range 3-11% across EU ferry routes analysed.",
+    "period": "2024",
+    "source_confidence": "primary",
+    "source_name": "European Commission, COM(2025) 110 final, Section 6.1",
+    "source_url": "https://climate.ec.europa.eu/document/download/1bb8387b-bdc4-4489-9d76-7ff30239704d_en?filename=First+report+on+the+implementation+of+the+ETS+extension+to+maritime+transport.pdf",
+    "unit": "% of ticket price",
+    "value": 3.0
+   },
+   {
+    "category": "pass_through",
+    "id": 9,
+    "metric_label": "Ferry/RoPax ticket price ETS impact -- high end",
+    "notes": null,
+    "period": "2024",
+    "source_confidence": "primary",
+    "source_name": "European Commission, COM(2025) 110 final, Section 6.1",
+    "source_url": "https://climate.ec.europa.eu/document/download/1bb8387b-bdc4-4489-9d76-7ff30239704d_en?filename=First+report+on+the+implementation+of+the+ETS+extension+to+maritime+transport.pdf",
+    "unit": "% of ticket price",
+    "value": 11.0
+   },
+   {
+    "category": "pass_through",
+    "id": 10,
+    "metric_label": "Ferry ETS cost as share of total shipping cost (100% fossil-fuel routes)",
+    "notes": "For ferry routes with no territorial-continuity exemption. Expected to rise in 2025/2026 as the phase-in percentage increases; no evidence yet (as of this report) of reduced service frequency to islands as a result.",
+    "period": "2024",
+    "source_confidence": "primary",
+    "source_name": "European Commission, COM(2025) 110 final, Section 6.2",
+    "source_url": "https://climate.ec.europa.eu/document/download/1bb8387b-bdc4-4489-9d76-7ff30239704d_en?filename=First+report+on+the+implementation+of+the+ETS+extension+to+maritime+transport.pdf",
+    "unit": "% of total shipping cost",
+    "value": 8.0
+   },
+   {
+    "category": "projection",
+    "id": 15,
+    "metric_label": "Illustrative full-phase-in cost, holding 2024 emissions/price constant",
+    "notes": "A simple x2.5 scaling of the EUR 2,200M / 40%-phase-in 2024 figure to 100% phase-in, holding both emissions volume and EUA price constant at their 2024 levels. The Commission's own report explicitly declines to project this, noting 'higher increases are anticipated in 2025 and 2026, linked to the phase-in approach' without a number -- real 2025/2026 costs will also depend on the EUA price path (volatile, roughly EUR 60-120/t through 2025-26) and on FuelEU Maritime stacking on top of ETS, neither of which this extrapolation accounts for. Treat as an order-of-magnitude orientation figure only, not a forecast.",
+    "period": "2026+ (100% phase-in, NOT an official projection)",
+    "source_confidence": "modeled",
+    "source_name": "This platform's own extrapolation, not a Commission figure",
+    "source_url": null,
+    "unit": "EUR million",
+    "value": 5500.0
+   },
+   {
+    "category": "route_case_study",
+    "id": 11,
+    "metric_label": "Shanghai-Rotterdam containership (14,000 TEU) -- ETS cost via Cape of Good Hope reroute",
+    "notes": "2015-built vessel, fossil fuels only, ~78% load factor assumed. Implies ~EUR 10/TEU. Rerouting via the Cape (avoiding the Red Sea/Suez) is the longer, higher-fuel-burn path, hence the higher ETS cost than the Suez route below.",
+    "period": "2024 case study",
+    "source_confidence": "primary",
+    "source_name": "European Commission, COM(2025) 110 final, Section 6.1",
+    "source_url": "https://climate.ec.europa.eu/document/download/1bb8387b-bdc4-4489-9d76-7ff30239704d_en?filename=First+report+on+the+implementation+of+the+ETS+extension+to+maritime+transport.pdf",
+    "unit": "EUR per voyage",
+    "value": 145000.0
+   },
+   {
+    "category": "route_case_study",
+    "id": 12,
+    "metric_label": "Shanghai-Rotterdam containership (14,000 TEU) -- ETS cost via Suez Canal",
+    "notes": "Same vessel/assumptions as the Cape route above. Implies ~EUR 7/TEU.",
+    "period": "2024 case study",
+    "source_confidence": "primary",
+    "source_name": "European Commission, COM(2025) 110 final, Section 6.1",
+    "source_url": "https://climate.ec.europa.eu/document/download/1bb8387b-bdc4-4489-9d76-7ff30239704d_en?filename=First+report+on+the+implementation+of+the+ETS+extension+to+maritime+transport.pdf",
+    "unit": "EUR per voyage",
+    "value": 106000.0
+   },
+   {
+    "category": "route_case_study",
+    "id": 13,
+    "metric_label": "Actual liner ETS surcharge, Asia to North Europe (average)",
+    "notes": "Announced by liner operators. Notably HIGHER than the Commission's own computed per-route cost (~EUR 7-10/TEU for the comparable Shanghai-Rotterdam case study above) -- the Commission's own reading is that liner operators can fully pass through, and in some cases over-recover relative to, their actual EUA cost via these surcharges.",
+    "period": "2024",
+    "source_confidence": "primary",
+    "source_name": "European Commission, COM(2025) 110 final, Section 6.1",
+    "source_url": "https://climate.ec.europa.eu/document/download/1bb8387b-bdc4-4489-9d76-7ff30239704d_en?filename=First+report+on+the+implementation+of+the+ETS+extension+to+maritime+transport.pdf",
+    "unit": "EUR/TEU",
+    "value": 30.0
+   },
+   {
+    "category": "route_case_study",
+    "id": 14,
+    "metric_label": "Actual liner ETS surcharge, North Europe to Asia (reverse direction)",
+    "notes": null,
+    "period": "2024",
+    "source_confidence": "primary",
+    "source_name": "European Commission, COM(2025) 110 final, Section 6.1",
+    "source_url": "https://climate.ec.europa.eu/document/download/1bb8387b-bdc4-4489-9d76-7ff30239704d_en?filename=First+report+on+the+implementation+of+the+ETS+extension+to+maritime+transport.pdf",
+    "unit": "EUR/TEU",
+    "value": 20.0
+   }
+  ],
+  "status": 200
+ },
+ "ship.missing_vessel": {
+  "body": {
+   "detail": "Vessel not found"
+  },
+  "status": 404
+ },
+ "ship.shipco.plans": {
+  "body": [
+   {
+    "id": 1,
+    "methodology": "BDN + tank soundings",
+    "status": "approved",
+    "version": 2,
+    "vessel_id": 1
+   }
+  ],
+  "status": 200
+ },
+ "ship.shipco.reports.after": {
+  "body": [
+   {
+    "ets_eligible_co2_t": 7233.26,
+    "id": 1,
+    "status": "submitted",
+    "total_co2_t": 12792.85,
+    "vessel_id": 1,
+    "year": 2025
+   }
+  ],
+  "status": 200
+ },
+ "ship.shipco.reports.before": {
+  "body": [],
+  "status": 200
+ },
+ "ship.shipco.submit.1.2023": {
+  "body": {
+   "detail": "No voyages found for this vessel/year"
+  },
+  "status": 404
+ },
+ "ship.shipco.submit.1.2024": {
+  "body": {
+   "detail": "No voyages found for this vessel/year"
+  },
+  "status": 404
+ },
+ "ship.shipco.submit.1.2025": {
+  "body": {
+   "ets_eligible_co2_t": 7233.26,
+   "id": 1,
+   "status": "submitted",
+   "total_co2_t": 12792.85,
+   "vessel_id": 1,
+   "year": 2025
+  },
+  "status": 200
+ },
+ "ship.shipco.submit.1.2026": {
+  "body": {
+   "detail": "No voyages found for this vessel/year"
+  },
+  "status": 404
+ },
+ "ship.shipco.vessels": {
+  "body": [
+   {
+    "gross_tonnage": 98500.0,
+    "id": 1,
+    "imo_number": "9811000",
+    "name": "MV Hanseatic Voyager",
+    "org_id": 4,
+    "vessel_type": "container"
+   }
+  ],
+  "status": 200
+ },
+ "ship.shipco.voyages": {
+  "body": [
+   {
+    "arrival_port": "Hamburg",
+    "arrival_time": "2025-01-06T00:00:00",
+    "departure_port": "Rotterdam",
+    "departure_time": "2025-01-05T00:00:00",
+    "distance_nm": 280.0,
+    "fuel_consumed_mt": 46.25484118612096,
+    "fuel_type": "VLSFO",
+    "id": 1,
+    "intra_eu": true,
+    "vessel_id": 1
+   },
+   {
+    "arrival_port": "Shanghai",
+    "arrival_time": "2025-02-04T00:00:00",
+    "departure_port": "Hamburg",
+    "departure_time": "2025-01-09T00:00:00",
+    "distance_nm": 10500.0,
+    "fuel_consumed_mt": 1674.2539794323868,
+    "fuel_type": "VLSFO",
+    "id": 2,
+    "intra_eu": false,
+    "vessel_id": 1
+   },
+   {
+    "arrival_port": "Rotterdam",
+    "arrival_time": "2025-03-07T00:00:00",
+    "departure_port": "Shanghai",
+    "departure_time": "2025-02-07T00:00:00",
+    "distance_nm": 11200.0,
+    "fuel_consumed_mt": 1833.6112582537419,
+    "fuel_type": "VLSFO",
+    "id": 3,
+    "intra_eu": false,
+    "vessel_id": 1
+   },
+   {
+    "arrival_port": "Piraeus",
+    "arrival_time": "2025-03-17T00:00:00",
+    "departure_port": "Rotterdam",
+    "departure_time": "2025-03-10T00:00:00",
+    "distance_nm": 3100.0,
+    "fuel_consumed_mt": 491.2139167674776,
+    "fuel_type": "VLSFO",
+    "id": 4,
+    "intra_eu": true,
+    "vessel_id": 1
+   },
+   {
+    "arrival_port": "Istanbul",
+    "arrival_time": "2025-03-21T00:00:00",
+    "departure_port": "Piraeus",
+    "departure_time": "2025-03-20T00:00:00",
+    "distance_nm": 380.0,
+    "fuel_consumed_mt": 62.83765456996815,
+    "fuel_type": "VLSFO",
+    "id": 5,
+    "intra_eu": false,
+    "vessel_id": 1
+   }
+  ],
+  "status": 200
+ },
+ "ship.tankerco.plans": {
+  "body": [
+   {
+    "id": 2,
+    "methodology": "BDN + tank soundings",
+    "status": "approved",
+    "version": 1,
+    "vessel_id": 2
+   }
+  ],
+  "status": 200
+ },
+ "ship.tankerco.reports.after": {
+  "body": [
+   {
+    "ets_eligible_co2_t": 7672.57,
+    "id": 2,
+    "status": "submitted",
+    "total_co2_t": 13606.06,
+    "vessel_id": 2,
+    "year": 2025
+   }
+  ],
+  "status": 200
+ },
+ "ship.tankerco.reports.before": {
+  "body": [],
+  "status": 200
+ },
+ "ship.tankerco.submit.2.2023": {
+  "body": {
+   "detail": "No voyages found for this vessel/year"
+  },
+  "status": 404
+ },
+ "ship.tankerco.submit.2.2024": {
+  "body": {
+   "detail": "No voyages found for this vessel/year"
+  },
+  "status": 404
+ },
+ "ship.tankerco.submit.2.2025": {
+  "body": {
+   "ets_eligible_co2_t": 7672.57,
+   "id": 2,
+   "status": "submitted",
+   "total_co2_t": 13606.06,
+   "vessel_id": 2,
+   "year": 2025
+  },
+  "status": 200
+ },
+ "ship.tankerco.submit.2.2026": {
+  "body": {
+   "detail": "No voyages found for this vessel/year"
+  },
+  "status": 404
+ },
+ "ship.tankerco.vessels": {
+  "body": [
+   {
+    "gross_tonnage": 61200.0,
+    "id": 2,
+    "imo_number": "9744231",
+    "name": "MT Aegean Horizon",
+    "org_id": 5,
+    "vessel_type": "tanker"
+   }
+  ],
+  "status": 200
+ },
+ "ship.tankerco.voyages": {
+  "body": [
+   {
+    "arrival_port": "Hamburg",
+    "arrival_time": "2025-01-06T00:00:00",
+    "departure_port": "Rotterdam",
+    "departure_time": "2025-01-05T00:00:00",
+    "distance_nm": 280.0,
+    "fuel_consumed_mt": 46.5902953868062,
+    "fuel_type": "VLSFO",
+    "id": 6,
+    "intra_eu": true,
+    "vessel_id": 2
+   },
+   {
+    "arrival_port": "Shanghai",
+    "arrival_time": "2025-02-04T00:00:00",
+    "departure_port": "Hamburg",
+    "departure_time": "2025-01-09T00:00:00",
+    "distance_nm": 10500.0,
+    "fuel_consumed_mt": 1995.1064400507928,
+    "fuel_type": "VLSFO",
+    "id": 7,
+    "intra_eu": false,
+    "vessel_id": 2
+   },
+   {
+    "arrival_port": "Rotterdam",
+    "arrival_time": "2025-03-07T00:00:00",
+    "departure_port": "Shanghai",
+    "departure_time": "2025-02-07T00:00:00",
+    "distance_nm": 11200.0,
+    "fuel_consumed_mt": 1761.384511729696,
+    "fuel_type": "VLSFO",
+    "id": 8,
+    "intra_eu": false,
+    "vessel_id": 2
+   },
+   {
+    "arrival_port": "Piraeus",
+    "arrival_time": "2025-03-17T00:00:00",
+    "departure_port": "Rotterdam",
+    "departure_time": "2025-03-10T00:00:00",
+    "distance_nm": 3100.0,
+    "fuel_consumed_mt": 511.8798692472682,
+    "fuel_type": "VLSFO",
+    "id": 9,
+    "intra_eu": true,
+    "vessel_id": 2
+   },
+   {
+    "arrival_port": "Istanbul",
+    "arrival_time": "2025-03-21T00:00:00",
+    "departure_port": "Piraeus",
+    "departure_time": "2025-03-20T00:00:00",
+    "distance_nm": 380.0,
+    "fuel_consumed_mt": 54.357566633256845,
+    "fuel_type": "VLSFO",
+    "id": 10,
+    "intra_eu": false,
+    "vessel_id": 2
+   }
+  ],
+  "status": 200
+ },
+ "trading.cancel": {
+  "body": {
+   "ok": true
+  },
+  "status": 200
+ },
+ "trading.cancel_again": {
+  "body": {
+   "detail": "Only open orders can be cancelled"
+  },
+  "status": 400
+ },
+ "trading.cancel_missing": {
+  "body": {
+   "detail": "Order not found"
+  },
+  "status": 404
+ },
+ "trading.instruments": {
+  "body": [
+   {
+    "id": 1,
+    "instrument_type": "EUA",
+    "reference_credit_project_id": null,
+    "symbol": "EUA-DEC26"
+   },
+   {
+    "id": 2,
+    "instrument_type": "CBAM_CERTIFICATE",
+    "reference_credit_project_id": null,
+    "symbol": "CBAM-CERT"
+   },
+   {
+    "id": 3,
+    "instrument_type": "VOLUNTARY_CREDIT",
+    "reference_credit_project_id": 1,
+    "symbol": "VCS-REDD-BR"
+   }
+  ],
+  "status": 200
+ },
+ "trading.market_reality": {
+  "body": [
+   {
+    "category": "context",
+    "id": 9,
+    "metric_label": "Real-world EUA average price (for comparison against the demo instrument)",
+    "notes": "This platform's own demo EUA instrument (EUA-DEC26, above) starts its simulated random-walk price series at EUR68/t -- deliberately close to this real 2024 average -- for orientation only, not a live price feed. Same primary source already used for the Shipping MRV compliance-cost figures.",
+    "period": "2024",
+    "source_confidence": "primary",
+    "source_name": "European Commission, COM(2025) 110 final, Section 6.1",
+    "source_url": "https://climate.ec.europa.eu/document/download/1bb8387b-bdc4-4489-9d76-7ff30239704d_en?filename=First+report+on+the+implementation+of+the+ETS+extension+to+maritime+transport.pdf",
+    "unit": "EUR/tCO2e",
+    "value": 64.0
+   },
+   {
+    "category": "ice_trading_volume",
+    "id": 1,
+    "metric_label": "ICE environmental futures/options contracts traded",
+    "notes": "Record year, up ~40% YoY, with record average daily volume and participation. Covers ICE's full environmental portfolio (EUA, UKA, North American schemes, RECs, RINs, voluntary credits), not EUAs alone.",
+    "period": "2024",
+    "source_confidence": "primary",
+    "source_name": "ICE (Intercontinental Exchange), press release, 24 Jan 2025",
+    "source_url": "https://ir.theice.com/press/news-details/2025/ICE-Announces-Record-Environmental-Market-Trading-in-2024/default.aspx",
+    "unit": "million contracts",
+    "value": 20.4
+   },
+   {
+    "category": "ice_trading_volume",
+    "id": 2,
+    "metric_label": "ICE environmental markets notional value traded",
+    "notes": null,
+    "period": "2024",
+    "source_confidence": "primary",
+    "source_name": "ICE (Intercontinental Exchange), press release, 24 Jan 2025",
+    "source_url": "https://ir.theice.com/press/news-details/2025/ICE-Announces-Record-Environmental-Market-Trading-in-2024/default.aspx",
+    "unit": "USD trillion (at least; 4th consecutive year)",
+    "value": 1.0
+   },
+   {
+    "category": "ice_trading_volume",
+    "id": 3,
+    "metric_label": "ICE EUA + UKA futures/options, physically delivered value",
+    "notes": "Combined EU Carbon Allowance (EUA) + UK Carbon Allowance (UKA) figure -- ICE's release does not break these two out separately. ICE describes its EUA futures/options as 'the world's most liquid carbon derivatives market.' Most contracts are cash-settled, not physically delivered -- this figure is specifically the physical-delivery subset.",
+    "period": "2024",
+    "source_confidence": "primary",
+    "source_name": "ICE (Intercontinental Exchange), press release, 24 Jan 2025",
+    "source_url": "https://ir.theice.com/press/news-details/2025/ICE-Announces-Record-Environmental-Market-Trading-in-2024/default.aspx",
+    "unit": "USD billion",
+    "value": 40.0
+   },
+   {
+    "category": "ice_trading_volume",
+    "id": 4,
+    "metric_label": "ICE cumulative carbon allowances traded (since launch)",
+    "notes": "Across ICE's full global environmental portfolio, all allowance-type products combined.",
+    "period": "cumulative, since launch to end-2024",
+    "source_confidence": "primary",
+    "source_name": "ICE (Intercontinental Exchange), press release, 24 Jan 2025",
+    "source_url": "https://ir.theice.com/press/news-details/2025/ICE-Announces-Record-Environmental-Market-Trading-in-2024/default.aspx",
+    "unit": "billion allowances",
+    "value": 166.0
+   },
+   {
+    "category": "ice_trading_volume",
+    "id": 5,
+    "metric_label": "ICE cumulative voluntary carbon credits traded (since launch)",
+    "notes": null,
+    "period": "cumulative, since launch to end-2024",
+    "source_confidence": "primary",
+    "source_name": "ICE (Intercontinental Exchange), press release, 24 Jan 2025",
+    "source_url": "https://ir.theice.com/press/news-details/2025/ICE-Announces-Record-Environmental-Market-Trading-in-2024/default.aspx",
+    "unit": "billion credits",
+    "value": 6.0
+   },
+   {
+    "category": "market_structure",
+    "id": 6,
+    "metric_label": "Dominant EUA futures/options trading venue",
+    "notes": "EUA futures also list on EEX (European Energy Exchange, Leipzig), but the vast majority of EUA futures/options trading volume happens on ICE Futures Europe -- structurally different roles, not direct competition: EEX operates the EU's official primary auction platform (where new allowances first enter the market on behalf of the European Commission/member states), while ICE dominates secondary/derivatives trading. No precise ICE-vs-EEX volume percentage was found and verified this session -- 'vast majority' is the most specific claim the sources support.",
+    "period": "ongoing",
+    "source_confidence": "secondary",
+    "source_name": "ICE press release (24 Jan 2025) + secondary market-structure reporting",
+    "source_url": "https://ir.theice.com/press/news-details/2025/ICE-Announces-Record-Environmental-Market-Trading-in-2024/default.aspx",
+    "unit": "qualitative",
+    "value": null
+   },
+   {
+    "category": "market_structure",
+    "id": 7,
+    "metric_label": "ICE environmental futures/options contracts traded",
+    "notes": "Up ~4% vs. the 2024 record. The primary press release fetch was rate-limited (HTTP 429) during this session's research -- this figure is via search summary only, not independently confirmed against the source document the way the 2024 figures above were.",
+    "period": "2025",
+    "source_confidence": "secondary",
+    "source_name": "ICE (Intercontinental Exchange), reported via search synthesis, not read directly this session",
+    "source_url": "https://ir.theice.com/press/news-details/2026/ICEs-Environmental-Market-Trading-Reaches-Record-Highs-in-2025/default.aspx",
+    "unit": "million contracts",
+    "value": 20.9
+   },
+   {
+    "category": "market_structure",
+    "id": 8,
+    "metric_label": "ICE environmental markets, physically delivered value",
+    "notes": "5th consecutive year of $1 trillion+ notional value traded, per the same search summary.",
+    "period": "2025",
+    "source_confidence": "secondary",
+    "source_name": "ICE (Intercontinental Exchange), reported via search synthesis, not read directly this session",
+    "source_url": "https://ir.theice.com/press/news-details/2026/ICEs-Environmental-Market-Trading-Reaches-Record-Highs-in-2025/default.aspx",
+    "unit": "USD billion",
+    "value": 117.0
+   }
+  ],
+  "status": 200
+ },
+ "trading.orders.final": {
+  "body": [
+   {
+    "id": 1,
+    "instrument_id": 1,
+    "limit_price_eur": 69.5,
+    "org_id": 11,
+    "quantity": 4780.0,
+    "side": "sell",
+    "status": "open"
+   },
+   {
+    "id": 2,
+    "instrument_id": 1,
+    "limit_price_eur": 70.0,
+    "org_id": 3,
+    "quantity": 2000.0,
+    "side": "sell",
+    "status": "open"
+   },
+   {
+    "id": 3,
+    "instrument_id": 3,
+    "limit_price_eur": 11.0,
+    "org_id": 10,
+    "quantity": 1500.0,
+    "side": "sell",
+    "status": "open"
+   },
+   {
+    "id": 4,
+    "instrument_id": 1,
+    "limit_price_eur": 70.0,
+    "org_id": 10,
+    "quantity": 100.0,
+    "side": "sell",
+    "status": "open"
+   },
+   {
+    "id": 5,
+    "instrument_id": 1,
+    "limit_price_eur": 72.0,
+    "org_id": 10,
+    "quantity": 50.0,
+    "side": "sell",
+    "status": "open"
+   },
+   {
+    "id": 6,
+    "instrument_id": 1,
+    "limit_price_eur": 1.0,
+    "org_id": 10,
+    "quantity": 10.0,
+    "side": "buy",
+    "status": "cancelled"
+   },
+   {
+    "id": 7,
+    "instrument_id": 1,
+    "limit_price_eur": 71.0,
+    "org_id": 11,
+    "quantity": 0.0,
+    "side": "buy",
+    "status": "filled"
+   },
+   {
+    "id": 8,
+    "instrument_id": 1,
+    "limit_price_eur": 80.0,
+    "org_id": 11,
+    "quantity": 0.0,
+    "side": "buy",
+    "status": "filled"
+   },
+   {
+    "id": 9,
+    "instrument_id": 1,
+    "limit_price_eur": 60.0,
+    "org_id": 11,
+    "quantity": 30.0,
+    "side": "sell",
+    "status": "open"
+   }
+  ],
+  "status": 200
+ },
+ "trading.orders.initial": {
+  "body": [
+   {
+    "id": 1,
+    "instrument_id": 1,
+    "limit_price_eur": 69.5,
+    "org_id": 11,
+    "quantity": 5000.0,
+    "side": "sell",
+    "status": "open"
+   },
+   {
+    "id": 2,
+    "instrument_id": 1,
+    "limit_price_eur": 70.0,
+    "org_id": 3,
+    "quantity": 2000.0,
+    "side": "sell",
+    "status": "open"
+   },
+   {
+    "id": 3,
+    "instrument_id": 3,
+    "limit_price_eur": 11.0,
+    "org_id": 10,
+    "quantity": 1500.0,
+    "side": "sell",
+    "status": "open"
+   }
+  ],
+  "status": 200
+ },
+ "trading.orders.open": {
+  "body": [
+   {
+    "id": 1,
+    "instrument_id": 1,
+    "limit_price_eur": 69.5,
+    "org_id": 11,
+    "quantity": 4780.0,
+    "side": "sell",
+    "status": "open"
+   },
+   {
+    "id": 2,
+    "instrument_id": 1,
+    "limit_price_eur": 70.0,
+    "org_id": 3,
+    "quantity": 2000.0,
+    "side": "sell",
+    "status": "open"
+   },
+   {
+    "id": 3,
+    "instrument_id": 3,
+    "limit_price_eur": 11.0,
+    "org_id": 10,
+    "quantity": 1500.0,
+    "side": "sell",
+    "status": "open"
+   },
+   {
+    "id": 4,
+    "instrument_id": 1,
+    "limit_price_eur": 70.0,
+    "org_id": 10,
+    "quantity": 100.0,
+    "side": "sell",
+    "status": "open"
+   },
+   {
+    "id": 5,
+    "instrument_id": 1,
+    "limit_price_eur": 72.0,
+    "org_id": 10,
+    "quantity": 50.0,
+    "side": "sell",
+    "status": "open"
+   },
+   {
+    "id": 9,
+    "instrument_id": 1,
+    "limit_price_eur": 60.0,
+    "org_id": 11,
+    "quantity": 30.0,
+    "side": "sell",
+    "status": "open"
+   }
+  ],
+  "status": 200
+ },
+ "trading.place.buy_no_cross": {
+  "body": {
+   "id": 6,
+   "instrument_id": 1,
+   "limit_price_eur": 1.0,
+   "org_id": 10,
+   "quantity": 10.0,
+   "side": "buy",
+   "status": "open"
+  },
+  "status": 200
+ },
+ "trading.place.buy_partial": {
+  "body": {
+   "id": 7,
+   "instrument_id": 1,
+   "limit_price_eur": 71.0,
+   "org_id": 11,
+   "quantity": 0.0,
+   "side": "buy",
+   "status": "filled"
+  },
+  "status": 200
+ },
+ "trading.place.buy_sweep": {
+  "body": {
+   "id": 8,
+   "instrument_id": 1,
+   "limit_price_eur": 80.0,
+   "org_id": 11,
+   "quantity": 0.0,
+   "side": "buy",
+   "status": "filled"
+  },
+  "status": 200
+ },
+ "trading.place.foreign_org": {
+  "body": {
+   "detail": "org_id does not belong to your tenant"
+  },
+  "status": 403
+ },
+ "trading.place.sell_cross": {
+  "body": {
+   "id": 9,
+   "instrument_id": 1,
+   "limit_price_eur": 60.0,
+   "org_id": 11,
+   "quantity": 30.0,
+   "side": "sell",
+   "status": "open"
+  },
+  "status": 200
+ },
+ "trading.place.sell_rest": {
+  "body": {
+   "id": 4,
+   "instrument_id": 1,
+   "limit_price_eur": 70.0,
+   "org_id": 10,
+   "quantity": 100.0,
+   "side": "sell",
+   "status": "open"
+  },
+  "status": 200
+ },
+ "trading.place.sell_rest2": {
+  "body": {
+   "id": 5,
+   "instrument_id": 1,
+   "limit_price_eur": 72.0,
+   "org_id": 10,
+   "quantity": 50.0,
+   "side": "sell",
+   "status": "open"
+  },
+  "status": 200
+ },
+ "trading.positions.foreign": {
+  "body": {
+   "detail": "org_id does not belong to your tenant"
+  },
+  "status": 403
+ },
+ "trading.positions.t1.after": {
+  "body": [
+   {
+    "avg_cost_eur": 10.5,
+    "id": 3,
+    "instrument_id": 3,
+    "org_id": 10,
+    "quantity": 3000.0
+   }
+  ],
+  "status": 200
+ },
+ "trading.positions.t1.before": {
+  "body": [
+   {
+    "avg_cost_eur": 10.5,
+    "id": 3,
+    "instrument_id": 3,
+    "org_id": 10,
+    "quantity": 3000.0
+   }
+  ],
+  "status": 200
+ },
+ "trading.positions.t2": {
+  "body": [
+   {
+    "avg_cost_eur": 69.5,
+    "id": 4,
+    "instrument_id": 1,
+    "org_id": 11,
+    "quantity": 0.0
+   }
+  ],
+  "status": 200
+ },
+ "trading.prices.1": {
+  "body": [
+   {
+    "price_date": "2025-09-01",
+    "price_eur": 66.59
+   },
+   {
+    "price_date": "2025-09-08",
+    "price_eur": 66.62
+   },
+   {
+    "price_date": "2025-09-15",
+    "price_eur": 64.25
+   },
+   {
+    "price_date": "2025-09-22",
+    "price_eur": 62.75
+   },
+   {
+    "price_date": "2025-09-29",
+    "price_eur": 63.5
+   },
+   {
+    "price_date": "2025-10-06",
+    "price_eur": 63.72
+   },
+   {
+    "price_date": "2025-10-13",
+    "price_eur": 62.32
+   },
+   {
+    "price_date": "2025-10-20",
+    "price_eur": 62.77
+   },
+   {
+    "price_date": "2025-10-27",
+    "price_eur": 64.32
+   },
+   {
+    "price_date": "2025-11-03",
+    "price_eur": 61.85
+   },
+   {
+    "price_date": "2025-11-10",
+    "price_eur": 63.38
+   },
+   {
+    "price_date": "2025-11-17",
+    "price_eur": 64.37
+   },
+   {
+    "price_date": "2025-11-24",
+    "price_eur": 63.57
+   },
+   {
+    "price_date": "2025-12-01",
+    "price_eur": 61.85
+   },
+   {
+    "price_date": "2025-12-08",
+    "price_eur": 64.13
+   },
+   {
+    "price_date": "2025-12-15",
+    "price_eur": 63.32
+   },
+   {
+    "price_date": "2025-12-22",
+    "price_eur": 61.28
+   },
+   {
+    "price_date": "2025-12-29",
+    "price_eur": 59.26
+   },
+   {
+    "price_date": "2026-01-05",
+    "price_eur": 61.0
+   },
+   {
+    "price_date": "2026-01-12",
+    "price_eur": 61.52
+   },
+   {
+    "price_date": "2026-01-19",
+    "price_eur": 63.06
+   },
+   {
+    "price_date": "2026-01-26",
+    "price_eur": 64.2
+   },
+   {
+    "price_date": "2026-02-02",
+    "price_eur": 64.39
+   },
+   {
+    "price_date": "2026-02-09",
+    "price_eur": 66.75
+   },
+   {
+    "price_date": "2026-02-16",
+    "price_eur": 66.14
+   },
+   {
+    "price_date": "2026-02-23",
+    "price_eur": 66.4
+   },
+   {
+    "price_date": "2026-03-02",
+    "price_eur": 68.05
+   },
+   {
+    "price_date": "2026-03-09",
+    "price_eur": 68.64
+   },
+   {
+    "price_date": "2026-03-16",
+    "price_eur": 70.45
+   },
+   {
+    "price_date": "2026-03-23",
+    "price_eur": 70.84
+   },
+   {
+    "price_date": "2026-03-30",
+    "price_eur": 71.86
+   },
+   {
+    "price_date": "2026-04-06",
+    "price_eur": 69.59
+   },
+   {
+    "price_date": "2026-04-13",
+    "price_eur": 68.23
+   },
+   {
+    "price_date": "2026-04-20",
+    "price_eur": 67.18
+   },
+   {
+    "price_date": "2026-04-27",
+    "price_eur": 65.08
+   },
+   {
+    "price_date": "2026-05-04",
+    "price_eur": 63.74
+   },
+   {
+    "price_date": "2026-05-11",
+    "price_eur": 61.75
+   },
+   {
+    "price_date": "2026-05-18",
+    "price_eur": 60.64
+   },
+   {
+    "price_date": "2026-05-25",
+    "price_eur": 61.31
+   },
+   {
+    "price_date": "2026-06-01",
+    "price_eur": 60.64
+   },
+   {
+    "price_date": "2026-06-08",
+    "price_eur": 59.99
+   },
+   {
+    "price_date": "2026-06-15",
+    "price_eur": 58.54
+   },
+   {
+    "price_date": "2026-06-22",
+    "price_eur": 57.37
+   },
+   {
+    "price_date": "2026-06-29",
+    "price_eur": 59.55
+   },
+   {
+    "price_date": "2026-07-06",
+    "price_eur": 60.29
+   },
+   {
+    "price_date": "2026-07-13",
+    "price_eur": 60.84
+   },
+   {
+    "price_date": "2026-07-20",
+    "price_eur": 59.2
+   },
+   {
+    "price_date": "2026-07-27",
+    "price_eur": 60.34
+   },
+   {
+    "price_date": "2026-08-03",
+    "price_eur": 58.66
+   },
+   {
+    "price_date": "2026-08-10",
+    "price_eur": 58.06
+   },
+   {
+    "price_date": "2026-08-17",
+    "price_eur": 60.5
+   },
+   {
+    "price_date": "2026-08-24",
+    "price_eur": 61.2
+   },
+   {
+    "price_date": "2026-08-31",
+    "price_eur": 61.49
+   }
+  ],
+  "status": 200
+ },
+ "trading.prices.2": {
+  "body": [
+   {
+    "price_date": "2026-01-01",
+    "price_eur": 66.74
+   },
+   {
+    "price_date": "2026-01-08",
+    "price_eur": 68.11
+   },
+   {
+    "price_date": "2026-01-15",
+    "price_eur": 69.21
+   },
+   {
+    "price_date": "2026-01-22",
+    "price_eur": 68.13
+   },
+   {
+    "price_date": "2026-01-29",
+    "price_eur": 66.26
+   },
+   {
+    "price_date": "2026-02-05",
+    "price_eur": 65.52
+   },
+   {
+    "price_date": "2026-02-12",
+    "price_eur": 64.59
+   },
+   {
+    "price_date": "2026-02-19",
+    "price_eur": 63.44
+   },
+   {
+    "price_date": "2026-02-26",
+    "price_eur": 65.21
+   },
+   {
+    "price_date": "2026-03-05",
+    "price_eur": 66.71
+   },
+   {
+    "price_date": "2026-03-12",
+    "price_eur": 65.97
+   },
+   {
+    "price_date": "2026-03-19",
+    "price_eur": 66.59
+   },
+   {
+    "price_date": "2026-03-26",
+    "price_eur": 66.18
+   },
+   {
+    "price_date": "2026-04-02",
+    "price_eur": 67.83
+   },
+   {
+    "price_date": "2026-04-09",
+    "price_eur": 67.67
+   },
+   {
+    "price_date": "2026-04-16",
+    "price_eur": 66.73
+   },
+   {
+    "price_date": "2026-04-23",
+    "price_eur": 65.71
+   },
+   {
+    "price_date": "2026-04-30",
+    "price_eur": 65.96
+   },
+   {
+    "price_date": "2026-05-07",
+    "price_eur": 65.01
+   },
+   {
+    "price_date": "2026-05-14",
+    "price_eur": 65.35
+   },
+   {
+    "price_date": "2026-05-21",
+    "price_eur": 66.94
+   },
+   {
+    "price_date": "2026-05-28",
+    "price_eur": 66.54
+   },
+   {
+    "price_date": "2026-06-04",
+    "price_eur": 65.42
+   },
+   {
+    "price_date": "2026-06-11",
+    "price_eur": 67.41
+   },
+   {
+    "price_date": "2026-06-18",
+    "price_eur": 67.44
+   },
+   {
+    "price_date": "2026-06-25",
+    "price_eur": 65.81
+   },
+   {
+    "price_date": "2026-07-02",
+    "price_eur": 64.0
+   },
+   {
+    "price_date": "2026-07-09",
+    "price_eur": 62.43
+   },
+   {
+    "price_date": "2026-07-16",
+    "price_eur": 62.94
+   },
+   {
+    "price_date": "2026-07-23",
+    "price_eur": 64.11
+   },
+   {
+    "price_date": "2026-07-30",
+    "price_eur": 63.8
+   },
+   {
+    "price_date": "2026-08-06",
+    "price_eur": 62.06
+   },
+   {
+    "price_date": "2026-08-13",
+    "price_eur": 61.58
+   },
+   {
+    "price_date": "2026-08-20",
+    "price_eur": 63.57
+   },
+   {
+    "price_date": "2026-08-27",
+    "price_eur": 63.68
+   }
+  ],
+  "status": 200
+ },
+ "trading.prices.3": {
+  "body": [
+   {
+    "price_date": "2025-09-01",
+    "price_eur": 12.75
+   },
+   {
+    "price_date": "2025-09-08",
+    "price_eur": 13.33
+   },
+   {
+    "price_date": "2025-09-15",
+    "price_eur": 12.55
+   },
+   {
+    "price_date": "2025-09-22",
+    "price_eur": 12.9
+   },
+   {
+    "price_date": "2025-09-29",
+    "price_eur": 13.19
+   },
+   {
+    "price_date": "2025-10-06",
+    "price_eur": 13.25
+   },
+   {
+    "price_date": "2025-10-13",
+    "price_eur": 12.88
+   },
+   {
+    "price_date": "2025-10-20",
+    "price_eur": 13.1
+   },
+   {
+    "price_date": "2025-10-27",
+    "price_eur": 12.48
+   },
+   {
+    "price_date": "2025-11-03",
+    "price_eur": 12.38
+   },
+   {
+    "price_date": "2025-11-10",
+    "price_eur": 12.3
+   },
+   {
+    "price_date": "2025-11-17",
+    "price_eur": 13.03
+   },
+   {
+    "price_date": "2025-11-24",
+    "price_eur": 13.63
+   },
+   {
+    "price_date": "2025-12-01",
+    "price_eur": 13.25
+   },
+   {
+    "price_date": "2025-12-08",
+    "price_eur": 13.25
+   },
+   {
+    "price_date": "2025-12-15",
+    "price_eur": 12.74
+   },
+   {
+    "price_date": "2025-12-22",
+    "price_eur": 13.4
+   },
+   {
+    "price_date": "2025-12-29",
+    "price_eur": 13.99
+   },
+   {
+    "price_date": "2026-01-05",
+    "price_eur": 13.67
+   },
+   {
+    "price_date": "2026-01-12",
+    "price_eur": 13.89
+   },
+   {
+    "price_date": "2026-01-19",
+    "price_eur": 14.07
+   },
+   {
+    "price_date": "2026-01-26",
+    "price_eur": 13.51
+   },
+   {
+    "price_date": "2026-02-02",
+    "price_eur": 13.93
+   },
+   {
+    "price_date": "2026-02-09",
+    "price_eur": 14.0
+   },
+   {
+    "price_date": "2026-02-16",
+    "price_eur": 14.44
+   },
+   {
+    "price_date": "2026-02-23",
+    "price_eur": 14.49
+   },
+   {
+    "price_date": "2026-03-02",
+    "price_eur": 13.69
+   },
+   {
+    "price_date": "2026-03-09",
+    "price_eur": 13.41
+   },
+   {
+    "price_date": "2026-03-16",
+    "price_eur": 12.64
+   },
+   {
+    "price_date": "2026-03-23",
+    "price_eur": 13.33
+   },
+   {
+    "price_date": "2026-03-30",
+    "price_eur": 13.93
+   },
+   {
+    "price_date": "2026-04-06",
+    "price_eur": 14.46
+   },
+   {
+    "price_date": "2026-04-13",
+    "price_eur": 14.16
+   },
+   {
+    "price_date": "2026-04-20",
+    "price_eur": 13.45
+   },
+   {
+    "price_date": "2026-04-27",
+    "price_eur": 14.05
+   },
+   {
+    "price_date": "2026-05-04",
+    "price_eur": 14.77
+   },
+   {
+    "price_date": "2026-05-11",
+    "price_eur": 14.11
+   },
+   {
+    "price_date": "2026-05-18",
+    "price_eur": 14.08
+   },
+   {
+    "price_date": "2026-05-25",
+    "price_eur": 13.39
+   },
+   {
+    "price_date": "2026-06-01",
+    "price_eur": 13.81
+   },
+   {
+    "price_date": "2026-06-08",
+    "price_eur": 14.24
+   },
+   {
+    "price_date": "2026-06-15",
+    "price_eur": 13.64
+   },
+   {
+    "price_date": "2026-06-22",
+    "price_eur": 13.6
+   },
+   {
+    "price_date": "2026-06-29",
+    "price_eur": 13.68
+   },
+   {
+    "price_date": "2026-07-06",
+    "price_eur": 13.31
+   },
+   {
+    "price_date": "2026-07-13",
+    "price_eur": 13.9
+   },
+   {
+    "price_date": "2026-07-20",
+    "price_eur": 13.78
+   },
+   {
+    "price_date": "2026-07-27",
+    "price_eur": 13.32
+   },
+   {
+    "price_date": "2026-08-03",
+    "price_eur": 13.38
+   },
+   {
+    "price_date": "2026-08-10",
+    "price_eur": 13.75
+   },
+   {
+    "price_date": "2026-08-17",
+    "price_eur": 13.27
+   },
+   {
+    "price_date": "2026-08-24",
+    "price_eur": 12.97
+   },
+   {
+    "price_date": "2026-08-31",
+    "price_eur": 13.76
+   }
+  ],
+  "status": 200
+ },
+ "trading.trades": {
+  "body": [
+   {
+    "buy_order_id": 7,
+    "id": 1,
+    "instrument_id": 1,
+    "price_eur": 69.5,
+    "quantity": 120.0,
+    "sell_order_id": 1
+   },
+   {
+    "buy_order_id": 8,
+    "id": 2,
+    "instrument_id": 1,
+    "price_eur": 69.5,
+    "quantity": 100.0,
+    "sell_order_id": 1
+   }
+  ],
+  "status": 200
+ },
+ "trading.trades.eua": {
+  "body": [
+   {
+    "buy_order_id": 7,
+    "id": 1,
+    "instrument_id": 1,
+    "price_eur": 69.5,
+    "quantity": 120.0,
+    "sell_order_id": 1
+   },
+   {
+    "buy_order_id": 8,
+    "id": 2,
+    "instrument_id": 1,
+    "price_eur": 69.5,
+    "quantity": 100.0,
+    "sell_order_id": 1
+   }
+  ],
+  "status": 200
+ }
+}
