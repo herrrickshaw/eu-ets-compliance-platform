@@ -14,7 +14,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-SEED_DUMP_SHA256 = "85b7abad3942d8fce16b869d4bc6273ff8955baafe9931dc0c35abb42ce6486f"
+SEED_DUMP_SHA256 = "595bccb3cbf498a56b3a1f7b392c12b8cae1bec0f635d630522d12411a0d7559"
 OPENAPI_SHA256 = "251270c8cf8cc0c0c29cf8f5f30ec22d22e5f9e1cb1d6b55e634e06cfb441d84"
 
 
@@ -25,6 +25,9 @@ def _normalised_dump(path: str) -> str:
         for line in con.iterdump():
             line = re.sub(r"'\$2[abxy]\$[^']*'", "'<HASH>'", line)
             line = re.sub(r"'\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\.(?!000000')\d{6}'", "'<TS>'", line)
+            # SQLite renders REALs with a version-dependent number of digits (3.46 vs 3.54 differ in
+            # the last place), so keep 12 significant digits to make the digest platform-independent.
+            line = re.sub(r"(?<![\w.'])-?\d+\.\d{12,}(?![\w'])", lambda m: format(float(m.group()), ".12g"), line)
             out.append(line)
         return "\n".join(out)
     finally:
@@ -41,9 +44,6 @@ def test_seeded_database_dump_is_unchanged(tmp_path):
         cwd=backend, env=env, check=True, capture_output=True,
     )
     dump = _normalised_dump(str(db_path))
-    print('DBGSQLITE', __import__('sqlite3').sqlite_version)
-    for i, ln in enumerate(dump.split('\n')):
-        print('DBGLINE', i, hashlib.sha1(ln.encode()).hexdigest()[:6], ln[:70].replace(' ', '_'))
     assert hashlib.sha256(dump.encode()).hexdigest() == SEED_DUMP_SHA256
 
 
