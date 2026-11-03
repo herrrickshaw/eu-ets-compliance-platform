@@ -25,9 +25,9 @@ def _normalised_dump(path: str) -> str:
         for line in con.iterdump():
             line = re.sub(r"'\$2[abxy]\$[^']*'", "'<HASH>'", line)
             line = re.sub(r"'\d{4}-\d\d-\d\d \d\d:\d\d:\d\d\.(?!000000')\d{6}'", "'<TS>'", line)
-            # SQLite renders REALs with a version-dependent number of digits (3.46 vs 3.54 differ in
-            # the last place), so keep 12 significant digits to make the digest platform-independent.
-            line = re.sub(r"(?<![\w.'])-?\d+\.\d{12,}(?![\w'])", lambda m: format(float(m.group()), ".12g"), line)
+            # SQLite renders REALs with a version-dependent number of digits (3.54 prints shortest-repr, 3.46 prints
+            # 20 digits in exponent form), so keep 12 significant digits to make the digest platform-independent.
+            line = re.sub(r"(?<![\w.'])-?\d+\.\d{12,}(?:e[+-]\d+)?(?![\w'])", lambda m: format(float(m.group()), ".12g"), line)
             out.append(line)
         return "\n".join(out)
     finally:
@@ -44,8 +44,6 @@ def test_seeded_database_dump_is_unchanged(tmp_path):
         cwd=backend, env=env, check=True, capture_output=True,
     )
     dump = _normalised_dump(str(db_path))
-    for i, ln in enumerate(dump.split('\n')):
-        print('DBGLINE', i, hashlib.sha1(ln.encode()).hexdigest()[:6], ln[:400])
     assert hashlib.sha256(dump.encode()).hexdigest() == SEED_DUMP_SHA256
 
 
