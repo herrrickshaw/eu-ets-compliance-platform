@@ -41,6 +41,9 @@ def test_seeded_database_dump_is_unchanged(tmp_path):
         cwd=backend, env=env, check=True, capture_output=True,
     )
     dump = _normalised_dump(str(db_path))
+    print('DBGSQLITE', __import__('sqlite3').sqlite_version)
+    for i, l in enumerate(dump.split('\n')):
+        print('DBGLINE', i, hashlib.sha1(l.encode()).hexdigest()[:6], l[:70].replace(' ', '_'))
     assert hashlib.sha256(dump.encode()).hexdigest() == SEED_DUMP_SHA256
 
 
