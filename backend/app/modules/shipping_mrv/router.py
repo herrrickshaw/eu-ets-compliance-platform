@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from ... import models, schemas
 from ...auth.deps import get_current_user, get_my_org_ids
 from ...db import get_db
+from .service import summarise_voyages
 
 router = APIRouter(prefix="/api/shipping", tags=["Shipping MRV"])
 
@@ -76,8 +77,6 @@ def submit_emission_report(
     if org is None or org.tenant_id != user.tenant_id:
         raise HTTPException(403, "This vessel does not belong to your tenant")
 
-    CO2_PER_TONNE_FUEL = 3.114  # IMO/EU standard VLSFO emission factor, tCO2 per tonne fuel
-
     voyages = (
         db.query(models.Voyage)
         .filter(
@@ -90,10 +89,7 @@ def submit_emission_report(
     if not voyages:
         raise HTTPException(404, "No voyages found for this vessel/year")
 
-    total_co2 = sum(v.fuel_consumed_mt * CO2_PER_TONNE_FUEL for v in voyages)
-    ets_eligible = sum(
-        v.fuel_consumed_mt * CO2_PER_TONNE_FUEL * (1.0 if v.intra_eu else 0.5) for v in voyages
-    )
+    total_co2, ets_eligible = summarise_voyages(voyages)
 
     report = (
         db.query(models.EmissionReport)

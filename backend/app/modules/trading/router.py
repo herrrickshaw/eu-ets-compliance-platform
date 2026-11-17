@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from ... import models, schemas
 from ...auth.deps import get_current_user, get_my_org_ids
 from ...db import get_db
+from .service import apply_fill_to_position, plan_fills
 
 router = APIRouter(prefix="/api/trading", tags=["Trading"])
 
@@ -62,14 +63,7 @@ def _apply_fill(db: Session, org_id: int, instrument_id: int, side: models.Order
         pos = models.Position(org_id=org_id, instrument_id=instrument_id, quantity=0.0, avg_cost_eur=0.0)
         db.add(pos)
         db.flush()
-
-    if side == models.OrderSide.BUY:
-        new_qty = pos.quantity + qty
-        if new_qty > 0:
-            pos.avg_cost_eur = ((pos.avg_cost_eur * pos.quantity) + (price * qty)) / new_qty
-        pos.quantity = new_qty
-    else:
-        pos.quantity -= qty
+    apply_fill_to_position(pos, side, qty, price)
 
 
 @router.post("/orders", response_model=schemas.OrderOut)
@@ -81,12 +75,7 @@ def place_order(req: schemas.OrderCreate, db: Session = Depends(get_db), user: m
         raise HTTPException(403, "org_id does not belong to your tenant")
 
     side = models.OrderSide(req.side)
-    if side == models.OrderSide.BUY:
-        opposite = models.OrderSide.SELL
-        price_ok = lambda resting: resting.limit_price_eur <= req.limit_price_eur
-    else:
-        opposite = models.OrderSide.BUY
-        price_ok = lambda resting: resting.limit_price_eur >= req.limit_price_eur
+    opposite = models.OrderSide.SELL if side == models.OrderSide.BUY else models.OrderSide.BUY
 
     order = models.Order(
         org_id=req.org_id,
@@ -99,20 +88,15 @@ def place_order(req: schemas.OrderCreate, db: Session = Depends(get_db), user: m
     db.add(order)
     db.flush()
 
-    remaining = req.quantity
     resting_orders = (
         db.query(models.Order)
         .filter_by(instrument_id=req.instrument_id, side=opposite, status=models.OrderStatus.OPEN)
         .order_by(models.Order.created_at.asc())
         .all()
     )
-    for resting in resting_orders:
-        if remaining <= 0:
-            break
-        if not price_ok(resting):
-            continue
-        fill_qty = min(remaining, resting.quantity)
-        fill_price = resting.limit_price_eur  # resting order sets the price
+    fills, remaining = plan_fills(side, req.quantity, req.limit_price_eur, resting_orders)
+    for fill in fills:
+        resting = fill.resting
         buy_order_id = order.id if side == models.OrderSide.BUY else resting.id
         sell_order_id = resting.id if side == models.OrderSide.BUY else order.id
 
@@ -121,15 +105,14 @@ def place_order(req: schemas.OrderCreate, db: Session = Depends(get_db), user: m
                 buy_order_id=buy_order_id,
                 sell_order_id=sell_order_id,
                 instrument_id=req.instrument_id,
-                quantity=fill_qty,
-                price_eur=fill_price,
+                quantity=fill.quantity,
+                price_eur=fill.price_eur,
             )
         )
-        _apply_fill(db, order.org_id, req.instrument_id, side, fill_qty, fill_price)
-        _apply_fill(db, resting.org_id, req.instrument_id, opposite, fill_qty, fill_price)
+        _apply_fill(db, order.org_id, req.instrument_id, side, fill.quantity, fill.price_eur)
+        _apply_fill(db, resting.org_id, req.instrument_id, opposite, fill.quantity, fill.price_eur)
 
-        resting.quantity -= fill_qty
-        remaining -= fill_qty
+        resting.quantity -= fill.quantity
         if resting.quantity <= 0:
             resting.status = models.OrderStatus.FILLED
 
@@ -143,7 +126,7 @@ def place_order(req: schemas.OrderCreate, db: Session = Depends(get_db), user: m
 
 @router.delete("/orders/{order_id}")
 def cancel_order(order_id: int, db: Session = Depends(get_db), user: models.User = Depends(get_current_user)):
-    order = db.query(models.Order).get(order_id)
+    order = db.get(models.Order, order_id)
     if order is None:
         raise HTTPException(404, "Order not found")
     org = db.get(models.Organization, order.org_id)
