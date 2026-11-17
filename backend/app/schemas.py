@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import date, datetime
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class OrmBase(BaseModel):
@@ -88,7 +88,7 @@ class ComplianceStatusOut(OrmBase):
 class SurrenderRequest(BaseModel):
     installation_id: int
     year: int
-    amount_t: float
+    amount_t: float = Field(gt=0)
 
 
 # ---- Shipping MRV ----
@@ -161,7 +161,7 @@ class CbamGoodsImportOut(OrmBase):
     cn_code: str
     good_name: str
     country_of_origin: str
-    quantity_t: float
+    quantity_t: float = Field(gt=0)
     import_date: date
     emission_source: str
     direct_emissions_t: float
@@ -172,7 +172,7 @@ class CbamGoodsImportCreate(BaseModel):
     declarant_id: int
     cn_code: str
     country_of_origin: str
-    quantity_t: float
+    quantity_t: float = Field(gt=0)
     import_date: date
     actual_direct_emissions_t: float | None = None
     actual_indirect_emissions_t: float | None = None
@@ -292,8 +292,8 @@ class OrderCreate(BaseModel):
     org_id: int
     instrument_id: int
     side: str
-    quantity: float
-    limit_price_eur: float
+    quantity: float = Field(gt=0)
+    limit_price_eur: float = Field(gt=0)
 
 
 class TradeOut(OrmBase):

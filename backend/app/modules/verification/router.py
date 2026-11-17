@@ -56,6 +56,10 @@ def decide(req: schemas.VerifyRequest, db: Session = Depends(get_db), user: mode
     verifier_org = db.get(models.Organization, req.verifier_org_id)
     if verifier_org is None or verifier_org.tenant_id != user.tenant_id:
         raise HTTPException(403, "verifier_org_id does not belong to your tenant")
+    if verifier_org.org_type != models.OrgType.VERIFIER:
+        raise HTTPException(403, "Only an accredited verifier organisation can decide verifications")
+    if _subject_org_id(db, req.subject_type, req.subject_id) in get_my_org_ids(db, user.tenant_id):
+        raise HTTPException(403, "A tenant cannot verify its own submission")
 
     record = (
         db.query(models.VerificationRecord)

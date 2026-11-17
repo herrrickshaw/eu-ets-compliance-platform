@@ -145,27 +145,36 @@ def reconcile_declaration(
     )
     total_emissions = sum(i.direct_emissions_t + i.indirect_emissions_t for i in imports)
 
+    decl = db.query(models.CbamDeclaration).filter_by(declarant_id=declarant_id, year=year, quarter=quarter).first()
+    if decl is None:
+        decl = models.CbamDeclaration(declarant_id=declarant_id, year=year, quarter=quarter, total_embedded_emissions_t=0)
+        db.add(decl)
+    already = decl.certificates_surrendered_t or 0.0  # re-running a quarter only tops up the shortfall
+
     held_certs = (
         db.query(models.CbamCertificate)
         .filter_by(declarant_id=declarant_id, status=models.CbamCertificateStatus.HELD)
+        .order_by(models.CbamCertificate.purchase_date, models.CbamCertificate.id)
         .all()
     )
     available_cert_qty = sum(c.quantity_t_co2 for c in held_certs)
-    surrendered = min(total_emissions, available_cert_qty)
+    newly = min(max(0.0, total_emissions - already), available_cert_qty)
+    surrendered = already + newly
 
-    remaining = surrendered
+    remaining = newly
     for c in held_certs:
         if remaining <= 0:
             break
         take = min(c.quantity_t_co2, remaining)
         if take >= c.quantity_t_co2:
             c.status = models.CbamCertificateStatus.SURRENDERED
+        else:
+            # Partial use: split off the surrendered part so the rest stays HELD at its true size.
+            c.quantity_t_co2 -= take
+            db.add(models.CbamCertificate(declarant_id=c.declarant_id, quantity_t_co2=take,
+                                          price_eur_per_t=c.price_eur_per_t, purchase_date=c.purchase_date,
+                                          status=models.CbamCertificateStatus.SURRENDERED))
         remaining -= take
-
-    decl = db.query(models.CbamDeclaration).filter_by(declarant_id=declarant_id, year=year, quarter=quarter).first()
-    if decl is None:
-        decl = models.CbamDeclaration(declarant_id=declarant_id, year=year, quarter=quarter, total_embedded_emissions_t=0)
-        db.add(decl)
 
     decl.total_embedded_emissions_t = round(total_emissions, 3)
     decl.certificates_surrendered_t = round(surrendered, 3)
