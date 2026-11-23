@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from ... import models, schemas
 from ...auth.deps import get_current_user
 from ...db import get_db
+from .service import compute_demand_rows, estimate_capacity_credits, split_supply
 
 router = APIRouter(prefix="/api/india", tags=["India CCTS"])
 
@@ -28,35 +29,7 @@ def _compute_demand(db: Session, overrides_list: list[schemas.SectorAssumptionOv
     overrides = {o.sector_id: o for o in overrides_list}
     sectors = db.query(models.IndiaCctsSector).order_by(models.IndiaCctsSector.name).all()
 
-    rows = []
-    total = 0.0
-    for s in sectors:
-        override = overrides.get(s.id)
-        volume = (override.volume_mt if override and override.volume_mt is not None else s.default_volume_mt)
-        intensity = (
-            override.intensity_tco2_per_t
-            if override and override.intensity_tco2_per_t is not None
-            else s.default_intensity_tco2_per_t
-        )
-        target_pct = s.target_reduction_pct_avg or 0.0
-
-        baseline_mt_co2e = volume * intensity
-        pool_mt_co2e = baseline_mt_co2e * (target_pct / 100)
-        total += pool_mt_co2e
-
-        rows.append(
-            schemas.SectorDemandOut(
-                sector_id=s.id,
-                sector_key=s.key,
-                sector_name=s.name,
-                status=s.status.value,
-                volume_mt=volume,
-                intensity_tco2_per_t=intensity,
-                target_reduction_pct_avg=target_pct,
-                baseline_emissions_mt_co2e=round(baseline_mt_co2e, 2),
-                illustrative_abatement_pool_mt_co2e=round(pool_mt_co2e, 2),
-            )
-        )
+    rows, total = compute_demand_rows(sectors, overrides)
 
     return schemas.DemandModelResponse(
         sectors=rows, total_illustrative_demand_mt_co2e=round(total, 2), methodology_note=METHODOLOGY_NOTE
@@ -107,16 +80,7 @@ def gap_analysis(
     demand = _compute_demand(db, req.overrides)
 
     supply_rows = db.query(models.IndiaSupplyCapacity).all()
-    near_term_total = 0.0
-    aspirational_total = 0.0
-    excluded = []
-    for row in supply_rows:
-        if row.potential_avoided_mt_co2e is None:
-            excluded.append(f"{row.metric_label} ({row.source_name})")
-        elif row.figure_type == models.FigureType.ASPIRATIONAL_TARGET:
-            aspirational_total += row.potential_avoided_mt_co2e
-        else:
-            near_term_total += row.potential_avoided_mt_co2e
+    near_term_total, aspirational_total, excluded = split_supply(supply_rows)
 
     return schemas.GapAnalysisResponse(
         total_demand_mt_co2e=demand.total_illustrative_demand_mt_co2e,
@@ -146,12 +110,7 @@ def capacity_to_credits(
     if b is None:
         raise HTTPException(404, "Benchmark not found")
 
-    mwh = None
-    tco2e = None
-    if b.mwh_per_mw_per_year is not None:
-        mwh = round(req.capacity_mw * b.mwh_per_mw_per_year, 2)
-    if b.tco2e_per_mw_per_year is not None:
-        tco2e = round(req.capacity_mw * b.tco2e_per_mw_per_year, 2)
+    mwh, tco2e = estimate_capacity_credits(b, req.capacity_mw)
 
     note = (
         f"{req.capacity_mw} MW x {b.mwh_per_mw_per_year or '?'} MWh/MW/yr "

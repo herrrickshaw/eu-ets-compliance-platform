@@ -4,6 +4,18 @@ from sqlalchemy.orm import Session
 from ... import models, schemas
 from ...auth.deps import get_current_user, get_my_org_ids
 from ...db import get_db
+from .service import (
+    FULL_PHASE_IN_PCT,
+    find_default_value,
+    imports_in_year,
+    latest_eua_price,
+    marked_up_emissions,
+    phase_in_for_year,
+    quarter_window,
+    surrender_held_certificates,
+    tenant_declarant_ids,
+    total_embedded,
+)
 
 router = APIRouter(prefix="/api/cbam", tags=["CBAM"])
 
@@ -61,25 +73,10 @@ def create_import(
         indirect_t = req.actual_indirect_emissions_t or 0.0
         source = models.EmissionSource.ACTUAL_VERIFIED
     else:
-        dv = (
-            db.query(models.CbamDefaultValue)
-            .filter_by(cn_code=req.cn_code, country=req.country_of_origin)
-            .order_by(models.CbamDefaultValue.valid_from.desc())
-            .first()
-        )
-        if dv is None:
-            dv = (
-                db.query(models.CbamDefaultValue)
-                .filter_by(cn_code=req.cn_code, country="default")
-                .order_by(models.CbamDefaultValue.valid_from.desc())
-                .first()
-            )
+        dv = find_default_value(db, req.cn_code, req.country_of_origin)
         if dv is None:
             raise HTTPException(404, f"No CBAM default value found for CN code {req.cn_code}")
-        factor_direct = dv.direct_emissions_factor * (1 + dv.markup_pct / 100)
-        factor_indirect = dv.indirect_emissions_factor * (1 + dv.markup_pct / 100)
-        direct_t = round(req.quantity_t * factor_direct, 3)
-        indirect_t = round(req.quantity_t * factor_indirect, 3)
+        direct_t, indirect_t = marked_up_emissions(dv, req.quantity_t)
         source = models.EmissionSource.DEFAULT_VALUE
 
     good_name = (
@@ -134,33 +131,24 @@ def reconcile_declaration(
     into one declaration and net off certificates already held."""
     _require_declarant_in_tenant(db, declarant_id, user.tenant_id)
 
+    start, end = quarter_window(year, quarter)
     imports = (
         db.query(models.CbamGoodsImport)
         .filter(
             models.CbamGoodsImport.declarant_id == declarant_id,
-            models.CbamGoodsImport.import_date >= f"{year}-{(quarter - 1) * 3 + 1:02d}-01",
-            models.CbamGoodsImport.import_date < f"{year if quarter < 4 else year + 1}-{(quarter * 3) % 12 + 1:02d}-01",
+            models.CbamGoodsImport.import_date >= start,
+            models.CbamGoodsImport.import_date < end,
         )
         .all()
     )
-    total_emissions = sum(i.direct_emissions_t + i.indirect_emissions_t for i in imports)
+    total_emissions = total_embedded(imports)
 
     held_certs = (
         db.query(models.CbamCertificate)
         .filter_by(declarant_id=declarant_id, status=models.CbamCertificateStatus.HELD)
         .all()
     )
-    available_cert_qty = sum(c.quantity_t_co2 for c in held_certs)
-    surrendered = min(total_emissions, available_cert_qty)
-
-    remaining = surrendered
-    for c in held_certs:
-        if remaining <= 0:
-            break
-        take = min(c.quantity_t_co2, remaining)
-        if take >= c.quantity_t_co2:
-            c.status = models.CbamCertificateStatus.SURRENDERED
-        remaining -= take
+    surrendered = surrender_held_certificates(held_certs, total_emissions)
 
     decl = db.query(models.CbamDeclaration).filter_by(declarant_id=declarant_id, year=year, quarter=quarter).first()
     if decl is None:
@@ -195,62 +183,27 @@ DEMAND_METHODOLOGY_NOTE = (
 
 @router.get("/demand-analysis", response_model=schemas.CbamDemandAnalysisResponse)
 def demand_analysis(year: int, db: Session = Depends(get_db), user: models.User = Depends(get_current_user)):
-    org_ids = get_my_org_ids(db, user.tenant_id)
-    declarant_ids = [
-        d.id for d in db.query(models.CbamDeclarant).filter(models.CbamDeclarant.org_id.in_(org_ids)).all()
-    ]
+    declarant_ids = tenant_declarant_ids(db, get_my_org_ids(db, user.tenant_id))
+    total_embedded_t = total_embedded(imports_in_year(db, declarant_ids, year))
 
-    imports = (
-        db.query(models.CbamGoodsImport)
-        .filter(
-            models.CbamGoodsImport.declarant_id.in_(declarant_ids),
-            models.CbamGoodsImport.import_date >= f"{year}-01-01",
-            models.CbamGoodsImport.import_date < f"{year + 1}-01-01",
-        )
-        .all()
-        if declarant_ids
-        else []
-    )
-    total_embedded = sum(i.direct_emissions_t + i.indirect_emissions_t for i in imports)
+    schedule = phase_in_for_year(db, year)
+    factor_pct = schedule.cbam_factor_pct if schedule else FULL_PHASE_IN_PCT
 
-    schedule = db.query(models.CbamPhaseInSchedule).filter_by(year=year).first()
-    if schedule is None:
-        schedule = (
-            db.query(models.CbamPhaseInSchedule)
-            .filter(models.CbamPhaseInSchedule.year >= year)
-            .order_by(models.CbamPhaseInSchedule.year)
-            .first()
-        )
-        if schedule is None:
-            schedule = (
-                db.query(models.CbamPhaseInSchedule).order_by(models.CbamPhaseInSchedule.year.desc()).first()
-            )
-    factor_pct = schedule.cbam_factor_pct if schedule else 100.0
-
-    actual_obligation = total_embedded * (factor_pct / 100)
-    deferred = total_embedded - actual_obligation
-
-    eua = db.query(models.Instrument).filter_by(instrument_type=models.InstrumentType.EUA).first()
-    latest_price = (
-        db.query(models.PriceHistory)
-        .filter_by(instrument_id=eua.id)
-        .order_by(models.PriceHistory.price_date.desc())
-        .first()
-        if eua
-        else None
-    )
+    actual_obligation = total_embedded_t * (factor_pct / 100)
+    deferred = total_embedded_t - actual_obligation
+    latest_price = latest_eua_price(db)
 
     return schemas.CbamDemandAnalysisResponse(
         year=year,
         declarant_count=len(declarant_ids),
-        total_embedded_emissions_t=round(total_embedded, 3),
+        total_embedded_emissions_t=round(total_embedded_t, 3),
         cbam_factor_pct=factor_pct,
         actual_obligation_t=round(actual_obligation, 3),
         deferred_liability_t=round(deferred, 3),
         reference_price_eur_per_t=latest_price.price_eur if latest_price else None,
         reference_price_date=latest_price.price_date if latest_price else None,
         actual_obligation_cost_eur=round(actual_obligation * latest_price.price_eur, 2) if latest_price else None,
-        full_liability_cost_eur=round(total_embedded * latest_price.price_eur, 2) if latest_price else None,
+        full_liability_cost_eur=round(total_embedded_t * latest_price.price_eur, 2) if latest_price else None,
         methodology_note=DEMAND_METHODOLOGY_NOTE,
     )
 
@@ -259,32 +212,9 @@ def demand_analysis(year: int, db: Session = Depends(get_db), user: models.User 
 def demand_projection(base_year: int, db: Session = Depends(get_db), user: models.User = Depends(get_current_user)):
     """Holds base_year's actual import volume constant and projects the obligation
     across the whole 2026-2034 phase-in schedule — the clearest way to see the ramp."""
-    org_ids = get_my_org_ids(db, user.tenant_id)
-    declarant_ids = [
-        d.id for d in db.query(models.CbamDeclarant).filter(models.CbamDeclarant.org_id.in_(org_ids)).all()
-    ]
-    imports = (
-        db.query(models.CbamGoodsImport)
-        .filter(
-            models.CbamGoodsImport.declarant_id.in_(declarant_ids),
-            models.CbamGoodsImport.import_date >= f"{base_year}-01-01",
-            models.CbamGoodsImport.import_date < f"{base_year + 1}-01-01",
-        )
-        .all()
-        if declarant_ids
-        else []
-    )
-    total_embedded = sum(i.direct_emissions_t + i.indirect_emissions_t for i in imports)
-
-    eua = db.query(models.Instrument).filter_by(instrument_type=models.InstrumentType.EUA).first()
-    latest_price = (
-        db.query(models.PriceHistory)
-        .filter_by(instrument_id=eua.id)
-        .order_by(models.PriceHistory.price_date.desc())
-        .first()
-        if eua
-        else None
-    )
+    declarant_ids = tenant_declarant_ids(db, get_my_org_ids(db, user.tenant_id))
+    total_embedded_t = total_embedded(imports_in_year(db, declarant_ids, base_year))
+    latest_price = latest_eua_price(db)
     price = latest_price.price_eur if latest_price else None
 
     schedule = db.query(models.CbamPhaseInSchedule).order_by(models.CbamPhaseInSchedule.year).all()
@@ -292,15 +222,15 @@ def demand_projection(base_year: int, db: Session = Depends(get_db), user: model
         schemas.CbamProjectionYear(
             year=s.year,
             cbam_factor_pct=s.cbam_factor_pct,
-            obligation_t=round(total_embedded * (s.cbam_factor_pct / 100), 3),
-            obligation_cost_eur=round(total_embedded * (s.cbam_factor_pct / 100) * price, 2) if price else None,
+            obligation_t=round(total_embedded_t * (s.cbam_factor_pct / 100), 3),
+            obligation_cost_eur=round(total_embedded_t * (s.cbam_factor_pct / 100) * price, 2) if price else None,
         )
         for s in schedule
     ]
 
     return schemas.CbamProjectionResponse(
         base_year=base_year,
-        total_embedded_emissions_t=round(total_embedded, 3),
+        total_embedded_emissions_t=round(total_embedded_t, 3),
         reference_price_eur_per_t=price,
         years=years,
         note=(
