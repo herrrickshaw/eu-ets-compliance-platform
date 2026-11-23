@@ -147,3 +147,14 @@ def test_integrity_stats_ordering(client, make, world):
     make.add(models.VerificationIntegrityStat(category="b", metric_label="b1", **common))
     make.add(models.VerificationIntegrityStat(category="a", metric_label="a1", **common))
     assert [x["metric_label"] for x in client.get("/api/verification/integrity-stats", headers=hv).json()] == ["a1", "b1"]
+
+
+def test_decide_updates_the_most_recent_of_several_records(client, make, db, world):
+    (_, _, ov, hv), (_, _, ob, _), _ = world
+    rep = report(make, ob)
+    old = make.add(models.VerificationRecord(subject_type=T.EMISSION_REPORT, subject_id=rep.id, verifier_org_id=ov.id))
+    new = make.add(models.VerificationRecord(subject_type=T.EMISSION_REPORT, subject_id=rep.id, verifier_org_id=ov.id))
+    r = decide(client, hv, "emission_report", rep.id, ov, True, "latest")
+    assert r.json()["id"] == new.id
+    db.expire_all()
+    assert db.get(models.VerificationRecord, old.id).status == S.PENDING

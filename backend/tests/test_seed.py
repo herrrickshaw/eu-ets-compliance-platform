@@ -138,3 +138,11 @@ def test_seeded_tenant_isolation_on_installations(seeded_client):
     names_steel = {i["name"] for i in seeded_client.get("/api/ets/installations", headers=steel).json()}
     assert names_steel
     assert seeded_client.get("/api/ets/installations", headers=trader).json() == []
+
+
+def test_demo_password_matches_what_the_readme_and_login_page_advertise():
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[2]
+    assert seed_data.DEMO_PASSWORD in (root / "README.md").read_text()
+    assert seed_data.DEMO_PASSWORD in (root / "frontend" / "src" / "pages" / "Login.jsx").read_text()
